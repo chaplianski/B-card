@@ -1,7 +1,8 @@
-package com.chaplianski.bcard
+package com.chaplianski.bcard.presenter.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.chaplianski.bcard.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

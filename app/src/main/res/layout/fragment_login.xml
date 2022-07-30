@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frameLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/back"
+        tools:context=".presenter.ui.LoginFragment">
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginBottom="10dp"
+            android:text="Welcome to B-card"
+            android:textColor="@color/text_dark"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/Regular"
+            android:layout_width="311dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginBottom="42dp"
+            android:text="No need for expensive legal services to conclude a contract"
+            app:layout_constraintBottom_toTopOf="@+id/otf_login_fragment_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otf_login_fragment_email"
+            style="@style/BCard.OutlinedBox.Field"
+            android:layout_width="336dp"
+
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:hint="Email Adress"
+            app:layout_constraintBottom_toTopOf="@+id/otf_login_fragment_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:startIconDrawable="@drawable/ic_email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_login_fragment_email"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_field_with_background_corners" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otf_login_fragment_password"
+            style="@style/BCard.OutlinedBox.Field"
+            android:layout_width="336dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Password"
+            app:hintTextColor="@color/text_middle"
+            app:layout_constraintBottom_toTopOf="@+id/tv_login_fragment_forgot_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:startIconDrawable="@drawable/ic_password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_login_fragment_password"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_field_with_background_corners" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/tv_login_fragment_forgot_password"
+            style="@style/Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="19dp"
+            android:layout_marginBottom="16dp"
+            android:text="Forgot Password?"
+            android:textColor="@color/text_middle"
+            app:layout_constraintBottom_toTopOf="@+id/bt_login_fragment_signin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/bt_login_fragment_signin"
+            style="@style/BCard.Button"
+            android:layout_width="303dp"
+            android:layout_height="56dp"
+            android:backgroundTint="@color/blue_main"
+            android:text="Sign In"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView6"
+            style="@style/Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:text="or"
+            android:textColor="@color/text_middle"
+            app:layout_constraintBottom_toTopOf="@+id/bt_login_fragment_goggle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bt_login_fragment_goggle"
+            style="@style/BCard.Button"
+            android:layout_width="336dp"
+            android:layout_height="56dp"
+            android:backgroundTint="@color/white"
+            android:text="Sign In with Google"
+            android:textColor="#737C97"
+            app:icon="@drawable/ic_google_logo"
+            app:iconGravity="start"
+            app:iconTint="@color/transparent"
+            app:iconTintMode="screen"
+            app:layout_constraintBottom_toTopOf="@+id/bt_login_fragment_meta"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bt_login_fragment_meta"
+            style="@style/BCard.Button"
+            android:layout_width="336dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="96dp"
+            android:backgroundTint="@color/white"
+            android:text="Sign In with Facebook"
+            android:textColor="#737C97"
+            app:icon="@drawable/ic_facebook_logo"
+            app:iconGravity="start"
+            app:iconTint="@color/transparent"
+            app:iconTintMode="screen"
+            app:layout_constraintBottom_toTopOf="@+id/textView7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="42dp"
+            style="@style/Regular"
+            android:text="Don't have an account? "
+            android:textColor="@color/text_middle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/tv_welcome_fragment_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            style="@style/SemiBold"
+            app:layout_constraintBottom_toBottomOf="@+id/textView7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/textView7"
+            app:layout_constraintTop_toTopOf="@+id/textView7"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frameLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/back"
+        tools:context=".presenter.ui.RegistrationFragment">
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            android:text="Registration to B-card"
+            android:textColor="@color/text_dark"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/Regular"
+            android:layout_width="311dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginBottom="42dp"
+            android:text="Please fill all fields and click to button Sign Up"
+            app:layout_constraintBottom_toTopOf="@+id/otf_registration_fragment_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otf_registration_fragment_name"
+            style="@style/BCard.OutlinedBox.Field"
+            android:layout_width="336dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:hint="Name"
+            app:layout_constraintBottom_toTopOf="@+id/otf_registration_fragment_suname"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:startIconDrawable="@drawable/ic_user_regular">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_registration_fragment_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_field_with_background_corners"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otf_registration_fragment_suname"
+            style="@style/BCard.OutlinedBox.Field"
+            android:layout_width="336dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:hint="Suname"
+            app:layout_constraintBottom_toTopOf="@+id/otf_registration_fragment_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:startIconDrawable="@drawable/ic_user_regular">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_registration_fragment_suname"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_field_with_background_corners"
+                android:inputType="textPersonName" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otf_registration_fragment_email"
+            style="@style/BCard.OutlinedBox.Field"
+            android:layout_width="336dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:hint="Email Adress"
+            app:layout_constraintBottom_toTopOf="@+id/otf_registration_fragment_repeat_phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:startIconDrawable="@drawable/ic_email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_registration_fragment_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_field_with_background_corners" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otf_registration_fragment_repeat_phone"
+            style="@style/BCard.OutlinedBox.Field"
+            android:layout_width="336dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Phone number"
+            app:hintTextColor="@color/text_middle"
+            app:layout_constraintBottom_toTopOf="@+id/otf_registration_fragment_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:startIconDrawable="@drawable/ic_phone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_registration_fragment_repeat_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_field_with_background_corners"
+                android:inputType="textPhonetic" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otf_registration_fragment_password"
+            style="@style/BCard.OutlinedBox.Field"
+            android:layout_width="336dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Password"
+            app:hintTextColor="@color/text_middle"
+            app:layout_constraintBottom_toTopOf="@+id/otf_registration_fragment_repeat_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:startIconDrawable="@drawable/ic_password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_registration_fragment_password"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_field_with_background_corners"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otf_registration_fragment_repeat_password"
+            style="@style/BCard.OutlinedBox.Field"
+            android:layout_width="336dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="32dp"
+            android:hint="Repeat Password"
+            app:hintTextColor="@color/text_middle"
+            app:layout_constraintBottom_toTopOf="@+id/bt_registration_fragment_signup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:startIconDrawable="@drawable/ic_password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_registration_fragment_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_field_with_background_corners"
+                android:inputType="textPassword"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/bt_registration_fragment_signup"
+            style="@style/BCard.Button"
+            android:layout_width="303dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="64dp"
+            android:backgroundTint="@color/blue_main"
+            android:text="Sign Up"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
