@@ -3,7 +3,9 @@ package com.chaplianski.bcard.di
 import android.content.Context
 import androidx.room.Room
 import com.chaplianski.bcard.data.repository.AuthorizationRepositoryImpl
+import com.chaplianski.bcard.data.repository.CardRepositoryImpl
 import com.chaplianski.bcard.domain.repository.AuthorizationRepository
+import com.chaplianski.bcard.domain.repository.CardRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -30,8 +32,8 @@ class AppModule() {
 ////
     @Provides
     fun provideAuthorizationRepository(impl: AuthorizationRepositoryImpl): AuthorizationRepository = impl
-//    @Provides
-//    fun provideGoalRepository(impl: GoalRepositoryImpl): GoalRepository = impl
+    @Provides
+    fun provideCardRepository(impl: CardRepositoryImpl): CardRepository = impl
 //    @Provides
 //    fun provideInterestRepository(impl: InterestRepositoryImpl): InterestRepository = impl
 //    @Provides

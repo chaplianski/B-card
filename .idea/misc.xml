@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/drawable/card_form.xml" value="0.3655" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/drawable/ic_email.xml" value="0.3795" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/drawable/ic_facebook_logo.xml" value="0.3795" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/drawable/ic_google_logo.xml" value="0.3795" />
@@ -10,7 +11,9 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/drawable/ic_user_regular.xml" value="0.3795" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/drawable/text_field_with_background_corners.xml" value="0.3795" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/activity_main.xml" value="0.528125" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_cards.xml" value="0.5421875" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_cards.xml" value="0.4" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_cards_card_add_item.xml" value="0.3645833333333333" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_cards_card_item.xml" value="0.3645833333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_login.xml" value="0.3015625" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_registration.xml" value="0.5421875" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_start.xml" value="0.264" />

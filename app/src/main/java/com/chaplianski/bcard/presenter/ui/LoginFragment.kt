@@ -66,9 +66,10 @@ class LoginFragment : Fragment() {
                 } else {
                     Log.d("MyLog", "Fail")
                 }
+
             }
 
-
+            findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
 
 
 //            checkLoginUser(email, password)
