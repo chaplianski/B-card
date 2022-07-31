@@ -11,14 +11,14 @@
         android:layout_height="450dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
-        android:background="@drawable/card_form"
+        android:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
+    <!--     android:background="@drawable/card_form" -->
         <ImageView
-            android:id="@+id/iv_card_fragment_avatar"
+            android:id="@+id/iv_card_fragment_item_avatar"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginStart="16dp"
@@ -32,7 +32,7 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/tv_card_fragment_name"
+            android:id="@+id/tv_card_fragment_item_name"
             style="@style/Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,11 +43,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_card_fragment_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/iv_card_fragment_item_avatar"
             app:layout_constraintVertical_bias="0.107" />
 
         <TextView
-            android:id="@+id/tv_card_fragment_specialization"
+            android:id="@+id/tv_card_fragment_item_specialization"
             style="@style/Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,11 +58,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_card_fragment_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_card_fragment_item_name"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/tv_card_fragment_phone"
+            android:id="@+id/tv_card_fragment_item_phone"
             style="@style/Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/tv_card_fragment_addition_phone"
+            android:id="@+id/tv_card_fragment_item_addition_phone"
             style="@style/Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,11 +89,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/iv_card_fragment_add_phone"
-            app:layout_constraintTop_toBottomOf="@+id/tv_card_fragment_phone"
+            app:layout_constraintTop_toBottomOf="@+id/tv_card_fragment_item_phone"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/tv_card_fragment_email"
+            android:id="@+id/tv_card_fragment_item_email"
             style="@style/Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
             app:layout_constraintVertical_bias="0.093" />
 
         <TextView
-            android:id="@+id/tv_card_fragment_location"
+            android:id="@+id/tv_card_fragment_item_location"
             style="@style/Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_card_fragment_specialization"
+            app:layout_constraintTop_toBottomOf="@+id/tv_card_fragment_item_specialization"
             app:srcCompat="@drawable/ic_phone_call" />
 
         <ImageView

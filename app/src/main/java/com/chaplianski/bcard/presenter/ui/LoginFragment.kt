@@ -59,17 +59,19 @@ class LoginFragment : Fragment() {
             val email = emailField.editText?.text.toString()
             val password = passwordField.editText?.text.toString()
 
-            loginFragmentViewModel.checkLoginUser(email, password)
-            loginFragmentViewModel.loginResponse.observe(this.viewLifecycleOwner){
-                if (it == "OK"){
-                    findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
-                } else {
-                    Log.d("MyLog", "Fail")
-                }
-
-            }
-
             findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
+
+//            loginFragmentViewModel.checkLoginUser(email, password)
+//            loginFragmentViewModel.loginResponse.observe(this.viewLifecycleOwner){
+//                if (it == "OK"){
+//                    findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
+//                } else {
+//                    Log.d("MyLog", "Fail")
+//                }
+//
+//            }
+//
+//            findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
 
 
 //            checkLoginUser(email, password)
