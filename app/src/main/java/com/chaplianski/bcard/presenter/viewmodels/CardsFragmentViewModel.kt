@@ -1,5 +1,6 @@
 package com.chaplianski.bcard.presenter.viewmodels
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,6 +35,10 @@ class CardsFragmentViewModel @Inject constructor(private val getCardUseCase: Get
 
     override fun onCleared() {
         viewModelScope.cancel()
+    }
+
+    fun insertPhoto(imageUri: Uri) {
+
     }
 
 }

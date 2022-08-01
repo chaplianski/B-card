@@ -31,8 +31,7 @@
                 android:id="@+id/cl_cards"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="26dp"
-                android:layout_marginRight="26dp"
+
                 app:layout_collapseMode="parallax">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -91,6 +90,10 @@
                 android:backgroundTint="@color/blue_main"
                 android:text="Additional Information" />
 
+            <include layout="@layout/user_information"
+                android:id="@+id/layout_user_information"
+                android:visibility="gone"/>
+
             <Button
                 android:id="@+id/bt_cards_fragment_edit"
                 style="@style/BCard.Button"
@@ -101,8 +104,8 @@
                 android:backgroundTint="@color/blue_main"
                 android:text="Edit User " />
 
-            <include layout="@layout/user_information"
-                android:id="@+id/layout_user_information"
+            <include layout="@layout/card_implementation"
+                android:id="@+id/layout_user_edit_information"
                 android:visibility="gone"/>
 
 
@@ -154,7 +157,7 @@
                 style="@style/Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="24dp"
                 android:text="Andrew"
                 android:textColor="@color/black"
                 android:textSize="18sp"
