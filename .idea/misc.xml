@@ -17,11 +17,15 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_cards.xml" value="0.4" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_cards_card_add_item.xml" value="0.3645833333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_cards_card_item.xml" value="0.3645833333333333" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_edit_card.xml" value="0.49585253456221196" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_login.xml" value="0.3015625" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_registration.xml" value="0.5421875" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/fragment_start.xml" value="0.264" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/stroke_color_item.xml" value="0.5411458333333333" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/user_card_settings.xml" value="0.5411458333333333" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/user_edit_addition_info.xml" value="0.5411458333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/user_information.xml" value="0.5421875" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/layout/user_person_info.xml" value="0.5411458333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Bcard/app/src/main/res/xml/provider_path.xml" value="0.2791666666666667" />
       </map>
     </option>

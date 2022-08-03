@@ -39,5 +39,18 @@
         android:id="@+id/cardsFragment"
         android:name="com.chaplianski.bcard.presenter.ui.CardsFragment"
         android:label="fragment_cards"
-        tools:layout="@layout/fragment_cards" />
+        tools:layout="@layout/fragment_cards" >
+        <action
+            android:id="@+id/action_cardsFragment_to_editCardFragment"
+            app:destination="@id/editCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editCardFragment"
+        android:name="com.chaplianski.bcard.presenter.ui.EditCardFragment"
+        android:label="fragment_edit_card"
+        tools:layout="@layout/fragment_edit_card" >
+        <action
+            android:id="@+id/action_editCardFragment_to_cardsFragment"
+            app:destination="@id/cardsFragment" />
+    </fragment>
 </navigation>

@@ -4,8 +4,10 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +21,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.databinding.FragmentCardsBinding
@@ -35,13 +38,13 @@ import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 
-class CardsFragment : Fragment() {
+class CardsFragment : Fragment(R.layout.fragment_cards) {
 
     @Inject
     lateinit var cardsFragmentViewModelFactory: CardsFragmentViewModelFactory
     val cardsFragmentViewModel: CardsFragmentViewModel by viewModels { cardsFragmentViewModelFactory }
 
-    lateinit var photoPicker: PhotoPicker
+
     var _binding: FragmentCardsBinding? = null
     val binding: FragmentCardsBinding get() = _binding!!
 
@@ -63,11 +66,6 @@ class CardsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        photoPicker =
-            PhotoPicker(context!!, requireActivity().activityResultRegistry) { uri ->
-                savePhotoToAnswer(uri)
-            }
 
         val infoButton: Button = binding.btCardsFragmentAddInfo
         val editButton: Button = binding.btCardsFragmentEdit
@@ -91,55 +89,9 @@ class CardsFragment : Fragment() {
             expandAppbar(appbar, nameplate)
         }
 
-        // **** Edit card
-
-        val editInfoText: ConstraintLayout = binding.layoutUserEditInformation.clCardImplementation
-        val personInfo: ConstraintLayout = binding.layoutUserEditInformation.clCardImplPersonInfo
-        val cardSettings: ConstraintLayout = binding.layoutUserEditInformation.clCardImplCardSettings
-        val personInfoButton: TextView = binding.layoutUserEditInformation.tvCardImplPersonInfo
-        val cardSettingsButton: TextView = binding.layoutUserEditInformation.tvCardImplCardSettings
-        val saveButtonEdit: Button = binding.layoutUserEditInformation.btCardImplSave
-        val cardColors: RecyclerView = binding.layoutUserEditInformation.rvCardImplCardColor
-        val strokeColors: RecyclerView = binding.layoutUserEditInformation.rvCardImplStrokeColor
-        val avatar: ImageView = binding.layoutUserEditInformation.ivCardImplAvatar
-
         editButton.setOnClickListener {
-            editInfoText.visibility = View.VISIBLE
-//            appbar.scrollTo(0, 1050)
-            collapseAppbar(appbar, nameplate)
-//            appbar.visibility = View.GONE
+            findNavController().navigate(R.id.action_cardsFragment_to_editCardFragment)
         }
-
-        personInfoButton.setOnClickListener {
-            personInfo.visibility =
-            if (personInfo.isVisible) View.GONE
-            else View.VISIBLE
-            if (cardSettings.isVisible) cardSettings.visibility = View.GONE
-        }
-
-        cardSettingsButton.setOnClickListener {
-            cardSettings.visibility =
-            if (cardSettings.isVisible) View.GONE
-            else View.VISIBLE
-            if (personInfo.isVisible) personInfo.visibility = View.GONE
-        }
-
-        saveButtonEdit.setOnClickListener {
-            editInfoText.visibility = View.GONE
-            expandAppbar(appbar, nameplate)
-        }
-
-        avatar.setOnClickListener {
-            addAvatarDialog()
-        }
-
-        val cardColorsAdapter = CardColorAdapter()
-        cardColors.layoutManager = GridLayoutManager(context,5)
-        cardColors.adapter = cardColorsAdapter
-
-        val strokeColorsAdapter = StrokeColorAdapter()
-        strokeColors.layoutManager = GridLayoutManager(context, 6)
-        strokeColors.adapter = strokeColorsAdapter
 
         // **** Share card
         shareButton.setOnClickListener {
@@ -150,6 +102,7 @@ class CardsFragment : Fragment() {
 
         }
 
+
         // ******  Cards wheel  ********
 
         val cardsRV: RecyclerView = view.findViewById(R.id.rv_cards_fragment_cards)
@@ -157,6 +110,8 @@ class CardsFragment : Fragment() {
             CardsPickerLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         cardsFragmentViewModel.getCards()
+
+
         cardsFragmentViewModel.cards.observe(this.viewLifecycleOwner) { listCards ->
 
             val cardFragmentCardAdapter = CardsFragmentCardAdapter(listCards, cardsRV)
@@ -188,38 +143,39 @@ class CardsFragment : Fragment() {
                 val userName: TextView = view.findViewById(R.id.tv_cards_fragment_name)
                 userName.text = cardData[0]
             }
-        }
-    }
 
-    private fun savePhotoToAnswer(imageUri: Uri?) {
-//        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-//        val questionId = sharedPref?.getString(Constants.CURRENT_QUESTION_ID, "")
+            cardFragmentCardAdapter.shortOnClickListener = object: CardsFragmentCardAdapter.ShortOnClickListener{
 
-        val contentResolver = context?.getContentResolver()
-
-        if (imageUri != null) {
-//            if (questionId != null) {
-                if (contentResolver != null) {
-                    cardsFragmentViewModel.insertPhoto(imageUri)
-//                    answerViewModel.insertPhoto(imageUri, questionId, contentResolver)
+                override fun shortClick() {
+//                    editButton.text = "Input user information"
+//                    editInfoText.visibility = View.VISIBLE
+//                    appbar.setExpanded(false)
+//                    personInfo.visibility = View.VISIBLE
                 }
-//            }
-        }
-    }
 
-    private fun addAvatarDialog() {
-        val photoDialogItems = arrayOf("Select photo from gallery", "Capture photo from camera")
-        val builder = AlertDialog.Builder(context)
+                override fun shortPhoneClick(phone: String) {
+                    val i = Intent(Intent.ACTION_DIAL)
+                    i.data = Uri.parse("tel:$phone")
+                    activity?.startActivity(i)
+                }
 
-        builder.setTitle("Choose variant of adding photo")
-        builder.setItems(photoDialogItems) { _, position ->
-            when (position) {
-                0 -> photoPicker.pickPhoto()
-                1 -> photoPicker.takePhoto()
+                override fun shortEmailClick(email: String) {
+                    val i = Intent(Intent.ACTION_SEND)
+//                    i.data = Uri.parse("mailto:$email")
+                    i.type = "text/plain"
+                    i.putExtra(Intent.EXTRA_EMAIL, email)
+                    activity?.startActivity(Intent.createChooser(i, "Send email"))
+                }
+
+                override fun shortLinkedinClick(linkedin: String) {
+                    val i = Intent(Intent.ACTION_VIEW, Uri.parse("https:$linkedin"))
+                    activity?.startActivity(i)
+                }
             }
         }
-        builder.show()
     }
+
+
 
     private fun expandAppbar(
         appbar: AppBarLayout,

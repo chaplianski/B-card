@@ -1,7 +1,6 @@
 package com.chaplianski.bcard.presenter.adapters
 
 import android.graphics.drawable.GradientDrawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,26 +13,61 @@ import com.bumptech.glide.Glide
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.domain.model.Card
 
-class CardsFragmentCardAdapter (private val cardList: List<Card>, private val recyclerView: RecyclerView): RecyclerView.Adapter<CardsFragmentCardAdapter.ViewHolder>() {
+class CardsFragmentCardAdapter (private val cardList: List<Card>, private val recyclerView: RecyclerView): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layout = when(viewType){
-            ADD -> R.layout.fragment_cards_card_add_item
-            CARD -> R.layout.fragment_cards_card_item
+    interface ShortOnClickListener {
+        fun shortClick()
+        fun shortPhoneClick(phone: String)
+        fun shortEmailClick(email: String)
+        fun shortLinkedinClick(linkedin: String)
+    }
+    var shortOnClickListener: ShortOnClickListener? = null
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when(viewType){
+            ADD -> {
+                val v = LayoutInflater.from(parent.context).inflate(R.layout.fragment_cards_card_add_item, parent, false)
+                AddCardViewHolder(v)
+            }
+            CARD -> {
+                val v = LayoutInflater.from(parent.context).inflate(R.layout.fragment_cards_card_item, parent, false)
+                CardViewHolder(v)
+            }
+
             else -> throw IllegalArgumentException("Unknown view type $viewType")
         }
-        val v = LayoutInflater.from(parent.context).inflate(layout, parent, false)
-        return ViewHolder(v)
+
+
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(getItemViewType(position)){
-            ADD -> holder.onBindAdd()
-            CARD -> holder.onBindCard(cardList[position])
+            ADD -> {}
+            CARD -> {
+                (holder as CardViewHolder).onBindCard(cardList[position])
+            }
+
+
+        }
+        holder.itemView.setOnClickListener { recyclerView.smoothScrollToPosition(position) }
+
+        if (getItemViewType(position) == ADD){
+            (holder as AddCardViewHolder).itemView.setOnClickListener {
+            shortOnClickListener?.shortClick()
+            }
+        } else {
+            (holder as CardViewHolder).phone.setOnClickListener {
+                shortOnClickListener?.shortPhoneClick(cardList[position].phone)
+            }
+            holder.email.setOnClickListener{
+                shortOnClickListener?.shortEmailClick(cardList[position].email)
+            }
+            holder.linkedin.setOnClickListener {
+                shortOnClickListener?.shortLinkedinClick(cardList[position].linkedin)
+            }
         }
 
-        Log.d("Log", "adapter ${holder.itemView.id}")
-        holder.itemView.setOnClickListener { recyclerView.smoothScrollToPosition(position) }
+
     }
 
     override fun getItemCount(): Int {
@@ -47,23 +81,23 @@ class CardsFragmentCardAdapter (private val cardList: List<Card>, private val re
         }
     }
 
-    class ViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
+    class CardViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
+
+        val phone: TextView = itemView.findViewById(R.id.tv_card_fragment_item_phone)
+        val name: TextView = itemView.findViewById(R.id.tv_card_fragment_item_name)
+        val specialization: TextView = itemView.findViewById(R.id.tv_card_fragment_item_specialization)
+        val linkedin: TextView = itemView.findViewById(R.id.tv_card_fragment_item_addition_phone)
+        val email: TextView = itemView.findViewById(R.id.tv_card_fragment_item_email)
+        val location: TextView = itemView.findViewById(R.id.tv_card_fragment_item_location)
+        val avatar: ImageView = itemView.findViewById(R.id.iv_card_fragment_item_avatar)
+        val cardLayout: ConstraintLayout = itemView.findViewById(R.id.layout_card_fragment_card)
 
         fun onBindCard(card: Card){
-
-            val name: TextView = itemView.findViewById(R.id.tv_card_fragment_item_name)
-            val specialization: TextView = itemView.findViewById(R.id.tv_card_fragment_item_specialization)
-            val phone: TextView = itemView.findViewById(R.id.tv_card_fragment_item_phone)
-            val addPhone: TextView = itemView.findViewById(R.id.tv_card_fragment_item_addition_phone)
-            val email: TextView = itemView.findViewById(R.id.tv_card_fragment_item_email)
-            val location: TextView = itemView.findViewById(R.id.tv_card_fragment_item_location)
-            val avatar: ImageView = itemView.findViewById(R.id.iv_card_fragment_item_avatar)
-            val cardLayout: ConstraintLayout = itemView.findViewById(R.id.layout_card_fragment_card)
 
             name.text = card.name
             specialization.text = card.speciality
             phone.text = card.phone
-            addPhone.text = card.additionPhone
+            linkedin.text = card.linkedin
             email.text = card.email
             location.text = card.location
 
@@ -83,8 +117,6 @@ class CardsFragmentCardAdapter (private val cardList: List<Card>, private val re
                     0XFFF4D03F.toInt(),
                     itemView.context.resources.getColor(R.color.accent_2)
                 ))
-                Log.d("MyLog", "color1 = ${R.color.accent_2}")
-            Log.d("MyLog", "color2 = ${0XFFD98880.toInt()}")
 
             val colorA = ContextCompat.getDrawable(itemView.context, R.color.accent_2)
             val drawStroke = GradientDrawable()
@@ -107,10 +139,12 @@ class CardsFragmentCardAdapter (private val cardList: List<Card>, private val re
         }
 
         fun onBindAdd(){
-
+            val addLayout: ConstraintLayout = itemView.findViewById(R.id.cl_card_fragment_card_add)
         }
 
+    }
 
+    class AddCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
     }
 

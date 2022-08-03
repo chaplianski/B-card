@@ -5,7 +5,7 @@ data class Card(
     val name: String,
     val photo: String,
     val phone: String,
-    val additionPhone: String,
+    val linkedin: String,
     val email: String,
     val speciality: String,
     val location: String

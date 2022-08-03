@@ -6,13 +6,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chaplianski.bcard.domain.model.Card
+import com.chaplianski.bcard.domain.usecases.AddCardUseCase
 import com.chaplianski.bcard.domain.usecases.GetCardUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class CardsFragmentViewModel @Inject constructor(private val getCardUseCase: GetCardUseCase) : ViewModel() {
+class CardsFragmentViewModel @Inject constructor(
+    private val getCardUseCase: GetCardUseCase,
+    private val addCardUseCase: AddCardUseCase,
+                                                 ) : ViewModel() {
 
     var _cards = MutableLiveData<List<Card>>()
     val cards: LiveData<List<Card>> get() = _cards
@@ -39,6 +43,10 @@ class CardsFragmentViewModel @Inject constructor(private val getCardUseCase: Get
 
     fun insertPhoto(imageUri: Uri) {
 
+    }
+
+    fun addCard(card: Card){
+        addCardUseCase.execute(card)
     }
 
 }
