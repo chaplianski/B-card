@@ -78,6 +78,7 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
         val appbar: AppBarLayout = binding.appbarCardsFragment
         val nameplate: FrameLayout = binding.flCardsFragmentTopInfo
 
+
         // **** Additional User Info
         infoButton.setOnClickListener {
             additionalInfoText.visibility = View.VISIBLE

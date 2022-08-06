@@ -74,7 +74,7 @@
         android:layout_marginBottom="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -82,55 +82,82 @@
             <Button
                 android:id="@+id/bt_cards_fragment_add_info"
                 style="@style/BCard.Button"
-                android:layout_width="match_parent"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-
+                android:background="@color/transparent"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:backgroundTint="@color/blue_main"
-                android:text="Additional Information" />
+                android:drawableTop="@drawable/ic_add_plus"
 
-            <include layout="@layout/user_information"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <include
                 android:id="@+id/layout_user_information"
-                android:visibility="gone"/>
+                layout="@layout/user_information"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/bt_cards_fragment_edit"
                 style="@style/BCard.Button"
-                android:layout_width="match_parent"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
                 android:backgroundTint="@color/blue_main"
-                android:text="Edit User " />
+                android:drawableTop="@drawable/ic_edit"
 
-            <include layout="@layout/card_implementation"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_add_info"
+                app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_add_info" />
+
+            <include
                 android:id="@+id/layout_user_edit_information"
-                android:visibility="gone"/>
+                layout="@layout/card_implementation"
+                android:visibility="gone" />
 
 
             <Button
                 android:id="@+id/bt_cards_fragment_share"
                 style="@style/BCard.Button"
-                android:layout_width="match_parent"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:backgroundTint="@color/blue_main"
-                android:text="Share User" />
+                android:drawableTop="@drawable/ic_share"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_add_info"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/bt_cards_fragment_delete"
                 style="@style/BCard.Button"
-                android:layout_width="match_parent"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:backgroundTint="@color/blue_main"
-                android:text="Delete User" />
+                android:drawableTop="@drawable/ic_delete"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_edit"
+                app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_add_info"
+                app:layout_constraintVertical_bias="0.0" />
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.core.widget.NestedScrollView>

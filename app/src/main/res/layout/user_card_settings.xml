@@ -2,179 +2,185 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_card_settings"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.0">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_card_settings"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_card_settings_color"
+        style="@style/Bold"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:visibility="visible"
+
+        android:text="Card color"
+        android:textColor="@color/text_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_card_settings_color"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_card_settings_color"
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/card_color_item" />
+
+    <TextView
+        android:id="@+id/tv_card_settings_corners_size"
+        style="@style/Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Corners round"
+        android:textColor="@color/text_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_card_settings_color"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <RadioGroup
+        android:id="@+id/rg_card_settings_corners_variant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_card_settings_corners_size"
         app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/tv_card_settings_color"
-            style="@style/Bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Card color"
-            android:textColor="@color/text_dark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_card_settings_color"
+        <RadioButton
+            android:id="@+id/cb_corner_small"
+            style="@style/Regular"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_card_settings_color"
-            app:layout_constraintVertical_bias="0.0"
-            tools:listitem="@layout/card_color_item" />
-
-        <TextView
-            android:id="@+id/tv_card_settings_corners_size"
-            style="@style/Bold"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Corners round"
-            android:textColor="@color/text_dark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_card_settings_color"
-            app:layout_constraintVertical_bias="0.0" />
+            android:layout_marginEnd="16dp"
+            android:buttonTint="@color/blue_main"
+            android:text="Small" />
 
-        <RadioGroup
-            android:id="@+id/rg_card_settings_corners_variant"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_card_settings_corners_size"
-            app:layout_constraintVertical_bias="0.0">
-
-            <CheckBox
-                android:id="@+id/cb_corner_small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/blue_main"
-                android:text="Small" />
-
-            <CheckBox
-                android:id="@+id/b_corner_middle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/blue_main"
-                android:text="Middle" />
-
-            <CheckBox
-                android:id="@+id/b_corner_big"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/blue_main"
-                android:text="Big" />
-
-            <CheckBox
-                android:id="@+id/b_corner_without"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/blue_main"
-                android:text="Without" />
-        </RadioGroup>
-
-
-        <TextView
-            android:id="@+id/tv_card_settings_stroke_color"
-            style="@style/Bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stroke color"
-            android:textColor="@color/text_dark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tv_card_settings_corners_size"
-            app:layout_constraintTop_toBottomOf="@+id/rg_card_settings_corners_variant"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_card_settings_stroke_color"
+        <RadioButton
+            android:id="@+id/cb_corner_middle"
+            style="@style/Regular"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_card_settings_stroke_color"
-            app:layout_constraintVertical_bias="0.0"
-            tools:listitem="@layout/stroke_color_item"/>
-
-        <TextView
-            android:id="@+id/tv_card_settings_form_photo"
-            style="@style/Bold"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Form of photo"
-            android:textColor="@color/text_dark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tv_card_settings_corners_size"
-            app:layout_constraintTop_toBottomOf="@+id/rv_card_settings_stroke_color"
-            app:layout_constraintVertical_bias="0.0" />
+            android:layout_marginEnd="16dp"
+            android:buttonTint="@color/blue_main"
+            android:text="Middle" />
 
-        <RadioGroup
-            android:id="@+id/rg_card_settings_form_photo"
-            android:layout_width="wrap_content"
+        <RadioButton
+            android:id="@+id/cb_corner_big"
+            style="@style/Regular"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_card_settings_form_photo"
-            app:layout_constraintVertical_bias="0.0">
+            android:layout_marginEnd="16dp"
+            android:buttonTint="@color/blue_main"
+            android:text="Big" />
 
-            <CheckBox
-                android:id="@+id/cb_form_rectangle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:backgroundTint="@color/blue_main"
-                android:text="Rectangle" />
-
-            <CheckBox
-                android:id="@+id/cb_form_oval"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/blue_main"
-                android:text="Oval" />
+        <RadioButton
+            android:id="@+id/cb_corner_without"
+            style="@style/Regular"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:buttonTint="@color/blue_main"
+            android:text="Without" />
+    </RadioGroup>
 
 
-        </RadioGroup>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_card_settings_stroke_color"
+        style="@style/Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Stroke color"
+        android:textColor="@color/text_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_card_settings_corners_size"
+        app:layout_constraintTop_toBottomOf="@+id/rg_card_settings_corners_variant"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_card_settings_stroke_color"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_card_settings_stroke_color"
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/stroke_color_item" />
+
+    <TextView
+        android:id="@+id/tv_card_settings_form_photo"
+        style="@style/Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Form of photo"
+        android:textColor="@color/text_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_card_settings_corners_size"
+        app:layout_constraintTop_toBottomOf="@+id/rv_card_settings_stroke_color"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <RadioGroup
+        android:id="@+id/rg_card_settings_form_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_card_settings_form_photo"
+        app:layout_constraintVertical_bias="0.0">
+
+        <RadioButton
+            android:id="@+id/cb_form_rectangle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:buttonTint="@color/blue_main"
+            android:text="Rectangle" />
+
+        <RadioButton
+            android:id="@+id/cb_form_oval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:buttonTint="@color/blue_main"
+            android:text="Oval" />
+
+
+    </RadioGroup>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

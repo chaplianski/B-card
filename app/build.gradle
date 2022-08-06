@@ -76,5 +76,10 @@ dependencies {
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.13.2'
 
+    //Contacts
+    implementation 'com.github.vestrel00:contacts-android:0.2.3'
+       
+
+
 
 }

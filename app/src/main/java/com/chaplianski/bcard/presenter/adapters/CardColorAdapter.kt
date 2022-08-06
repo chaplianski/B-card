@@ -2,6 +2,7 @@ package com.chaplianski.bcard.presenter.adapters
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,13 @@ import com.chaplianski.bcard.domain.model.CardColor
 class CardColorAdapter () : RecyclerView.Adapter<CardColorAdapter.ViewHolder>() {
 
     private val cardColorList: List<CardColor> = getCardColorsList()
+    var selectedPosition = -1
+
+    interface ColorCardClickListener{
+        fun onShortClick(color: String)
+    }
+
+    var colorCardClickListener: ColorCardClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.card_color_item, parent, false)
@@ -22,6 +30,32 @@ class CardColorAdapter () : RecyclerView.Adapter<CardColorAdapter.ViewHolder>() 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.onBind(cardColorList[position])
+//        holder.itemView.setOnClickListener {
+//            colorCardClickListener?.onShortClick(cardColorList[position].secondColor)
+//        }
+
+
+
+        if (selectedPosition == position){
+            val colorGradient = GradientDrawable()
+            colorGradient.setStroke(20,holder.itemView.context.resources.getColor(R.color.blue_main))
+            holder.colorImage.background = colorGradient
+        }
+
+
+        holder.itemView.setOnClickListener {
+            Log.d("MyLog", "position = $position")
+            if (selectedPosition == position){
+                selectedPosition = -1
+                notifyDataSetChanged()
+                return@setOnClickListener
+            }
+            selectedPosition = position
+            notifyDataSetChanged()
+            colorCardClickListener?.onShortClick(cardColorList[position].secondColor)
+        }
+
+
     }
 
     override fun getItemCount(): Int {
