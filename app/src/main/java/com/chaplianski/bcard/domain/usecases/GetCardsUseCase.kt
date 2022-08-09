@@ -4,9 +4,9 @@ import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.repository.CardRepository
 import javax.inject.Inject
 
-class GetCardUseCase @Inject constructor(private val cardRepository: CardRepository) {
+class GetCardsUseCase @Inject constructor(private val cardRepository: CardRepository) {
 
-    fun execute(cardId: Long): Card{
-        return cardRepository.getCard(cardId)
+    fun execute (): List<Card>{
+        return cardRepository.getCards()
     }
 }

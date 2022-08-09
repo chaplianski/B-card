@@ -1,9 +1,7 @@
 package com.chaplianski.bcard.di
 
 import android.content.Context
-import com.chaplianski.bcard.presenter.ui.CardsFragment
-import com.chaplianski.bcard.presenter.ui.LoginFragment
-import com.chaplianski.bcard.presenter.ui.RegistrationFragment
+import com.chaplianski.bcard.presenter.ui.*
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -15,8 +13,8 @@ interface AppComponent {
     fun loginFragmentInject(loginFragment: LoginFragment)
     fun registrationFragmentInject(registrationFragment: RegistrationFragment)
     fun cardsFragmentInject(cardsFragment: CardsFragment)
-//    fun categoryChooseFragmentInject(categoryChooseFragment: CategoryChooseFragment)
-//    fun parentPurposeChooseFragmentInject(parentsPurposeChooseFragment: ParentsPurposeChooseFragment)
+    fun editCardFragmentInject(editCardFragment: EditCardFragment)
+    fun deleteCardFragmentInject(deleteCardFragment: DeleteCardFragment)
 //    fun interestChooseFragmentInject(kidsInterestChooseFragment: KidsInterestChooseFragment)
 //    fun kidGoalsFragmentInject(kidsGoalsFragment: KidsGoalsFragment)
 //    fun tasksFragmentInject(tasksFragment: TasksFragment)

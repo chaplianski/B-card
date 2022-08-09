@@ -81,18 +81,17 @@
 
             <Button
                 android:id="@+id/bt_cards_fragment_add_info"
-                style="@style/BCard.Button"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:layout_marginStart="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="42dp"
                 android:layout_marginEnd="24dp"
-                android:backgroundTint="@color/blue_main"
-                android:drawableTop="@drawable/ic_add_plus"
-
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:backgroundTint="@color/white"
+                android:drawableLeft="@drawable/ic_information"
+                android:gravity="center_horizontal|top"
+                app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
@@ -105,16 +104,18 @@
             <Button
                 android:id="@+id/bt_cards_fragment_edit"
                 style="@style/BCard.Button"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/blue_main"
-                android:drawableTop="@drawable/ic_edit"
-
+                android:layout_marginStart="24dp"
+                android:backgroundTint="@color/white"
+                android:drawableLeft="@drawable/ic_edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_add_info"
-                app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_add_info" />
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_share"
+                app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_share"
+                app:layout_constraintVertical_bias="0.0" />
 
             <include
                 android:id="@+id/layout_user_edit_information"
@@ -125,16 +126,16 @@
             <Button
                 android:id="@+id/bt_cards_fragment_share"
                 style="@style/BCard.Button"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:backgroundTint="@color/blue_main"
-                android:drawableTop="@drawable/ic_share"
-
+                android:backgroundTint="@color/white"
+                android:drawableLeft="@drawable/ic_share"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_add_info"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
@@ -142,18 +143,33 @@
             <Button
                 android:id="@+id/bt_cards_fragment_delete"
                 style="@style/BCard.Button"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:backgroundTint="@color/blue_main"
-                android:drawableTop="@drawable/ic_delete"
+                android:backgroundTint="@color/white"
+                android:drawableLeft="@drawable/ic_delete"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_edit"
-                app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_add_info"
+                app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_share"
+                app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_edit"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/bt_cards_fragment_exit"
+                style="@style/BCard.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:backgroundTint="@color/white"
+                android:drawableLeft="@drawable/ic_exit"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_edit"
+                app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_share"
                 app:layout_constraintVertical_bias="0.0" />
 
 

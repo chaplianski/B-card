@@ -78,7 +78,7 @@ dependencies {
 
     //Contacts
     implementation 'com.github.vestrel00:contacts-android:0.2.3'
-       
+    implementation 'com.github.vestrel00.contacts-android:core:0.2.3'
 
 
 

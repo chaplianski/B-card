@@ -8,5 +8,10 @@ interface CardRepository {
 
     fun getCards(): List<Card>
 
+    fun getCard(cardId: Long): Card
+
+    fun updateCard(card: Card)
+
+    fun deleteCard(cardId: Long)
 
 }

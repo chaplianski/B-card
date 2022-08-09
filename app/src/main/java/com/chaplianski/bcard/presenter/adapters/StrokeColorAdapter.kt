@@ -11,11 +11,19 @@ import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.chaplianski.bcard.R
 
-class StrokeColorAdapter : RecyclerView.Adapter<StrokeColorAdapter.ViewHolder>() {
+class StrokeColorAdapter (private val beginStrokeColor: String) : RecyclerView.Adapter<StrokeColorAdapter.ViewHolder>() {
 
     private val strokeColorList = getStrokeColorList()
-    var selectedPosition = -1
+    var selectedPosition = getSelectedPosition(beginStrokeColor)
 
+    private fun getSelectedPosition(beginStrokeColor: String): Int {
+        var position = 0
+        for (color in strokeColorList){
+            if (color == beginStrokeColor) return position
+            else position++
+        }
+        return position
+    }
 
     interface StrokeColorListener{
         fun onShortClick(strokeColor: String)
@@ -34,7 +42,6 @@ class StrokeColorAdapter : RecyclerView.Adapter<StrokeColorAdapter.ViewHolder>()
         holder.strokeColor.background = colorGradient
 
         if (selectedPosition == position){
-
             colorGradient.setStroke(20,holder.itemView.context.resources.getColor(R.color.blue_main))
             colorGradient.setColor(strokeColorList[position].toColorInt())
             holder.strokeColor.background = colorGradient
@@ -42,7 +49,7 @@ class StrokeColorAdapter : RecyclerView.Adapter<StrokeColorAdapter.ViewHolder>()
 
 
         holder.itemView.setOnClickListener {
-            Log.d("MyLog", "position = $position")
+//            Log.d("MyLog", "position = $position")
             if (selectedPosition == position){
                 selectedPosition = -1
                 notifyDataSetChanged()

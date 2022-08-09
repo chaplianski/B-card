@@ -1,8 +1,10 @@
 package com.chaplianski.bcard.presenter.ui
 
 import android.app.AlertDialog
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,28 +13,51 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.findFragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.databinding.FragmentEditCardBinding
+import com.chaplianski.bcard.di.DaggerAppComponent
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.presenter.adapters.CardColorAdapter
 import com.chaplianski.bcard.presenter.adapters.StrokeColorAdapter
+import com.chaplianski.bcard.presenter.factories.EditCardFragmentViewModelFactory
 import com.chaplianski.bcard.presenter.helpers.PhotoPicker
+import com.chaplianski.bcard.presenter.utils.CURRENT_CARD_ID
+import com.chaplianski.bcard.presenter.viewmodels.EditCardFragmentViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import javax.inject.Inject
 
 
 class EditCardFragment : Fragment() {
 
+    @Inject
+    lateinit var editCardFragmentViewModelFactory: EditCardFragmentViewModelFactory
+    val editCardFragmentViewModel: EditCardFragmentViewModel by viewModels { editCardFragmentViewModelFactory }
+
+
     var _binding: FragmentEditCardBinding? = null
     val binding: FragmentEditCardBinding get() = _binding!!
     lateinit var photoPicker: PhotoPicker
-    var checkedCornerSizeVariant = ""
+    var checkedCornerSizeVariant = 1F
     var checkedFormAvatarVariant = ""
     var cardColorVariant = ""
     var strokeColorVariant = ""
+    var avatarUri = ""
+
+    override fun onAttach(context: Context) {
+        DaggerAppComponent.builder()
+            .context(context)
+            .build()
+            .editCardFragmentInject(this)
+        super.onAttach(context)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +92,7 @@ class EditCardFragment : Fragment() {
         // ***** Addition info values
         val additionInfo: ConstraintLayout = binding.additionInfo.clUserInfo
         val additionInfoButton: TextView = binding.tvEditFragmentAdditionInfo
+        val speciality: EditText = binding.additionInfo.userEditInformationSpeciality
         val profileInfo: EditText = binding.additionInfo.userEditInformationProfileInfo
         val profSkills: EditText = binding.additionInfo.userEditInformationProfSkills
         val education: EditText = binding.additionInfo.userEditInformationEducation
@@ -83,6 +109,45 @@ class EditCardFragment : Fragment() {
 
 
         val saveButtonEdit: Button = binding.btEditCardSave
+        personInfo.visibility = View.VISIBLE
+
+
+        // ***** Fill fields  *****
+
+        val cardID = arguments?.getLong(CURRENT_CARD_ID, 0L)
+        if (cardID != null){
+            editCardFragmentViewModel.getCardData(cardID)
+        }
+
+        editCardFragmentViewModel.currentCard.observe(this.viewLifecycleOwner){ card ->
+
+            Glide.with(context!!).load(card.photo)
+                .override(150, 150)
+                .centerCrop()
+                .into(avatar)
+
+            avatarUri = card.photo
+            nameText.setText(card.name)
+            phoneText.setText(card.phone)
+            emailText.setText(card.email)
+            linkedinText.setText(card.linkedin)
+            locationText.setText(card.location)
+            speciality.setText(card.speciality)
+            profileInfo.setText(card.profilInfo)
+            profSkills.setText(card.professionalSkills)
+            education.setText(card.education)
+            workExperience.setText(card.workExperience)
+            reference.setText(card.reference)
+            cardColorVariant = card.cardColor
+            strokeColorVariant = card.strokeColor
+            checkedFormAvatarVariant = card.formPhoto
+            checkedCornerSizeVariant = card.cornerRound
+
+
+            // ****** Setting card Listeners*****
+
+            fillSettingParameters(cardColors, cornerRound, formAvatar, strokeColors)
+        }
 
 
         // ***** Common Listeners *****
@@ -111,6 +176,8 @@ class EditCardFragment : Fragment() {
                 else View.VISIBLE
             if (additionInfo.isVisible) additionInfo.visibility = View.GONE
             if (personInfo.isVisible) personInfo.visibility = View.GONE
+
+
         }
 
         //***** Person info Listener *****
@@ -129,92 +196,117 @@ class EditCardFragment : Fragment() {
 
             if (nameText.text?.isBlank() == false &&  phoneText.text?.isEmpty() == false && emailText.text?.isEmpty() == false && locationText.text?.isEmpty() == false) {
 
+                var cardIdValue = 0L
+                if (cardID != null) {
+                    cardIdValue = cardID
+                }
                 val nameValue = nameField.editText?.text.toString()
                 val phoneValue = phoneField.editText?.text.toString()
                 val emailValue = emailField.editText?.text.toString()
                 val linkedinValue = linkedinField.editText?.text.toString()
                 val locationValue = locationField.editText?.text.toString()
-
+                val specialityValue = speciality.text.toString()
+                val profiInfoValue = profileInfo.text.toString()
+                val profSkillsValue = profSkills.text.toString()
+                val educationValue = education.text.toString()
+                val workExperienceValue = workExperience.text.toString()
+                val referenceValue = reference.text.toString()
+                val cardColorValue = cardColorVariant
+                val strokeColorValue = strokeColorVariant
+                val cardCornerValue = checkedCornerSizeVariant
+                val formCardValue = checkedFormAvatarVariant
                 val newCard = Card(
-                    0, nameValue, " ---", phoneValue, linkedinValue, emailValue, "", locationValue
+                    cardIdValue, nameValue, avatarUri, phoneValue, linkedinValue, emailValue,
+                    specialityValue, locationValue,profiInfoValue,educationValue,profSkillsValue,
+                    workExperienceValue,referenceValue,cardColorValue,strokeColorValue,
+                    cardCornerValue,formCardValue
                 )
+
+                if (cardIdValue == 0L){
+                    editCardFragmentViewModel.addCard(newCard)
+                } else editCardFragmentViewModel.updateCard(newCard)
 
                 findNavController().navigate(R.id.action_editCardFragment_to_cardsFragment)
             }
-
-
-//            cardsFragmentViewModel.addCard()
         }
-
-
+        fillSettingParameters(cardColors, cornerRound, formAvatar, strokeColors)
 
         avatar.setOnClickListener {
             addAvatarDialog()
         }
-
-
-
+        editCardFragmentViewModel.photoUri.observe(this.viewLifecycleOwner){
+            avatarUri = it
+            Glide.with(context!!).load(avatarUri)
+                .override(150, 150)
+                .centerCrop()
+                .into(avatar)
+        }
         changeErrorStatus(nameText, nameField)
         changeErrorStatus(phoneText, phoneField)
         changeErrorStatus(emailText, emailField)
         changeErrorStatus(locationText, locationField)
+    }
 
-
-
-
-        // ***** Addition info Listeners *****
-
-        val profileValue = profileInfo.text.toString()
-        val profSkillsValue = profSkills.text.toString()
-        val educationValue = education.text.toString()
-        val workExperienceValue = workExperience.text.toString()
-        val referenceValue = reference.text.toString()
-
-
-        // ****** Setting card Listeners*****
-
-        val cardColorsAdapter = CardColorAdapter()
+    private fun fillSettingParameters(
+        cardColors: RecyclerView,
+        cornerRound: RadioGroup,
+        formAvatar: RadioGroup,
+        strokeColors: RecyclerView
+    ) {
+        val cardColorsAdapter = CardColorAdapter(cardColorVariant)
         cardColors.layoutManager = GridLayoutManager(context, 5)
         cardColors.adapter = cardColorsAdapter
 
-          cardColorsAdapter.colorCardClickListener = object: CardColorAdapter.ColorCardClickListener{
-              override fun onShortClick(color: String) {
-                  cardColorVariant = color
-              }
-          }
+        cardColorsAdapter.colorCardClickListener =
+            object : CardColorAdapter.ColorCardClickListener {
+                override fun onShortClick(color: String) {
+                    cardColorVariant = color
+                }
+            }
 
-        cornerRound.setOnCheckedChangeListener { group, checkedId ->
-            checkedCornerSizeVariant = when (checkedId){
-                R.id.cb_corner_small -> "small"
-                R.id.cb_corner_middle -> "middle"
-                R.id.cb_corner_big -> "big"
-                R.id.cb_corner_without -> "without"
-                else -> {"unknown corner size"}
+        val smallCorner = view?.findViewById<RadioButton>(R.id.cb_corner_small)
+        val middleCorner = view?.findViewById<RadioButton>(R.id.cb_corner_middle)
+        val bigCorner = view?.findViewById<RadioButton>(R.id.cb_corner_big)
+        val withoutCorner = view?.findViewById<RadioButton>(R.id.cb_corner_without)
+
+        if (checkedCornerSizeVariant != 1F){
+            when (checkedCornerSizeVariant){
+                5F -> smallCorner?.isChecked = true
+                15F -> middleCorner?.isChecked = true
+                30F -> bigCorner?.isChecked = true
+                else -> withoutCorner?.isChecked = true
             }
         }
 
+        cornerRound.setOnCheckedChangeListener { group, checkedId ->
+            checkedCornerSizeVariant = when (checkedId) {
+                R.id.cb_corner_small -> 5F
+                R.id.cb_corner_middle -> 15F
+                R.id.cb_corner_big -> 30F
+                else -> 0F
+            }
+        }
 
+        val ovalButton = view?.findViewById<RadioButton>(R.id.cb_form_oval)
+        val squareButton = view?.findViewById<RadioButton>(R.id.cb_form_rectangle)
+
+        if (checkedFormAvatarVariant != ""){
+            if (checkedFormAvatarVariant == "oval") ovalButton?.isChecked = true
+            else squareButton?.isChecked = true
+        }
 
         formAvatar.setOnCheckedChangeListener { group, checkedId ->
             checkedFormAvatarVariant = when (checkedId) {
                 R.id.cb_form_oval -> "oval"
-                R.id.cb_form_rectangle -> "square"
-                else -> {
-                    "unknown form"
-                }
+                else -> "square"
             }
         }
 
-//            Log.d("MyLog", "corner size = $checkedVariant")
-
-
-
-
-        val strokeColorsAdapter = StrokeColorAdapter()
+        val strokeColorsAdapter = StrokeColorAdapter(strokeColorVariant)
         strokeColors.layoutManager = GridLayoutManager(context, 6)
         strokeColors.adapter = strokeColorsAdapter
 
-        strokeColorsAdapter.strokeColorListener = object : StrokeColorAdapter.StrokeColorListener{
+        strokeColorsAdapter.strokeColorListener = object : StrokeColorAdapter.StrokeColorListener {
             override fun onShortClick(strokeColor: String) {
                 strokeColorVariant = strokeColor
             }
@@ -240,16 +332,17 @@ class EditCardFragment : Fragment() {
     }
 
     private fun savePhotoToAnswer(imageUri: Uri?) {
-//        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-//        val questionId = sharedPref?.getString(Constants.CURRENT_QUESTION_ID, "")
 
         val contentResolver = context?.getContentResolver()
 
         if (imageUri != null) {
             if (contentResolver != null) {
-//                cardsFragmentViewModel.insertPhoto(imageUri)
+                context?.let {
+                    editCardFragmentViewModel.insertPhoto(imageUri, contentResolver,
+                        it
+                    )
+                }
             }
-
         }
     }
 

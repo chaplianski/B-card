@@ -17,4 +17,16 @@ class CardStorageImpl @Inject constructor(): CardStorage {
     override fun getCards(): List<CardDTO> {
         return cardDao.getAllCards()
     }
+
+    override fun getCard(cardId: Long): CardDTO {
+        return cardDao.getCard(cardId)
+    }
+
+    override fun updateCard(cardDTO: CardDTO) {
+        cardDao.updateCard(cardDTO)
+    }
+
+    override fun deleteCard(cardId: Long) {
+        cardDao.deleteCard(cardId)
+    }
 }

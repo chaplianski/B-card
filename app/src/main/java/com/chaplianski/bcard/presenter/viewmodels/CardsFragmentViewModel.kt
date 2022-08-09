@@ -7,21 +7,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.usecases.AddCardUseCase
-import com.chaplianski.bcard.domain.usecases.GetCardUseCase
+import com.chaplianski.bcard.domain.usecases.GetCardsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CardsFragmentViewModel @Inject constructor(
-    private val getCardUseCase: GetCardUseCase,
+    private val getCardUseCase: GetCardsUseCase,
     private val addCardUseCase: AddCardUseCase,
                                                  ) : ViewModel() {
 
     var _cards = MutableLiveData<List<Card>>()
     val cards: LiveData<List<Card>> get() = _cards
-    var _currentUser = MutableLiveData<List<String>>()
-    val currentUser: LiveData<List<String>> get() = _currentUser
+    var _currentCard = MutableLiveData<List<Any>>()
+    val currentCard: LiveData<List<Any>> get() = _currentCard
 
     fun getCards (){
         viewModelScope.launch(Dispatchers.IO) {
@@ -30,10 +30,10 @@ class CardsFragmentViewModel @Inject constructor(
         }
     }
 
-    fun transferData(name: String, avatar: String){
+    fun transferData(name: String, avatarUri: String, id: Long){
         viewModelScope.launch(Dispatchers.IO) {
-            val list = listOf<String>(name, avatar)
-            _currentUser.postValue(list)
+          val list = listOf<Any>(name, avatarUri, id)
+           _currentCard.postValue(list)
         }
     }
 

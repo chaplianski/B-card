@@ -43,6 +43,12 @@
         <action
             android:id="@+id/action_cardsFragment_to_editCardFragment"
             app:destination="@id/editCardFragment" />
+        <action
+            android:id="@+id/action_cardsFragment_to_shareFragment"
+            app:destination="@id/shareFragment" />
+        <action
+            android:id="@+id/action_cardsFragment_to_deleteCardFragment"
+            app:destination="@id/deleteCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/editCardFragment"
@@ -53,4 +59,14 @@
             android:id="@+id/action_editCardFragment_to_cardsFragment"
             app:destination="@id/cardsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/shareFragment"
+        android:name="com.chaplianski.bcard.presenter.ui.ShareFragment"
+        android:label="fragment_share"
+        tools:layout="@layout/fragment_share" />
+    <dialog
+        android:id="@+id/deleteCardFragment"
+        android:name="com.chaplianski.bcard.presenter.ui.DeleteCardFragment"
+        android:label="fragment_delete_card"
+        tools:layout="@layout/fragment_delete_card" />
 </navigation>

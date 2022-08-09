@@ -13,7 +13,16 @@ fun Card.cardMapDomainToData(): CardDTO {
         linkedin = linkedin,
         email = email,
         speciality = speciality,
-        location = location
+        location = location,
+        profilInfo = profilInfo,
+        education = education,
+        professionalSkills = professionalSkills,
+        workExperience = workExperience,
+        reference = reference,
+        cardColor = cardColor,
+        strokeColor = strokeColor,
+        cornerRound = cornerRound,
+        formPhoto = formPhoto
     )
 }
 
@@ -26,6 +35,15 @@ fun CardDTO.cardMapDataToDomain(): Card {
         linkedin = linkedin,
         email = email,
         speciality = speciality,
-        location = location
+        location = location,
+        profilInfo = profilInfo,
+        education = education,
+        professionalSkills = professionalSkills,
+        workExperience = workExperience,
+        reference = reference,
+        cardColor = cardColor,
+        strokeColor = strokeColor,
+        cornerRound = cornerRound,
+        formPhoto = formPhoto
     )
 }
