@@ -56,8 +56,8 @@ class LoginFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
 
         signInButton.setOnClickListener {
-            val email = emailField.editText?.text.toString()
-            val password = passwordField.editText?.text.toString()
+//            val email = emailField.editText?.text.toString()
+//            val password = passwordField.editText?.text.toString()
 
             findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
 

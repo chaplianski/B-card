@@ -79,6 +79,11 @@ dependencies {
     //Contacts
     implementation 'com.github.vestrel00:contacts-android:0.2.3'
     implementation 'com.github.vestrel00.contacts-android:core:0.2.3'
+    implementation 'com.googlecode.ez-vcard:ez-vcard:0.11.3'
+
+    //QR-Code
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
+    implementation 'com.google.zxing:core:3.3.2'
 
 
 

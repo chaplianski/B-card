@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.TransformationUtils.circleCrop
@@ -17,9 +18,11 @@ import com.chaplianski.bcard.R
 import com.chaplianski.bcard.domain.model.Card
 
 class CardsFragmentCardAdapter(
-    private val cardList: List<Card>,
+//    private var cardList: List<Card>,
     private val recyclerView: RecyclerView
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var cardList = mutableListOf<Card>()
 
     interface ShortOnClickListener {
         fun shortClick()
@@ -29,6 +32,15 @@ class CardsFragmentCardAdapter(
     }
 
     var shortOnClickListener: ShortOnClickListener? = null
+
+    fun updateData(list: List<Card>) {
+        Log.d("MyLog", "update")
+        val diffCallback = CardsDiffCallback(cardList, list)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        cardList = list as MutableList<Card>
+        diffResult.dispatchUpdatesTo(this)
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -151,5 +163,29 @@ class CardsFragmentCardAdapter(
         private val ADD = 1
     }
 
+}
+
+class CardsDiffCallback(
+    val oldList: List<Card>,
+    val newList: List<Card>
+) : DiffUtil.Callback() {
+    override fun getOldListSize(): Int {
+        return oldList.size
+    }
+
+    override fun getNewListSize(): Int {
+        return newList.size
+    }
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition].id == newList[newItemPosition].id
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldCard = oldList[oldItemPosition]
+        val newCard = newList[newItemPosition]
+
+        return oldCard == newCard
+    }
 }
 

@@ -211,10 +211,10 @@ class EditCardFragment : Fragment() {
                 val educationValue = education.text.toString()
                 val workExperienceValue = workExperience.text.toString()
                 val referenceValue = reference.text.toString()
-                val cardColorValue = cardColorVariant
-                val strokeColorValue = strokeColorVariant
-                val cardCornerValue = checkedCornerSizeVariant
-                val formCardValue = checkedFormAvatarVariant
+                val cardColorValue = if (cardColorVariant == "") "#F5F5F5" else cardColorVariant
+                val strokeColorValue = if(strokeColorVariant == "") "#616161" else strokeColorVariant
+                val cardCornerValue = if(checkedCornerSizeVariant == 1f) 30f else checkedCornerSizeVariant
+                val formCardValue = if (checkedFormAvatarVariant == "") "oval" else checkedFormAvatarVariant
                 val newCard = Card(
                     cardIdValue, nameValue, avatarUri, phoneValue, linkedinValue, emailValue,
                     specialityValue, locationValue,profiInfoValue,educationValue,profSkillsValue,

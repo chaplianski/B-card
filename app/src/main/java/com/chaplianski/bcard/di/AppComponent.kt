@@ -15,7 +15,7 @@ interface AppComponent {
     fun cardsFragmentInject(cardsFragment: CardsFragment)
     fun editCardFragmentInject(editCardFragment: EditCardFragment)
     fun deleteCardFragmentInject(deleteCardFragment: DeleteCardFragment)
-//    fun interestChooseFragmentInject(kidsInterestChooseFragment: KidsInterestChooseFragment)
+    fun shareFragmentInject(shareFragment: ShareFragment)
 //    fun kidGoalsFragmentInject(kidsGoalsFragment: KidsGoalsFragment)
 //    fun tasksFragmentInject(tasksFragment: TasksFragment)
 //    fun taskKidDetailFragmentInject(dayKidDetailTasksFragment: DayKidDetailTasksFragment)

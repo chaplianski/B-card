@@ -63,10 +63,19 @@
         android:id="@+id/shareFragment"
         android:name="com.chaplianski.bcard.presenter.ui.ShareFragment"
         android:label="fragment_share"
-        tools:layout="@layout/fragment_share" />
+        tools:layout="@layout/fragment_share" >
+        <action
+            android:id="@+id/action_shareFragment_to_QRFragment"
+            app:destination="@id/QRFragment" />
+    </fragment>
     <dialog
         android:id="@+id/deleteCardFragment"
         android:name="com.chaplianski.bcard.presenter.ui.DeleteCardFragment"
         android:label="fragment_delete_card"
         tools:layout="@layout/fragment_delete_card" />
+    <fragment
+        android:id="@+id/QRFragment"
+        android:name="com.chaplianski.bcard.presenter.ui.QRFragment"
+        android:label="fragment_q_r"
+        tools:layout="@layout/fragment_q_r" />
 </navigation>

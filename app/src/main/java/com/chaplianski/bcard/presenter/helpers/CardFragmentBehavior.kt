@@ -12,7 +12,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 class CardFragmentBehavior (): CoordinatorLayout.Behavior<FrameLayout>() {
 
     constructor(context: Context?, attrs: AttributeSet?) : this()
-    var beginChildPosition = 0f
 
     override fun onStartNestedScroll(
         coordinatorLayout: CoordinatorLayout,
@@ -43,24 +42,4 @@ class CardFragmentBehavior (): CoordinatorLayout.Behavior<FrameLayout>() {
             else -> child.translationY = newTranslation
         }
     }
-
-//    override fun onStopNestedScroll(
-//        coordinatorLayout: CoordinatorLayout,
-//        child: FrameLayout,
-//        target: View,
-//        type: Int
-//    ) {
-//
-//        val collapsedToolbar = coordinatorLayout.findViewById<CollapsingToolbarLayout>(R.id.cards_fragment_collapsing_toolbar)
-//
-//        if (collapsedToolbar.y > collapsedToolbar.height*3/4){
-//            child.y = 0f
-//        }
-//
-//
-//
-//
-//    }
-
-
 }

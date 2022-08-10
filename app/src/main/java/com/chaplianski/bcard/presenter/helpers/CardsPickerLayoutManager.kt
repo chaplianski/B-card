@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chaplianski.bcard.presenter.ui.DeleteCardFragment
 
 class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayout: Boolean) :
     LinearLayoutManager(context, orientation, reverseLayout) {
@@ -88,5 +89,7 @@ class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayou
     fun setOnScrollStopListener(onScrollStopListener: CardScrollStopListener?) {
         this.onScrollStopListener = onScrollStopListener
     }
+
+
 
 }

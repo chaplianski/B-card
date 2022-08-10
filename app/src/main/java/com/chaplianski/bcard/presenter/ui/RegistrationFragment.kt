@@ -66,10 +66,10 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
             val email = emailField.editText?.text.toString()
             val password = passwordField.editText?.text.toString()
-            Log.d("MyLog", "email = $email, password = $password")
+
             if(!email.isEmpty() && !password.isEmpty()){
                 registerUser(email, password)
-                Log.d("MyLog", "email = $email, password = $password")
+
             }
         }
 
