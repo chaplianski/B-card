@@ -8,6 +8,74 @@
     android:background="@color/back"
     tools:context=".presenter.ui.CardsFragment">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_cards_fragment_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue_main"
+        android:clickable="true"
+        app:layout_behavior=".presenter.utils.HideFabBehaviour"
+        android:src="@drawable/ic_baseline_exit_to_app"
+        app:layout_anchor="@+id/fab_cards_fragment_settings"
+        app:layout_anchorGravity="center"
+        app:tint="@color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_cards_fragment_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue_main"
+        android:clickable="true"
+        app:layout_behavior=".presenter.utils.HideFabBehaviour"
+        android:src="@drawable/ic_baseline_delete_sweep"
+        app:layout_anchor="@+id/fab_cards_fragment_settings"
+        app:layout_anchorGravity="center"
+        app:tint="@color/white"
+        android:focusable="true" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_cards_fragment_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue_main"
+        android:clickable="true"
+        app:layout_behavior=".presenter.utils.HideFabBehaviour"
+        android:src="@drawable/ic_baseline_share"
+        app:layout_anchor="@+id/fab_cards_fragment_settings"
+        app:layout_anchorGravity="center"
+        app:tint="@color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_cards_fragment_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue_main"
+        android:clickable="true"
+        app:layout_behavior=".presenter.utils.HideFabBehaviour"
+        android:src="@drawable/ic_baseline_edit_note"
+        app:layout_anchor="@+id/fab_cards_fragment_settings"
+        app:layout_anchorGravity="center"
+        app:tint="@color/white" />
+
+    <com.chaplianski.bcard.presenter.utils.CustomFab
+        android:id="@+id/fab_cards_fragment_settings"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/blue_main"
+        android:clickable="true"
+        android:src="@drawable/ic_baseline_settings"
+        app:fabCustomSize="80dp"
+        app:fabSize="auto"
+        app:layout_anchor="@+id/nsv_cards_fragment_scroll"
+        app:layout_anchorGravity="center_vertical|center_horizontal"
+        app:maxImageSize="56dp"
+        app:useCompatPadding="true"
+        app:tint="@color/white"
+        android:focusable="true" />
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_cards_fragment"
         android:layout_width="match_parent"
@@ -67,6 +135,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_cards_fragment_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="fill_vertical"
@@ -100,72 +169,72 @@
                 android:id="@+id/layout_user_information"
                 layout="@layout/user_information"
                 android:visibility="gone" />
+            <!--
+                        <Button
+                            android:id="@+id/bt_cards_fragment_edit"
+                            style="@style/BCard.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_marginEnd="24dp"
+                            android:backgroundTint="@color/white"
+                            android:drawableLeft="@drawable/ic_edit"
+                            app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_share"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_share"
+                            app:layout_constraintVertical_bias="1.0" />
 
-            <Button
-                android:id="@+id/bt_cards_fragment_edit"
-                style="@style/BCard.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:backgroundTint="@color/white"
-                android:drawableLeft="@drawable/ic_edit"
-                android:layout_marginEnd="24dp"
-                app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_share"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_share"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <include
-                android:id="@+id/layout_user_edit_information"
-                layout="@layout/card_implementation"
-                android:visibility="gone" />
-
-
-            <Button
-                android:id="@+id/bt_cards_fragment_share"
-                style="@style/BCard.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:layout_marginStart="24dp"
-                android:backgroundTint="@color/white"
-                android:drawableTop="@drawable/ic_share"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.016"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <Button
-                android:id="@+id/bt_cards_fragment_delete"
-                style="@style/BCard.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:backgroundTint="@color/white"
-                android:drawableTop="@drawable/ic_delete"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.183"
-                app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_share"
-                app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_share"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <Button
-                android:id="@+id/bt_cards_fragment_exit"
-                style="@style/BCard.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginEnd="56dp"
-                android:backgroundTint="@color/white"
-                android:drawableLeft="@drawable/ic_exit"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_edit"
-                app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_share"
-                app:layout_constraintVertical_bias="0.0" />
+                        <include
+                            android:id="@+id/layout_user_edit_information"
+                            layout="@layout/card_implementation"
+                            android:visibility="gone" />
 
 
+                        <Button
+                            android:id="@+id/bt_cards_fragment_share"
+                            style="@style/BCard.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="70dp"
+                            android:layout_marginStart="24dp"
+                            android:backgroundTint="@color/white"
+                            android:drawableTop="@drawable/ic_share"
+
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.016"
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <Button
+                            android:id="@+id/bt_cards_fragment_delete"
+                            style="@style/BCard.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="70dp"
+                            android:backgroundTint="@color/white"
+                            android:drawableTop="@drawable/ic_delete"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.183"
+                            app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_share"
+                            app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_share"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <Button
+                            android:id="@+id/bt_cards_fragment_exit"
+                            style="@style/BCard.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_marginEnd="56dp"
+                            android:backgroundTint="@color/white"
+                            android:drawableLeft="@drawable/ic_exit"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_edit"
+                            app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_share"
+                            app:layout_constraintVertical_bias="0.0" />
+
+            -->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

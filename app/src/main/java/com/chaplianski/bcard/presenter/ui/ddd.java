@@ -1,5 +1,7 @@
 package com.chaplianski.bcard.presenter.ui;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;

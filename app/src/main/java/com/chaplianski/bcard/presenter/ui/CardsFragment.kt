@@ -1,11 +1,9 @@
 package com.chaplianski.bcard.presenter.ui
 
 import android.animation.Animator
-import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -29,13 +27,15 @@ import com.bumptech.glide.Glide
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.databinding.FragmentCardsBinding
 import com.chaplianski.bcard.di.DaggerAppComponent
-import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.presenter.adapters.CardsFragmentCardAdapter
 import com.chaplianski.bcard.presenter.factories.CardsFragmentViewModelFactory
 import com.chaplianski.bcard.presenter.helpers.CardsPickerLayoutManager
 import com.chaplianski.bcard.presenter.utils.CURRENT_CARD_ID
+import com.chaplianski.bcard.presenter.utils.CustomFab
+import com.chaplianski.bcard.presenter.utils.init
 import com.chaplianski.bcard.presenter.viewmodels.CardsFragmentViewModel
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -72,13 +72,18 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
         super.onViewCreated(view, savedInstanceState)
 
 //        val infoButton: Button = binding.btCardsFragmentAddInfo
-        val editButton: Button = binding.btCardsFragmentEdit
-        val shareButton: Button = binding.btCardsFragmentShare
-        val deleteButton: Button = binding.btCardsFragmentDelete
+//        val editButton: Button = binding.btCardsFragmentEdit
+//        val shareButton: Button = binding.btCardsFragmentShare
+//        val deleteButton: Button = binding.btCardsFragmentDelete
         val additionalInfoText: ConstraintLayout = binding.layoutUserInformation.clUserInfo
-        val closeAppButton: Button = binding.btCardsFragmentExit
+//        val closeAppButton: Button = binding.btCardsFragmentExit
         val closeButton: Button = binding.layoutUserInformation.btUserInfoClose
 
+        val fabSettings: CustomFab = binding.fabCardsFragmentSettings
+        val fabEdit: FloatingActionButton = binding.fabCardsFragmentEdit
+        val fabDelete: FloatingActionButton = binding.fabCardsFragmentDelete
+        val fabShare: FloatingActionButton = binding.fabCardsFragmentShare
+        val fabExit: FloatingActionButton = binding.fabCardsFragmentExit
 
         val appbar: AppBarLayout = binding.appbarCardsFragment
         val nameplate: FrameLayout = binding.flCardsFragmentTopInfo
@@ -90,25 +95,28 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
 //            collapseAppbar(appbar, nameplate)
 //        }
 
+        setupFABs(fabSettings, fabEdit, fabDelete, fabShare, fabExit)
+
+
         closeButton.setOnClickListener {
             additionalInfoText.visibility = View.GONE
             expandAppbar(appbar, nameplate)
         }
 
-        editButton.setOnClickListener {
+        fabEdit.setOnClickListener {
             val bundle = Bundle()
             bundle.putLong(CURRENT_CARD_ID, currentCardId)
             findNavController().navigate(R.id.action_cardsFragment_to_editCardFragment, bundle)
         }
 
         // **** Share card
-        shareButton.setOnClickListener {
+        fabShare.setOnClickListener {
             val bundle = Bundle()
             bundle.putLong(CURRENT_CARD_ID, currentCardId)
             findNavController().navigate(R.id.action_cardsFragment_to_shareFragment, bundle)
         }
 
-        deleteButton.setOnClickListener {
+        fabDelete.setOnClickListener {
 //            val deleteCardFragment = DeleteCardFragment()
 //            val bundle = Bundle()
 //            bundle.putLong(CURRENT_CARD_ID, currentCardId)
@@ -118,42 +126,19 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
 
 
 
-        closeAppButton.setOnClickListener {
+        fabExit.setOnClickListener {
             activity?.finishAffinity()
         }
 
         appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
 
             if (Math.abs(verticalOffset - 154) == (appbar.height)) {
-
-                val set = AnimatorSet()
-                val screenOrientation = resources.configuration.orientation
-                if (screenOrientation == Configuration.ORIENTATION_PORTRAIT) {
-                    set.playTogether(
-//                        animationMove(infoButton, 0f, -500f),
-                        animationMove(editButton, 0f, -300f),
-                        animationMove(shareButton, 0f, -300f),
-                        animationMove(closeAppButton, 0f, -500f),
-                        animationMove(deleteButton, 0f, -500f)
-                    )
-                    set.start()
-                }
-
+                  fabSettings.hide()
                 additionalInfoText.visibility = View.VISIBLE
             }
             if (Math.abs(verticalOffset) == 0) {
-                val set = AnimatorSet()
-                val screenOrientation = resources.configuration.orientation
-                if (screenOrientation == Configuration.ORIENTATION_PORTRAIT) {
-                    set.playTogether(
-//                        animationMove(infoButton, -500f, 0f),
-                        animationMove(editButton, -300f, 0f),
-                        animationMove(shareButton, -300f, 0f),
-                        animationMove(closeAppButton, -500f, 0f),
-                        animationMove(deleteButton, -500f, 0f)
-                    )
-                    set.start()
-                }
+
+                fabSettings.show()
                 additionalInfoText.visibility = View.GONE
             }
         }
@@ -164,11 +149,11 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
         val cardsPickerLayoutManager =
             CardsPickerLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val cardFragmentCardAdapter = CardsFragmentCardAdapter(cardsRV) //(listCards, cardsRV)
-        val tasksSnapHelper: SnapHelper = LinearSnapHelper()
+        val cardsSnapHelper: SnapHelper = LinearSnapHelper()
         cardsRV.layoutManager = cardsPickerLayoutManager
         cardsRV.adapter = cardFragmentCardAdapter
         cardsRV.onFlingListener = null
-        tasksSnapHelper.attachToRecyclerView(cardsRV)
+        cardsSnapHelper.attachToRecyclerView(cardsRV)
 
         lifecycleScope.launchWhenCreated {
             delay(500)
@@ -182,11 +167,12 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
             Log.d("MyLog", "list card: ${listCards.size}")
 
             cardFragmentCardAdapter.updateData(listCards)
-
-
+            val currentPosition = cardsSnapHelper.getSnapPosition(cardsRV)
+            listCards[currentPosition].id
+            Log.d("MyLog", "position = $currentPosition")
+            cardsFragmentViewModel.getCard(listCards[currentPosition].id)
             setupDialog(cardFragmentCardAdapter)
-            cardFragmentCardAdapter.updateData(listCards)
-//            cardFragmentCardAdapter.notifyDataSetChanged()
+//            Log.updateData(listCards)
 
             cardsPickerLayoutManager.setOnScrollStopListener(object :
                 CardsPickerLayoutManager.CardScrollStopListener {
@@ -200,25 +186,23 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
                         ) != true
                     ) {
                         if (cardId != null) {
-                            cardsFragmentViewModel.transferData(
-                                userName?.text.toString(),
-                                userAvatar?.text.toString(),
-                                cardId.text.toString().toLong()
+                            cardsFragmentViewModel.getCard(cardId.text.toString().toLong()
                             )
                         }
                     }
                 }
+
             })
 
 
 
-            cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { cardData ->
+            cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
                 val userName: TextView = view.findViewById(R.id.tv_cards_fragment_name)
                 val userAvatar: ImageView = view.findViewById(R.id.iv_cards_fragment_avatar)
-                currentCardId = cardData[2].toString().toLong()
-                userName.text = cardData[0].toString()
+                currentCardId = card.id
+                userName.text = card.name
                 context?.let {
-                    Glide.with(it).load(cardData[1])
+                    Glide.with(it).load(card.photo)
                         .override(150, 150)
                         .centerCrop()
                         .into(userAvatar)
@@ -255,6 +239,43 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
         }
     }
 
+    private fun setupFABs(
+        fabSettings: FloatingActionButton,
+        fabEdit: FloatingActionButton,
+        fabDelete: FloatingActionButton,
+        fabShare: FloatingActionButton,
+        fabExit: FloatingActionButton
+    ) {
+
+        fabEdit.init(-340f, -120f)
+        fabShare.init(-120f, -250f)
+        fabDelete.init(120f, -250f)
+        fabExit.init(340f, -120f)
+
+        fabSettings.setOnClickListener {
+            if (fabEdit.isOrWillBeShown) {
+                fabEdit.hide()
+                fabDelete.hide()
+                fabShare.hide()
+                fabExit.hide()
+            } else {
+                fabEdit.show()
+                fabDelete.show()
+                fabShare.show()
+                fabExit.show()
+            }
+//            if (fabDelete.isOrWillBeShown) fabDelete.hide() else fabDelete.show()
+//            if (fabShare.isOrWillBeShown) fabShare.hide() else fabShare.show()
+//            if (fabExit.isOrWillBeShown) fabShare.hide() else fabExit.show()
+        }
+    }
+
+    fun SnapHelper.getSnapPosition(recyclerView: RecyclerView): Int {
+        val layoutManager = recyclerView.layoutManager ?: return RecyclerView.NO_POSITION
+        val snapView = findSnapView(layoutManager) ?: return RecyclerView.NO_POSITION
+        return layoutManager.getPosition(snapView)
+    }
+
     private fun expandAppbar(
         appbar: AppBarLayout,
         nameplate: FrameLayout
@@ -288,7 +309,7 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
     }
 
     fun setupDialog(cardFragmentCardAdapter: CardsFragmentCardAdapter) {
-        DeleteCardFragment.setupListener(parentFragmentManager, this){
+        DeleteCardFragment.setupListener(parentFragmentManager, this) {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     delay(1000)

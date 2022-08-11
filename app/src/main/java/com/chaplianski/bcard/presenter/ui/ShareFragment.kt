@@ -34,10 +34,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
+import javax.inject.Inject
 
 
 class ShareFragment : Fragment() {
 
+    @Inject
     lateinit var shareFragmentViewModelFactory: ShareFragmentViewModelFactory
     val shareFragmentViewModel: ShareFragmentViewModel by viewModels { shareFragmentViewModelFactory }
 
@@ -56,7 +58,6 @@ class ShareFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_share, container, false)
     }
 
@@ -92,10 +93,6 @@ class ShareFragment : Fragment() {
 
             startActivityForResult(Intent.createChooser(intent, "Select a file"), 111)
 
-
-//            val file = File("vcard.vcf")
-//            val vcard = Ezvcard.parse(file).first()
-//            Log.d("MyLog", "vcard = $vcard")
         }
 
         saveQR.setOnClickListener {
