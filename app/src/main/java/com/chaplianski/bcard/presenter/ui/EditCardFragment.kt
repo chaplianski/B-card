@@ -88,11 +88,12 @@ class EditCardFragment : Fragment() {
         val linkedinText = binding.personInfo.etCardImplLinkedin
         val locationField = binding.personInfo.otfUserPersonInfoLocation
         val locationText = binding.personInfo.etUserPersonInfoLocation
+        val specialityField = binding.personInfo.otfUserPersonInfoSpeciality
+        val speciality = binding.personInfo.etUserPersonInfoSpeciality
 
         // ***** Addition info values
         val additionInfo: ConstraintLayout = binding.additionInfo.clUserInfo
         val additionInfoButton: TextView = binding.tvEditFragmentAdditionInfo
-        val speciality: EditText = binding.additionInfo.userEditInformationSpeciality
         val profileInfo: EditText = binding.additionInfo.userEditInformationProfileInfo
         val profSkills: EditText = binding.additionInfo.userEditInformationProfSkills
         val education: EditText = binding.additionInfo.userEditInformationEducation
@@ -205,7 +206,7 @@ class EditCardFragment : Fragment() {
                 val emailValue = emailField.editText?.text.toString()
                 val linkedinValue = linkedinField.editText?.text.toString()
                 val locationValue = locationField.editText?.text.toString()
-                val specialityValue = speciality.text.toString()
+                val specialityValue = specialityField.editText?.text.toString()
                 val profiInfoValue = profileInfo.text.toString()
                 val profSkillsValue = profSkills.text.toString()
                 val educationValue = education.text.toString()
@@ -254,7 +255,7 @@ class EditCardFragment : Fragment() {
         strokeColors: RecyclerView
     ) {
         val cardColorsAdapter = CardColorAdapter(cardColorVariant)
-        cardColors.layoutManager = GridLayoutManager(context, 5)
+        cardColors.layoutManager = GridLayoutManager(context, 6)
         cardColors.adapter = cardColorsAdapter
 
         cardColorsAdapter.colorCardClickListener =

@@ -147,96 +147,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <!--
-                        <Button
-                            android:id="@+id/bt_cards_fragment_add_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_marginStart="42dp"
-                            android:layout_marginEnd="24dp"
-                            android:backgroundTint="@color/white"
-                            android:drawableLeft="@drawable/ic_information"
-                            android:gravity="center_horizontal|top"
-                            app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_delete"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintHorizontal_weight="1"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
-            -->
+
+            <TextView
+                android:id="@+id/tv_cards_fragment_instruction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                style="@style/Regular"
+                android:textSize="18sp"
+                android:visibility="invisible"
+                android:textColor="@color/text_dark"
+                android:text="Please click on the button to create a new B-card. \nIn the future, it is possible to change the content of the card and its presentation. \nIt is also possible to transfer the card to another device in the format of a contact or QR code."
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <include
                 android:id="@+id/layout_user_information"
                 layout="@layout/user_information"
                 android:visibility="gone" />
-            <!--
-                        <Button
-                            android:id="@+id/bt_cards_fragment_edit"
-                            style="@style/BCard.Button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_marginEnd="24dp"
-                            android:backgroundTint="@color/white"
-                            android:drawableLeft="@drawable/ic_edit"
-                            app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_share"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_weight="1"
-                            app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_share"
-                            app:layout_constraintVertical_bias="1.0" />
 
-                        <include
-                            android:id="@+id/layout_user_edit_information"
-                            layout="@layout/card_implementation"
-                            android:visibility="gone" />
-
-
-                        <Button
-                            android:id="@+id/bt_cards_fragment_share"
-                            style="@style/BCard.Button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="70dp"
-                            android:layout_marginStart="24dp"
-                            android:backgroundTint="@color/white"
-                            android:drawableTop="@drawable/ic_share"
-
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.016"
-                            app:layout_constraintHorizontal_weight="1"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
-
-                        <Button
-                            android:id="@+id/bt_cards_fragment_delete"
-                            style="@style/BCard.Button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="70dp"
-                            android:backgroundTint="@color/white"
-                            android:drawableTop="@drawable/ic_delete"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.183"
-                            app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_share"
-                            app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_share"
-                            app:layout_constraintVertical_bias="0.0" />
-
-                        <Button
-                            android:id="@+id/bt_cards_fragment_exit"
-                            style="@style/BCard.Button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_marginEnd="56dp"
-                            android:backgroundTint="@color/white"
-                            android:drawableLeft="@drawable/ic_exit"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_edit"
-                            app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_share"
-                            app:layout_constraintVertical_bias="0.0" />
-
-            -->
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.core.widget.NestedScrollView>
 
@@ -261,16 +195,18 @@
                 android:id="@+id/tv_cards_fragment_name"
                 style="@style/Bold"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="24dp"
                 android:text="Andrew"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.242"
+
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/iv_cards_fragment_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/iv_cards_fragment_avatar"
                 app:layout_constraintVertical_bias="0.612" />
 
             <ImageView

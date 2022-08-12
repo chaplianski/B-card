@@ -95,7 +95,4 @@ class DeleteCardFragment : BottomSheetDialogFragment() {
             })
         }
     }
-
-
-
 }

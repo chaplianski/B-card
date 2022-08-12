@@ -74,6 +74,31 @@
             android:id="@+id/et_card_impl_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:background="@drawable/text_field_with_background_corners" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/otf_user_person_info_speciality"
+        style="@style/BCard.OutlinedBox.Field"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Position / Specialty"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/iv_user_person_info_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/otf_user_person_info_phone"
+        app:layout_constraintVertical_bias="0.008"
+        app:startIconDrawable="@drawable/ic_id_card">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_user_person_info_speciality"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
             android:background="@drawable/text_field_with_background_corners" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -88,8 +113,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/iv_user_person_info_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/otf_user_person_info_phone"
+        app:layout_constraintStart_toStartOf="@+id/otf_user_person_info_speciality"
+        app:layout_constraintTop_toBottomOf="@+id/otf_user_person_info_speciality"
         app:layout_constraintVertical_bias="0.008"
         app:startIconDrawable="@drawable/ic_email_card">
 
@@ -97,6 +122,7 @@
             android:id="@+id/et_user_person_info_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
             android:background="@drawable/text_field_with_background_corners" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -120,6 +146,7 @@
             android:id="@+id/et_card_impl_linkedin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textUri"
             android:background="@drawable/text_field_with_background_corners" />
 
     </com.google.android.material.textfield.TextInputLayout>

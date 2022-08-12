@@ -16,15 +16,19 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
 import com.bumptech.glide.Glide
-import com.chaplianski.bcard.R
 import com.chaplianski.bcard.databinding.FragmentCardsBinding
 import com.chaplianski.bcard.di.DaggerAppComponent
 import com.chaplianski.bcard.presenter.adapters.CardsFragmentCardAdapter
@@ -35,6 +39,7 @@ import com.chaplianski.bcard.presenter.utils.CustomFab
 import com.chaplianski.bcard.presenter.utils.init
 import com.chaplianski.bcard.presenter.viewmodels.CardsFragmentViewModel
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.AppBarLayout.Behavior.DragCallback
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -42,7 +47,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class CardsFragment : Fragment(R.layout.fragment_cards) {
+class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 
     @Inject
     lateinit var cardsFragmentViewModelFactory: CardsFragmentViewModelFactory
@@ -71,12 +76,7 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val infoButton: Button = binding.btCardsFragmentAddInfo
-//        val editButton: Button = binding.btCardsFragmentEdit
-//        val shareButton: Button = binding.btCardsFragmentShare
-//        val deleteButton: Button = binding.btCardsFragmentDelete
         val additionalInfoText: ConstraintLayout = binding.layoutUserInformation.clUserInfo
-//        val closeAppButton: Button = binding.btCardsFragmentExit
         val closeButton: Button = binding.layoutUserInformation.btUserInfoClose
 
         val fabSettings: CustomFab = binding.fabCardsFragmentSettings
@@ -87,7 +87,13 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
 
         val appbar: AppBarLayout = binding.appbarCardsFragment
         val nameplate: FrameLayout = binding.flCardsFragmentTopInfo
+        val instruction: TextView = binding.tvCardsFragmentInstruction
 
+        val profileInfo: TextView = binding.layoutUserInformation.userInformationProfileInfo
+        val profSkills: TextView = binding.layoutUserInformation.userInformationProfSkills
+        val education: TextView = binding.layoutUserInformation.userInformationEducation
+        val workExperience: TextView = binding.layoutUserInformation.userInformationWorkExperience
+        val reference: TextView = binding.layoutUserInformation.userInformationReference
 
         // **** Additional User Info
 //        infoButton.setOnClickListener {
@@ -106,38 +112,30 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
         fabEdit.setOnClickListener {
             val bundle = Bundle()
             bundle.putLong(CURRENT_CARD_ID, currentCardId)
-            findNavController().navigate(R.id.action_cardsFragment_to_editCardFragment, bundle)
+            findNavController().navigate(com.chaplianski.bcard.R.id.action_cardsFragment_to_editCardFragment, bundle)
         }
 
         // **** Share card
         fabShare.setOnClickListener {
             val bundle = Bundle()
             bundle.putLong(CURRENT_CARD_ID, currentCardId)
-            findNavController().navigate(R.id.action_cardsFragment_to_shareFragment, bundle)
+            findNavController().navigate(com.chaplianski.bcard.R.id.action_cardsFragment_to_shareFragment, bundle)
         }
 
         fabDelete.setOnClickListener {
-//            val deleteCardFragment = DeleteCardFragment()
-//            val bundle = Bundle()
-//            bundle.putLong(CURRENT_CARD_ID, currentCardId)
-//            findNavController().navigate(R.id.action_cardsFragment_to_deleteCardFragment, bundle)
             showDialog(currentCardId)
         }
-
-
 
         fabExit.setOnClickListener {
             activity?.finishAffinity()
         }
 
         appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-
             if (Math.abs(verticalOffset - 154) == (appbar.height)) {
-                  fabSettings.hide()
+                fabSettings.hide()
                 additionalInfoText.visibility = View.VISIBLE
             }
             if (Math.abs(verticalOffset) == 0) {
-
                 fabSettings.show()
                 additionalInfoText.visibility = View.GONE
             }
@@ -145,7 +143,7 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
 
         // ******  Cards wheel  ********
 
-        val cardsRV: RecyclerView = view.findViewById(R.id.rv_cards_fragment_cards)
+        val cardsRV: RecyclerView = view.findViewById(com.chaplianski.bcard.R.id.rv_cards_fragment_cards)
         val cardsPickerLayoutManager =
             CardsPickerLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val cardFragmentCardAdapter = CardsFragmentCardAdapter(cardsRV) //(listCards, cardsRV)
@@ -164,23 +162,48 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
         cardsFragmentViewModel.getCards()
 
         cardsFragmentViewModel.cards.observe(this.viewLifecycleOwner) { listCards ->
-            Log.d("MyLog", "list card: ${listCards.size}")
-
             cardFragmentCardAdapter.updateData(listCards)
-            val currentPosition = cardsSnapHelper.getSnapPosition(cardsRV)
-            listCards[currentPosition].id
-            Log.d("MyLog", "position = $currentPosition")
-            cardsFragmentViewModel.getCard(listCards[currentPosition].id)
+
+            // Condition not empty list cards
+            if (listCards.size > 0){
+                val currentPosition = cardsSnapHelper.getSnapPosition(cardsRV)
+                listCards[currentPosition].id
+                Log.d("MyLog", "position1 = $currentPosition, listSize1 = ${listCards.size} " )
+                cardsFragmentViewModel.getCard(listCards[currentPosition].id)
+
+
+            }
+
+
+
             setupDialog(cardFragmentCardAdapter)
 //            Log.updateData(listCards)
 
             cardsPickerLayoutManager.setOnScrollStopListener(object :
                 CardsPickerLayoutManager.CardScrollStopListener {
                 override fun selectedView(view: View?) {
-                    val cardId = view?.findViewById<TextView>(R.id.tv_card_fragment_id)
-                    val userName = view?.findViewById<TextView>(R.id.tv_card_fragment_item_name)
+                    val cardId = view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_id)
+                    val userName = view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_item_name)
                     val userAvatar =
-                        view?.findViewById<TextView>(R.id.tv_card_fragment_uri)
+                        view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_uri)
+
+                    val currentPos = cardsSnapHelper.getSnapPosition(cardsRV)
+                    if (currentPos == listCards.size){
+//                        appbar.isLiftOnScroll = false
+                        fabSettings.visibility = View.INVISIBLE
+                        instruction.visibility = View.VISIBLE
+                    setAppBarDragging(false, appbar)
+
+
+                    } else {
+                        fabSettings.visibility = View.VISIBLE
+                        instruction.visibility = View.INVISIBLE
+                        setAppBarDragging(true, appbar)
+                    }
+
+//                    nestedScrollView.isNestedScrollingEnabled = currentPos != listCards.size
+                    Log.d("MyLog", "position = $currentPos, listSize = ${listCards.size} " )
+
                     if (userName?.text?.equals(null) != true && userAvatar?.text?.equals(null) != true && cardId?.text?.equals(
                             null
                         ) != true
@@ -194,11 +217,9 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
 
             })
 
-
-
             cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
-                val userName: TextView = view.findViewById(R.id.tv_cards_fragment_name)
-                val userAvatar: ImageView = view.findViewById(R.id.iv_cards_fragment_avatar)
+                val userName: TextView = view.findViewById(com.chaplianski.bcard.R.id.tv_cards_fragment_name)
+                val userAvatar: ImageView = view.findViewById(com.chaplianski.bcard.R.id.iv_cards_fragment_avatar)
                 currentCardId = card.id
                 userName.text = card.name
                 context?.let {
@@ -207,13 +228,19 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
                         .centerCrop()
                         .into(userAvatar)
                 }
+
+                profileInfo.text = card.profilInfo
+                profSkills.text = card.professionalSkills
+                education.text = card.education
+                workExperience.text = card.workExperience
+                reference.text = card.reference
             }
 
             cardFragmentCardAdapter.shortOnClickListener =
                 object : CardsFragmentCardAdapter.ShortOnClickListener {
 
                     override fun shortClick() {
-                        findNavController().navigate(R.id.action_cardsFragment_to_editCardFragment)
+                        findNavController().navigate(com.chaplianski.bcard.R.id.action_cardsFragment_to_editCardFragment)
 
                     }
 
@@ -238,6 +265,19 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
                 }
         }
     }
+
+    private fun setAppBarDragging(newValue: Boolean, appBarLayout: AppBarLayout) {
+        val params = appBarLayout.layoutParams as CoordinatorLayout.LayoutParams
+        val behavior = AppBarLayout.Behavior()
+        behavior.setDragCallback(object : DragCallback() {
+            override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+                return newValue
+            }
+        })
+        params.behavior = behavior
+    }
+
+
 
     private fun setupFABs(
         fabSettings: FloatingActionButton,
@@ -264,9 +304,6 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
                 fabShare.show()
                 fabExit.show()
             }
-//            if (fabDelete.isOrWillBeShown) fabDelete.hide() else fabDelete.show()
-//            if (fabShare.isOrWillBeShown) fabShare.hide() else fabShare.show()
-//            if (fabExit.isOrWillBeShown) fabShare.hide() else fabExit.show()
         }
     }
 
@@ -312,7 +349,7 @@ class CardsFragment : Fragment(R.layout.fragment_cards) {
         DeleteCardFragment.setupListener(parentFragmentManager, this) {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    delay(1000)
+                    delay(600)
                     cardsFragmentViewModel.getCards()
                 }
             }
