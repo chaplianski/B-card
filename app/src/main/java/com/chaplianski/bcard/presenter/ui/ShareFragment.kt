@@ -28,6 +28,7 @@ import ezvcard.VCard
 import ezvcard.VCardVersion
 import ezvcard.parameter.AddressType
 import ezvcard.parameter.EmailType
+import ezvcard.parameter.ImageType
 import ezvcard.parameter.TelephoneType
 import ezvcard.property.*
 import kotlinx.coroutines.Dispatchers
@@ -119,20 +120,20 @@ class ShareFragment : Fragment() {
 //        vcard.gender = Gender.male()
 //        vcard.addLanguage("en-US")
         val n = StructuredName()
-        n.family = "Doe"
-        n.given = "Jonathan"
+        n.family = card.name//"Doe"
+        n.given = card.surname //"Jonathan"
 //        n.prefixes.add("Mr")
         vcard.structuredName = n
-        vcard.setFormattedName("Jonathan Doe")
+        vcard.setFormattedName("${card.name} ${card.surname}")
 //        vcard.setNickname("John", "Jonny")
-        vcard.addTitle("Widget Engineer")
-        vcard.setOrganization("Acme Co. Ltd.", "Widget Department")
+        vcard.addTitle(card.speciality)
+        vcard.setOrganization(card.organization)
         val adr = Address()
 //        adr.streetAddress = "123 Wall St."
-        adr.locality = "New York"
+        adr.locality = card.town
 //        adr.region = "NY"
 //        adr.postalCode = "12345"
-        adr.country = "USA"
+        adr.country = card.country
 //        adr.label = "123 Wall St.\nNew York, NY 12345\nUSA"
         adr.types.add(AddressType.WORK)
 //        vcard.addAddress(adr)
@@ -145,18 +146,18 @@ class ShareFragment : Fragment() {
 //        adr.label = "123 Main St.\nAlbany, NY 54321\nUSA"
 //        adr.types.add(AddressType.HOME)
 //        vcard.addAddress(adr)
-        vcard.addTelephoneNumber("1-555-555-1234", TelephoneType.WORK)
+        vcard.addTelephoneNumber(card.phone, TelephoneType.WORK)
 //        vcard.addTelephoneNumber("1-555-555-5678", TelephoneType.WORK, TelephoneType.CELL)
-        vcard.addEmail("johndoe@hotmail.com", EmailType.HOME)
+        vcard.addEmail(card.email, EmailType.HOME)
 //        vcard.addEmail("doe.john@acme.com", EmailType.WORK)
-        vcard.addUrl("http://www.acme-co.com")
+        vcard.addUrl("https://www.linkedin.com/in/${card.linkedin}")
 //        vcard.setCategories("widgetphile", "biker", "vCard expert")
 //        vcard.setGeo(37.6, -95.67)
 //        val tz = TimeZone.getTimeZone("America/New_York")
 //        vcard.timezone = Timezone(tz)
-//        var file = File("portrait.jpg")
-//        val photo = Photo(file, ImageType.JPEG)
-//        vcard.addPhoto(photo)
+        var file = File("portrait.jpg")
+        val photo = Photo(file, ImageType.JPEG)
+        vcard.addPhoto(photo)
 //        file = File("pronunciation.ogg")
 //        val sound = Sound(file, SoundType.OGG)
 //        vcard.addSound(sound)
@@ -190,7 +191,7 @@ class ShareFragment : Fragment() {
     }
 
     fun addVCardData(vcard: VCard) {
-        val fff = vcard.formattedName
+        val formatedName = vcard.formattedName
         val addInfoProperties = vcard.getExtendedProperties(ADD_INFO)
         val cardSettingsProperties = vcard.getExtendedProperties(CARD_SETTINGS)
 
@@ -201,7 +202,7 @@ class ShareFragment : Fragment() {
         val townValue = vcard.addresses[0].locality
         val countryValue = vcard.addresses[0].country
         val specialityValue = vcard.titles[0].value
-        val organizationValue = vcard.organization
+        val organizationValue = vcard.organization.values[0]
         val linkedInValue = vcard.urls[0].value
         val photoValue = vcard.photos[0].url
         var profilInfoValue = ""
@@ -236,13 +237,17 @@ class ShareFragment : Fragment() {
 
         val card = Card(
             0,
+            0,
             nameValue,
+            surnameValue,
             photoValue,
             phoneValue,
             linkedInValue,
             emailValue,
             specialityValue,
-            "$townValue, $countryValue",
+            organizationValue,
+            townValue,
+            countryValue,
             profilInfoValue,
             educationValue,
             profSkillsValue,

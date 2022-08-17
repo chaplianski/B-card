@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.chaplianski.bcard.R
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 
 class CardFragmentBehavior (): CoordinatorLayout.Behavior<FrameLayout>() {
@@ -41,5 +42,24 @@ class CardFragmentBehavior (): CoordinatorLayout.Behavior<FrameLayout>() {
             newTranslation < 0 -> child.translationY = 0f
             else -> child.translationY = newTranslation
         }
+    }
+
+    override fun onStopNestedScroll(
+        coordinatorLayout: CoordinatorLayout,
+        child: FrameLayout,
+        target: View
+    ) {
+        val appbar: AppBarLayout = coordinatorLayout.findViewById(R.id.appbar_cards_fragment)
+        val childTranslation = child.translationY
+        if (appbar.translationY < 1/2*appbar.height){
+            child.translationY = child.height.toFloat()
+        }
+
+//        if (childTranslation < 1/2*child.height){
+//             child.translationY = 80f
+//         }
+
+
+//        super.onStopNestedScroll(coordinatorLayout, child, target)
     }
 }

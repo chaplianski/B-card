@@ -5,11 +5,12 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.chaplianski.bcard.data.storage.dao.CardDao
 import com.chaplianski.bcard.data.storage.modeldto.CardDTO
+import com.chaplianski.bcard.data.storage.modeldto.UserDTO
 
 
 @Database(
     entities = [
-        CardDTO::class,
+        CardDTO::class, UserDTO::class
         ],
     version = 1,
     exportSchema = false

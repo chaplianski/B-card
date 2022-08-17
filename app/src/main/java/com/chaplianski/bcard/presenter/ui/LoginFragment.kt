@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.databinding.FragmentLoginBinding
 import com.chaplianski.bcard.di.DaggerAppComponent
+import com.chaplianski.bcard.domain.model.User
 import com.chaplianski.bcard.presenter.factories.LoginFragmentViewModelFactory
 import com.chaplianski.bcard.presenter.viewmodels.LoginFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -49,27 +50,30 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val registerButton = binding.tvWelcomeFragmentSignUp
+        val registerButton = binding.btLoginFragmentSignup
         val emailField = binding.otfLoginFragmentEmail
         val passwordField = binding.otfLoginFragmentPassword
         val signInButton = binding.btLoginFragmentSignin
         auth = FirebaseAuth.getInstance()
 
         signInButton.setOnClickListener {
-//            val email = emailField.editText?.text.toString()
-//            val password = passwordField.editText?.text.toString()
+            val email = emailField.editText?.text.toString()
+            val password = passwordField.editText?.text.toString()
+            val user = User (0, email, password)
 
-            findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
+        loginFragmentViewModel.checkLoginUser(user)
+
+
 
 //            loginFragmentViewModel.checkLoginUser(email, password)
-//            loginFragmentViewModel.loginResponse.observe(this.viewLifecycleOwner){
-//                if (it == "OK"){
-//                    findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
-//                } else {
-//                    Log.d("MyLog", "Fail")
-//                }
-//
-//            }
+            loginFragmentViewModel.loginResponse.observe(this.viewLifecycleOwner){
+                if (it == -1L){
+
+                } else {
+                    findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
+                }
+
+            }
 //
 //            findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
 

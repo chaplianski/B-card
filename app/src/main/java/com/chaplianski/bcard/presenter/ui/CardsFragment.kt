@@ -15,9 +15,11 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -56,6 +58,7 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
     var _binding: FragmentCardsBinding? = null
     val binding: FragmentCardsBinding get() = _binding!!
     var currentCardId = 1L
+    var imageUri = ""
 
     override fun onAttach(context: Context) {
         DaggerAppComponent.builder()
@@ -95,6 +98,11 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
         val workExperience: TextView = binding.layoutUserInformation.userInformationWorkExperience
         val reference: TextView = binding.layoutUserInformation.userInformationReference
 
+        val launcher: ActivityResultLauncher<IntentSenderRequest> =
+            registerForActivityResult(
+                ActivityResultContracts.StartIntentSenderForResult()
+            ) { result -> }
+
         // **** Additional User Info
 //        infoButton.setOnClickListener {
 //            additionalInfoText.visibility = View.VISIBLE
@@ -131,7 +139,7 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
         }
 
         appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            if (Math.abs(verticalOffset - 154) == (appbar.height)) {
+            if (Math.abs(verticalOffset - 250) > (appbar.height)) {
                 fabSettings.hide()
                 additionalInfoText.visibility = View.VISIBLE
             }
@@ -170,13 +178,9 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
                 listCards[currentPosition].id
                 Log.d("MyLog", "position1 = $currentPosition, listSize1 = ${listCards.size} " )
                 cardsFragmentViewModel.getCard(listCards[currentPosition].id)
-
-
             }
 
-
-
-            setupDialog(cardFragmentCardAdapter)
+            setupDialog(cardFragmentCardAdapter, launcher)
 //            Log.updateData(listCards)
 
             cardsPickerLayoutManager.setOnScrollStopListener(object :
@@ -202,7 +206,7 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
                     }
 
 //                    nestedScrollView.isNestedScrollingEnabled = currentPos != listCards.size
-                    Log.d("MyLog", "position = $currentPos, listSize = ${listCards.size} " )
+
 
                     if (userName?.text?.equals(null) != true && userAvatar?.text?.equals(null) != true && cardId?.text?.equals(
                             null
@@ -221,6 +225,7 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
                 val userName: TextView = view.findViewById(com.chaplianski.bcard.R.id.tv_cards_fragment_name)
                 val userAvatar: ImageView = view.findViewById(com.chaplianski.bcard.R.id.iv_cards_fragment_avatar)
                 currentCardId = card.id
+                imageUri = card.photo
                 userName.text = card.name
                 context?.let {
                     Glide.with(it).load(card.photo)
@@ -255,11 +260,12 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 //                    i.data = Uri.parse("mailto:$email")
                         i.type = "text/plain"
                         i.putExtra(Intent.EXTRA_EMAIL, email)
+                        Log.d("MyLog", "email = $email" )
                         activity?.startActivity(Intent.createChooser(i, "Send email"))
                     }
 
                     override fun shortLinkedinClick(linkedin: String) {
-                        val i = Intent(Intent.ACTION_VIEW, Uri.parse("https:$linkedin"))
+                        val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/$linkedin"))
                         activity?.startActivity(i)
                     }
                 }
@@ -345,10 +351,20 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
         DeleteCardFragment.show(parentFragmentManager, cardId)
     }
 
-    fun setupDialog(cardFragmentCardAdapter: CardsFragmentCardAdapter) {
+    fun setupDialog(
+        cardFragmentCardAdapter: CardsFragmentCardAdapter,
+        launcher: ActivityResultLauncher<IntentSenderRequest>
+    ) {
         DeleteCardFragment.setupListener(parentFragmentManager, this) {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                    val contentResolver = context?.contentResolver
+
+                    cardsFragmentViewModel.deleteCard(currentCardId)
+//                    if (contentResolver != null) {
+//                        cardsFragmentViewModel.deleteImage(imageUri, contentResolver, launcher)
+//                    }
                     delay(600)
                     cardsFragmentViewModel.getCards()
                 }
@@ -356,6 +372,9 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
         }
     }
 }
+
+
+
 
 private fun animationMove(button: View, from: Float, to: Float): Animator {
     val logoBegin = ObjectAnimator.ofFloat(button, View.TRANSLATION_Y, from, to)

@@ -34,12 +34,10 @@ class CardsFragmentCardAdapter(
     var shortOnClickListener: ShortOnClickListener? = null
 
     fun updateData(list: List<Card>) {
-        Log.d("MyLog", "update")
         val diffCallback = CardsDiffCallback(cardList, list)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         cardList = list as MutableList<Card>
         diffResult.dispatchUpdatesTo(this)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -102,6 +100,7 @@ class CardsFragmentCardAdapter(
         val name: TextView = itemView.findViewById(R.id.tv_card_fragment_item_name)
         val specialization: TextView =
             itemView.findViewById(R.id.tv_card_fragment_item_specialization)
+        val organization: TextView = itemView.findViewById(R.id.tv_card_fragment_item_organization)
         val linkedin: TextView = itemView.findViewById(R.id.tv_card_fragment_item_addition_phone)
         val email: TextView = itemView.findViewById(R.id.tv_card_fragment_item_email)
         val location: TextView = itemView.findViewById(R.id.tv_card_fragment_item_location)
@@ -113,12 +112,13 @@ class CardsFragmentCardAdapter(
 
         fun onBindCard(card: Card) {
 
-            name.text = card.name
+            name.text = "${card.name} ${card.surname}"
             specialization.text = card.speciality
+            organization.text = card.organization
             phone.text = card.phone
             linkedin.text = card.linkedin
             email.text = card.email
-            location.text = card.location
+            location.text = "${card.town}, ${card.country}"
             cardId.text = card.id.toString()
             avatarUri.text = card.photo.toString()
 
@@ -143,12 +143,14 @@ class CardsFragmentCardAdapter(
                 Glide.with(itemView.context).load(avatarUri.text.toString())
                     .override(150, 150)
                     .centerCrop()
+                    .placeholder(R.drawable.ic_portrait)
                     .circleCrop()
                     .into(avatar)
             } else {
                 Glide.with(itemView.context).load(avatarUri.text.toString())
                     .override(150, 150)
                     .centerCrop()
+                    .placeholder(R.drawable.ic_portrait)
                     .into(avatar)
             }
         }

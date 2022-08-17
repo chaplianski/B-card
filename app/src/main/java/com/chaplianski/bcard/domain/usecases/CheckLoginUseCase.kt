@@ -1,12 +1,13 @@
 package com.chaplianski.bcard.domain.usecases
 
 import androidx.lifecycle.MutableLiveData
-import com.chaplianski.bcard.domain.repository.AuthorizationRepository
+import com.chaplianski.bcard.domain.model.User
+import com.chaplianski.bcard.domain.repository.UserRepository
 import javax.inject.Inject
 
-class CheckLoginUseCase @Inject constructor(private val authorizationRepository: AuthorizationRepository) {
+class CheckLoginUseCase @Inject constructor(private val authorizationRepository: UserRepository) {
 
-    suspend fun execute(email: String, password: String): MutableLiveData<String>{
-        return authorizationRepository.checkLoginPassword(email, password)
+    suspend fun execute(user: User): Long{
+        return authorizationRepository.checkLoginPassword(user)
     }
 }

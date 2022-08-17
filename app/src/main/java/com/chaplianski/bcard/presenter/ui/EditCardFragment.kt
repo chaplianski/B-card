@@ -13,7 +13,6 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.findFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -80,16 +79,22 @@ class EditCardFragment : Fragment() {
         val avatar: ImageView = binding.personInfo.ivUserPersonInfoAvatar
         val nameField = binding.personInfo.otfUserPersonInfoName
         val nameText = binding.personInfo.etUserPersonInfoName
+        val surnameField = binding.personInfo.otfUserPersonInfoSurname
+        val surnameText = binding.personInfo.etUserPersonInfoSurname
         val phoneField = binding.personInfo.otfUserPersonInfoPhone
         val phoneText = binding.personInfo.etCardImplPhone
         val emailField = binding.personInfo.otfUserPersonInfoEmail
         val emailText = binding.personInfo.etUserPersonInfoEmail
         val linkedinField = binding.personInfo.otfUserPersonInfoLinedin
         val linkedinText = binding.personInfo.etCardImplLinkedin
-        val locationField = binding.personInfo.otfUserPersonInfoLocation
-        val locationText = binding.personInfo.etUserPersonInfoLocation
+        val townField = binding.personInfo.otfUserPersonInfoTown
+        val townText = binding.personInfo.etUserPersonInfoTown
+        val countryField = binding.personInfo.otfUserPersonInfoCountry
+        val countryText = binding.personInfo.etUserPersonInfoCountry
         val specialityField = binding.personInfo.otfUserPersonInfoSpeciality
-        val speciality = binding.personInfo.etUserPersonInfoSpeciality
+        val specialityText = binding.personInfo.etUserPersonInfoSpeciality
+        val organizationField = binding.personInfo.otfUserPersonInfoOrganization
+        val organizationText = binding.personInfo.etUserPersonInfoOrganization
 
         // ***** Addition info values
         val additionInfo: ConstraintLayout = binding.additionInfo.clUserInfo
@@ -116,6 +121,7 @@ class EditCardFragment : Fragment() {
         // ***** Fill fields  *****
 
         val cardID = arguments?.getLong(CURRENT_CARD_ID, 0L)
+        var userID = 0L
         if (cardID != null){
             editCardFragmentViewModel.getCardData(cardID)
         }
@@ -126,14 +132,17 @@ class EditCardFragment : Fragment() {
                 .override(150, 150)
                 .centerCrop()
                 .into(avatar)
-
+            userID = card.userId
             avatarUri = card.photo
             nameText.setText(card.name)
+            surnameText.setText(card.surname)
             phoneText.setText(card.phone)
             emailText.setText(card.email)
             linkedinText.setText(card.linkedin)
-            locationText.setText(card.location)
-            speciality.setText(card.speciality)
+            townText.setText(card.town)
+            countryText.setText(card.country)
+            specialityText.setText(card.speciality)
+            organizationText.setText(card.organization)
             profileInfo.setText(card.profilInfo)
             profSkills.setText(card.professionalSkills)
             education.setText(card.education)
@@ -193,20 +202,26 @@ class EditCardFragment : Fragment() {
             }
             if (phoneText.text?.isEmpty() == true)  phoneField.error = "Please, enter phone"
             if (emailText.text?.isEmpty() == true) emailField.error = "Please, enter email"
-            if (locationText.text?.isEmpty() == true) locationField.error = "Please, enter location"
+//            if (locationText.text?.isEmpty() == true) locationField.error = "Please, enter location"
 
-            if (nameText.text?.isBlank() == false &&  phoneText.text?.isEmpty() == false && emailText.text?.isEmpty() == false && locationText.text?.isEmpty() == false) {
+            if (nameText.text?.isBlank() == false &&  phoneText.text?.isEmpty() == false && emailText.text?.isEmpty() == false) { // && locationText.text?.isEmpty() == false) {
 
                 var cardIdValue = 0L
+                var userIdValue = 0L
                 if (cardID != null) {
                     cardIdValue = cardID
+                    userIdValue = userID
                 }
                 val nameValue = nameField.editText?.text.toString()
+                val surnameValue = surnameField.editText?.text.toString()
                 val phoneValue = phoneField.editText?.text.toString()
                 val emailValue = emailField.editText?.text.toString()
                 val linkedinValue = linkedinField.editText?.text.toString()
-                val locationValue = locationField.editText?.text.toString()
+                val townValue = townField.editText?.text.toString()
+                val countryValue = countryField.editText?.text.toString()
                 val specialityValue = specialityField.editText?.text.toString()
+                val organizationValue = organizationField.editText?.text.toString()
+                Log.d("MyLog", "organization = $organizationValue")
                 val profiInfoValue = profileInfo.text.toString()
                 val profSkillsValue = profSkills.text.toString()
                 val educationValue = education.text.toString()
@@ -217,11 +232,13 @@ class EditCardFragment : Fragment() {
                 val cardCornerValue = if(checkedCornerSizeVariant == 1f) 30f else checkedCornerSizeVariant
                 val formCardValue = if (checkedFormAvatarVariant == "") "oval" else checkedFormAvatarVariant
                 val newCard = Card(
-                    cardIdValue, nameValue, avatarUri, phoneValue, linkedinValue, emailValue,
-                    specialityValue, locationValue,profiInfoValue,educationValue,profSkillsValue,
+                    cardIdValue, userIdValue, nameValue, surnameValue, avatarUri, phoneValue, linkedinValue, emailValue,
+                    specialityValue, organizationValue, townValue, countryValue,profiInfoValue,educationValue,profSkillsValue,
                     workExperienceValue,referenceValue,cardColorValue,strokeColorValue,
                     cardCornerValue,formCardValue
                 )
+                Log.d("MyLog", "card = $newCard")
+
 
                 if (cardIdValue == 0L){
                     editCardFragmentViewModel.addCard(newCard)
@@ -239,13 +256,14 @@ class EditCardFragment : Fragment() {
             avatarUri = it
             Glide.with(context!!).load(avatarUri)
                 .override(150, 150)
+                .placeholder(R.drawable.ic_portrait)
                 .centerCrop()
                 .into(avatar)
         }
         changeErrorStatus(nameText, nameField)
         changeErrorStatus(phoneText, phoneField)
         changeErrorStatus(emailText, emailField)
-        changeErrorStatus(locationText, locationField)
+//        changeErrorStatus(locationText, locationField)
     }
 
     private fun fillSettingParameters(
@@ -273,8 +291,8 @@ class EditCardFragment : Fragment() {
         if (checkedCornerSizeVariant != 1F){
             when (checkedCornerSizeVariant){
                 5F -> smallCorner?.isChecked = true
-                15F -> middleCorner?.isChecked = true
-                30F -> bigCorner?.isChecked = true
+                25F -> middleCorner?.isChecked = true
+                50F -> bigCorner?.isChecked = true
                 else -> withoutCorner?.isChecked = true
             }
         }
@@ -282,8 +300,8 @@ class EditCardFragment : Fragment() {
         cornerRound.setOnCheckedChangeListener { group, checkedId ->
             checkedCornerSizeVariant = when (checkedId) {
                 R.id.cb_corner_small -> 5F
-                R.id.cb_corner_middle -> 15F
-                R.id.cb_corner_big -> 30F
+                R.id.cb_corner_middle -> 25F
+                R.id.cb_corner_big -> 50F
                 else -> 0F
             }
         }

@@ -63,6 +63,21 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
+            android:id="@+id/tv_card_fragment_item_organization"
+            style="@style/SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Google corp LTD"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_card_fragment_item_specialization"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
             android:id="@+id/tv_card_fragment_item_phone"
             style="@style/Regular"
             android:layout_width="wrap_content"
@@ -85,7 +100,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
             android:text="+375447445638"
-            android:textSize="18sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -130,7 +145,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_card_fragment_item_specialization"
+            app:layout_constraintTop_toBottomOf="@+id/tv_card_fragment_item_organization"
             app:srcCompat="@drawable/ic_phone_call" />
 
         <ImageView

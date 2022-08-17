@@ -54,19 +54,44 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/otf_user_person_info_phone"
+        android:id="@+id/otf_user_person_info_surname"
         style="@style/BCard.OutlinedBox.Field"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="16dp"
+        android:hint="Surname"
+        app:boxStrokeColor="@color/blue_main"
+        app:boxStrokeWidth="2dp"
+        app:hintTextColor="@color/blue_main"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/iv_user_person_info_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/otf_user_person_info_name"
+        app:layout_constraintVertical_bias="0.0"
+        app:startIconDrawable="@drawable/ic_black_user">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_user_person_info_surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_field_with_background_corners" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/otf_user_person_info_phone"
+        style="@style/BCard.OutlinedBox.Field"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="16dp"
         android:hint="Phone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/iv_user_person_info_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/otf_user_person_info_name"
+        app:layout_constraintStart_toStartOf="@+id/iv_user_person_info_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/otf_user_person_info_surname"
         app:layout_constraintVertical_bias="0.0"
         app:startIconDrawable="@drawable/ic_phone_call">
 
@@ -74,8 +99,8 @@
             android:id="@+id/et_card_impl_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:background="@drawable/text_field_with_background_corners" />
+            android:background="@drawable/text_field_with_background_corners"
+            android:inputType="phone" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,8 +123,32 @@
             android:id="@+id/et_user_person_info_speciality"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:background="@drawable/text_field_with_background_corners" />
+            android:background="@drawable/text_field_with_background_corners"
+            android:inputType="textEmailAddress" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/otf_user_person_info_organization"
+        style="@style/BCard.OutlinedBox.Field"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Organization"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/otf_user_person_info_speciality"
+        app:layout_constraintTop_toBottomOf="@+id/otf_user_person_info_speciality"
+        app:layout_constraintVertical_bias="0.008"
+        app:startIconDrawable="@drawable/ic_organization">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_user_person_info_organization"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_field_with_background_corners"
+            android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +163,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/otf_user_person_info_speciality"
-        app:layout_constraintTop_toBottomOf="@+id/otf_user_person_info_speciality"
+        app:layout_constraintTop_toBottomOf="@+id/otf_user_person_info_organization"
         app:layout_constraintVertical_bias="0.008"
         app:startIconDrawable="@drawable/ic_email_card">
 
@@ -122,8 +171,8 @@
             android:id="@+id/et_user_person_info_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:background="@drawable/text_field_with_background_corners" />
+            android:background="@drawable/text_field_with_background_corners"
+            android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -146,28 +195,51 @@
             android:id="@+id/et_card_impl_linkedin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textUri"
-            android:background="@drawable/text_field_with_background_corners" />
+            android:background="@drawable/text_field_with_background_corners"
+            android:inputType="textUri" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/otf_user_person_info_location"
+        android:id="@+id/otf_user_person_info_town"
         style="@style/BCard.OutlinedBox.Field"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:hint="Location"
+        android:hint="Town"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/otf_user_person_info_linedin"
         app:layout_constraintTop_toBottomOf="@+id/otf_user_person_info_linedin"
         app:layout_constraintVertical_bias="0.0"
-        app:startIconDrawable="@drawable/ic_location_card">
+        app:startIconDrawable="@drawable/ic_town">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_user_person_info_location"
+            android:id="@+id/et_user_person_info_town"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_field_with_background_corners" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/otf_user_person_info_country"
+        style="@style/BCard.OutlinedBox.Field"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:hint="Country"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/otf_user_person_info_linedin"
+        app:layout_constraintTop_toBottomOf="@+id/otf_user_person_info_town"
+        app:layout_constraintVertical_bias="0.0"
+        app:startIconDrawable="@drawable/ic_country">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_user_person_info_country"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/text_field_with_background_corners" />

@@ -129,6 +129,7 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:titleMarginTop="30dp"
+
                 app:titleTextAppearance="@style/Bold" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -183,6 +184,7 @@
         android:layout_marginTop="-80dp"
         android:layout_marginBottom="100dp"
         android:elevation="5dp"
+
         app:layout_behavior=".presenter.helpers.CardFragmentBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -214,7 +216,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="20dp"
-                android:src="@drawable/avatar"
+                android:src="@drawable/ic_portrait"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

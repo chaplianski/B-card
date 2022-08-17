@@ -2,13 +2,17 @@ package com.chaplianski.bcard.domain.model
 
 data class Card(
     val id: Long = 0,
+    val userId: Long = 0,
     val name: String = "",
+    val surname: String = "",
     val photo: String = "",
     val phone: String = "",
     val linkedin: String = "",
     val email: String = "",
     val speciality: String = "",
-    val location: String = "",
+    val organization: String = "",
+    val town: String = "",
+    val country: String = "",
     val profilInfo: String = "",
     val education: String = "",
     val professionalSkills: String = "",
