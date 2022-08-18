@@ -13,6 +13,7 @@ import com.chaplianski.bcard.domain.usecases.AddCardUseCase
 import com.chaplianski.bcard.domain.usecases.GetCardUseCase
 import com.chaplianski.bcard.domain.usecases.UpdateCardUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -116,6 +117,10 @@ class EditCardFragmentViewModel @Inject constructor(
             e.printStackTrace()
         }
         return filePath
+    }
+
+    override fun onCleared() {
+        viewModelScope.cancel()
     }
 
 }

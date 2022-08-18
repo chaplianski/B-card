@@ -226,7 +226,7 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
                 val userAvatar: ImageView = view.findViewById(com.chaplianski.bcard.R.id.iv_cards_fragment_avatar)
                 currentCardId = card.id
                 imageUri = card.photo
-                userName.text = card.name
+                userName.text = "${card.name} ${card.surname}"
                 context?.let {
                     Glide.with(it).load(card.photo)
                         .override(150, 150)

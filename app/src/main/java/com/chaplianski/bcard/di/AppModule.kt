@@ -33,11 +33,11 @@ class AppModule() {
             .build()
 
     @Provides
-    fun provideAuthorizationRepository(impl: UserRepositoryImpl): UserRepository = impl
+    fun provideUserRepository(impl: UserRepositoryImpl): UserRepository = impl
     @Provides
     fun provideCardRepository(impl: CardRepositoryImpl): CardRepository = impl
-    @Provides
-    fun provideUserRepository(impl: UserRepositoryImpl): UserRepository = impl
+//    @Provides
+//    fun provideUserRepository(impl: UserRepositoryImpl): UserRepository = impl
 
     @Provides
     fun provideBCardStorage(impl: CardStorageImpl): CardStorage = impl

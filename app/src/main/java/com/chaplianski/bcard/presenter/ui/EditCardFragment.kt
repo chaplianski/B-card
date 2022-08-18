@@ -27,6 +27,7 @@ import com.chaplianski.bcard.presenter.adapters.StrokeColorAdapter
 import com.chaplianski.bcard.presenter.factories.EditCardFragmentViewModelFactory
 import com.chaplianski.bcard.presenter.helpers.PhotoPicker
 import com.chaplianski.bcard.presenter.utils.CURRENT_CARD_ID
+import com.chaplianski.bcard.presenter.utils.CURRENT_USER_ID
 import com.chaplianski.bcard.presenter.viewmodels.EditCardFragmentViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -121,7 +122,8 @@ class EditCardFragment : Fragment() {
         // ***** Fill fields  *****
 
         val cardID = arguments?.getLong(CURRENT_CARD_ID, 0L)
-        var userID = 0L
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        var userID = sharedPref?.getLong(CURRENT_USER_ID, 0L)
         if (cardID != null){
             editCardFragmentViewModel.getCardData(cardID)
         }
@@ -208,9 +210,9 @@ class EditCardFragment : Fragment() {
 
                 var cardIdValue = 0L
                 var userIdValue = 0L
-                if (cardID != null) {
+                if (cardID != null && userID != null) {
                     cardIdValue = cardID
-                    userIdValue = userID
+                    userIdValue = userID as Long
                 }
                 val nameValue = nameField.editText?.text.toString()
                 val surnameValue = surnameField.editText?.text.toString()
@@ -221,7 +223,6 @@ class EditCardFragment : Fragment() {
                 val countryValue = countryField.editText?.text.toString()
                 val specialityValue = specialityField.editText?.text.toString()
                 val organizationValue = organizationField.editText?.text.toString()
-                Log.d("MyLog", "organization = $organizationValue")
                 val profiInfoValue = profileInfo.text.toString()
                 val profSkillsValue = profSkills.text.toString()
                 val educationValue = education.text.toString()

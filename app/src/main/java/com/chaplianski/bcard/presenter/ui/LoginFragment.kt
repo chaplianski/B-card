@@ -14,6 +14,8 @@ import com.chaplianski.bcard.databinding.FragmentLoginBinding
 import com.chaplianski.bcard.di.DaggerAppComponent
 import com.chaplianski.bcard.domain.model.User
 import com.chaplianski.bcard.presenter.factories.LoginFragmentViewModelFactory
+import com.chaplianski.bcard.presenter.utils.LAST_USER_LOGIN
+import com.chaplianski.bcard.presenter.utils.LAST_USER_PASSWORD
 import com.chaplianski.bcard.presenter.viewmodels.LoginFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
@@ -44,7 +46,6 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,35 +53,56 @@ class LoginFragment : Fragment() {
 
         val registerButton = binding.btLoginFragmentSignup
         val emailField = binding.otfLoginFragmentEmail
+        val emailText = binding.etLoginFragmentEmail
         val passwordField = binding.otfLoginFragmentPassword
+        val passwordText = binding.etLoginFragmentPassword
         val signInButton = binding.btLoginFragmentSignin
-        auth = FirebaseAuth.getInstance()
+        val errorMessage = binding.tvLoginFragmentError
+        val rememberCheck = binding.cbLoginFragmentRemember
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+//        auth = FirebaseAuth.getInstance()
+
+        emailText.setText(sharedPref?.getString(LAST_USER_LOGIN, "").toString())
+        passwordText.setText(sharedPref?.getString(LAST_USER_PASSWORD, "").toString())
+
+        if (!emailField.editText?.text.toString().isEmpty()) rememberCheck.isChecked = true
+
+        Log.d("MyLog", "enter email = ${sharedPref?.getString(LAST_USER_LOGIN, "")}")
+        Log.d("MyLog", "enter password = ${sharedPref?.getString(LAST_USER_PASSWORD, "")}")
 
         signInButton.setOnClickListener {
             val email = emailField.editText?.text.toString()
             val password = passwordField.editText?.text.toString()
-            val user = User (0, email, password)
+            val user = User(0, email, password)
 
-        loginFragmentViewModel.checkLoginUser(user)
-
-
-
-//            loginFragmentViewModel.checkLoginUser(email, password)
-            loginFragmentViewModel.loginResponse.observe(this.viewLifecycleOwner){
-                if (it == -1L){
-
-                } else {
-                    findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
-                }
-
+            if (!email.isEmpty() && !password.isEmpty()) {
+                loginFragmentViewModel.checkLoginUser(user)
+            } else {
+                if (email.isEmpty()) emailField.error = "Please enter email"
+                if (password.isEmpty()) passwordField.error = "Please enter password"
             }
-//
-//            findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
-
-
-//            checkLoginUser(email, password)
         }
 
+        loginFragmentViewModel.loginResponse.observe(this.viewLifecycleOwner) {
+            if (it == -1L) {
+                errorMessage.visibility = View.VISIBLE
+            } else {
+                if (rememberCheck.isChecked) {
+                    sharedPref?.edit()
+                        ?.putString(LAST_USER_LOGIN, emailField.editText?.text.toString())?.apply()
+
+                    sharedPref?.edit()
+                        ?.putString(LAST_USER_PASSWORD, passwordField.editText?.text.toString())?.apply()
+
+                    Log.d("MyLog", "email exit = ${emailField.editText?.text.toString()}")
+                    Log.d("MyLog", "email exit = ${passwordField.editText?.text.toString()}")
+                } else {
+                    sharedPref?.edit()?.putString(LAST_USER_LOGIN, "")
+                    sharedPref?.edit()?.putString(LAST_USER_PASSWORD, "")
+                }
+                findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
+            }
+        }
 
         registerButton.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
@@ -91,9 +113,6 @@ class LoginFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
-
-
 
 
 }

@@ -1,5 +1,6 @@
 package com.chaplianski.bcard.data.storage.dao
 
+import android.util.Log
 import androidx.room.*
 import com.chaplianski.bcard.data.storage.modeldto.CardDTO
 import com.chaplianski.bcard.data.storage.modeldto.UserDTO
@@ -26,25 +27,24 @@ abstract class CardDao {
 //        insertCard(cardDTO)
 //    }
 
-    @Query ("SELECT * FROM cards WHERE cards.id=:cardId")
+    @Query("SELECT * FROM cards WHERE cards.id=:cardId")
     abstract fun getCard(cardId: Long): CardDTO
 
-    @Update (onConflict = OnConflictStrategy.IGNORE)
-    abstract  fun updateCard(cardDTO: CardDTO)
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    abstract fun updateCard(cardDTO: CardDTO)
+
+    @Query("SELECT EXISTS (SELECT * FROM users WHERE users.email=:email AND users.password=:password)")
+    abstract fun checkUser(email: String, password: String): Boolean
 
     @Query("SELECT * FROM users WHERE users.email=:email AND users.password=:password")
-    abstract fun checkUser(email: String, password: String): UserDTO
+    abstract fun getUserId(email: String, password: String): UserDTO
 
-    fun checkCurrentUser(userDTO: UserDTO): Long{
+    fun checkCurrentUser(userDTO: UserDTO): Long {
         val email = userDTO.email
         val password = userDTO.password
-        var user = UserDTO(-1, email, password)
-        try {
-            user = checkUser(email, password)
-        } catch (e: Exception){
-
-        }
-        return user.id
+        val isExist = checkUser(email, password)
+        return if (isExist) getUserId(email, password).id
+        else -1
     }
 
 }

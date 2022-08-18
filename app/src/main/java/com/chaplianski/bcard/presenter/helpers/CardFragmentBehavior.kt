@@ -36,10 +36,13 @@ class CardFragmentBehavior (): CoordinatorLayout.Behavior<FrameLayout>() {
     ) {
         val oldTranslation = child.translationY
         val newTranslation = oldTranslation + dy
+        val appbar: AppBarLayout = coordinatorLayout.findViewById(R.id.appbar_cards_fragment)
+
 //        Log.d("MyLog", "move  = ${dy}")
         when {
             newTranslation > child.height -> child.translationY = child.height.toFloat()
             newTranslation < 0 -> child.translationY = 0f
+            appbar.translationY < 1/2*appbar.height -> child.translationY = child.height.toFloat()
             else -> child.translationY = newTranslation
         }
     }
@@ -49,11 +52,11 @@ class CardFragmentBehavior (): CoordinatorLayout.Behavior<FrameLayout>() {
         child: FrameLayout,
         target: View
     ) {
-        val appbar: AppBarLayout = coordinatorLayout.findViewById(R.id.appbar_cards_fragment)
-        val childTranslation = child.translationY
-        if (appbar.translationY < 1/2*appbar.height){
-            child.translationY = child.height.toFloat()
-        }
+
+//        val childTranslation = child.translationY
+//        if (appbar.translationY < 1/2*appbar.height){
+//            child.translationY = child.height.toFloat()
+//        }
 
 //        if (childTranslation < 1/2*child.height){
 //             child.translationY = 80f
