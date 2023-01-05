@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/back"
-    tools:context=".presenter.ui.LoginFragment">
+    tools:context=".core.ui.LoginFragment">
 
     <TextView
         android:id="@+id/tv_login_fragment_title"
@@ -59,10 +59,12 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_login_fragment_email"
+            style="@style/Regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/text_field_with_background_corners"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColor="@color/text_middle" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -86,10 +88,12 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_login_fragment_password"
+            style="@style/Regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/text_field_with_background_corners"
             android:inputType="textPassword"
+            android:textColor="@color/text_middle"
 
             />
 
@@ -145,8 +149,8 @@
         style="@style/Regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/remember_for_the_next_entry"
         android:buttonTint="@color/blue_main"
+        android:text="@string/remember_for_the_next_entry"
         android:textColor="@color/text_middle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

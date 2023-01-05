@@ -9,4 +9,7 @@
     <string name="remember_for_the_next_entry">Remember for the next entry</string>
     <string name="sign_in">Sign In</string>
     <string name="registration_account">Registration account</string>
+    <string name="check_all">Check All</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

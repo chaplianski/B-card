@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <EditText
+        android:id="@+id/et_layout_search_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/layout_list"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/layout_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_layout_search_search"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/tv_layout_search_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Results 23"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/et_layout_search_text"
+            app:layout_constraintTop_toTopOf="@+id/et_layout_search_text"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_layout_search_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
+                app:layout_constraintTop_toBottomOf="@+id/textView7"
+                app:srcCompat="@drawable/caret_up" />
+
+            <ImageView
+                android:id="@+id/iv_layout_search_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toBottomOf="@+id/textView7"
+                app:srcCompat="@drawable/caret_down" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/iv_layout_search_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipIcon="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <!--    <ImageView-->
+<!--        android:id="@+id/iv_layout_search_search"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_gravity="right"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="1.0"-->
+<!--        app:srcCompat="@drawable/ic_search" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>

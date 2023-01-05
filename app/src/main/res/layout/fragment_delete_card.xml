@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout6"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".presenter.ui.DeleteCardFragment">
+    tools:context=".core.ui.DeleteCardFragment">
 
     <TextView
         android:id="@+id/textView19"

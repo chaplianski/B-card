@@ -1,7 +1,7 @@
 package com.chaplianski.bcard.di
 
 import android.content.Context
-import com.chaplianski.bcard.presenter.ui.*
+import com.chaplianski.bcard.core.ui.*
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -16,13 +16,7 @@ interface AppComponent {
     fun editCardFragmentInject(editCardFragment: EditCardFragment)
     fun deleteCardFragmentInject(deleteCardFragment: DeleteCardFragment)
     fun shareFragmentInject(shareFragment: ShareFragment)
-//    fun kidGoalsFragmentInject(kidsGoalsFragment: KidsGoalsFragment)
-//    fun tasksFragmentInject(tasksFragment: TasksFragment)
-//    fun taskKidDetailFragmentInject(dayKidDetailTasksFragment: DayKidDetailTasksFragment)
-//    fun newTaskFragmentInject(newTaskFragment: NewTaskFragment)
-//    fun dayPersonalTasksDialogInject(dayPersonalTasksDialogFragment: DayPersonalTasksDialogFragment)
-//    fun editTaskFragmentInject(editTaskFragment: EditTaskFragment)
-
+    fun checkCardListFragmentInject(checkCardListFragment: CheckCardListFragment)
 
     @Component.Builder
     interface Builder{
@@ -30,4 +24,6 @@ interface AppComponent {
         fun context(context: Context): Builder
         fun build(): AppComponent
     }
+
+
 }

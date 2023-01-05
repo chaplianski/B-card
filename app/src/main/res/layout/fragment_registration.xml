@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/back"
-        tools:context=".presenter.ui.RegistrationFragment">
+        tools:context=".core.ui.RegistrationFragment">
 
         <TextView
             android:id="@+id/textView3"
