@@ -204,7 +204,9 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 
         cardsFragmentViewModel.getCards()
 
-        cardsFragmentViewModel.cards.observe(this.viewLifecycleOwner) { listCards ->
+        cardsFragmentViewModel.cards.observe(this.viewLifecycleOwner) {
+
+            val listCards = it.sortedBy { it.surname }
 
             cardFragmentCardAdapter.updateData(listCards)
 

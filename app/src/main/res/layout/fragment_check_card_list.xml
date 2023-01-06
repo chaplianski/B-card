@@ -90,6 +90,7 @@
             android:id="@+id/bt_check_card_fragment_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/BCard.Button"
             android:layout_weight="1"
             android:backgroundTint="@color/blue_main"
             android:text="@string/save" />
@@ -102,6 +103,7 @@
             android:id="@+id/bt_check_card_fragment_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/BCard.Button"
             android:layout_weight="1"
             android:backgroundTint="@color/blue_main"
             android:text="@string/cancel" />

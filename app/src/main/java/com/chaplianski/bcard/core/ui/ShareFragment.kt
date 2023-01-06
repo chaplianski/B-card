@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.factories.ShareFragmentViewModelFactory
@@ -119,6 +120,10 @@ class ShareFragment : Fragment() {
             findNavController().navigate(R.id.action_shareFragment_to_QRFragment)
         }
 
+        shareFragmentViewModel.loadedCardList.observe(this.viewLifecycleOwner){
+            Log.d("MyLog", "cardList = ${it.map { it.surname }}")
+        }
+
     }
 
 
@@ -163,11 +168,17 @@ class ShareFragment : Fragment() {
         }
         if (requestCode == 222 && resultCode == RESULT_OK){
             data?.data?.also {
-
-                val inputStream = context?.contentResolver?.openInputStream(it)
+                lifecycleScope.launchWhenResumed {
+                    val inputStream = context?.contentResolver?.openInputStream(it)
 //                val file = File(it.path.toString())
-                val readVcard = Ezvcard.parse(inputStream).first()
-                Log.d("MyLog", "readVcard = $readVcard")
+                    val readVcard = Ezvcard.parse(inputStream).all()
+                    shareFragmentViewModel.convertVCardListToCardList(readVcard)
+//                    readVcard.forEach {
+//                        Log.d("MyLog", "readVcard = $it.")
+//                    }
+
+                }
+
             }
         }
     }

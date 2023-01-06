@@ -85,5 +85,9 @@
         android:id="@+id/checkCardListFragment"
         android:name="com.chaplianski.bcard.core.ui.CheckCardListFragment"
         android:label="fragment_check_card_list"
-        tools:layout="@layout/fragment_check_card_list" />
+        tools:layout="@layout/fragment_check_card_list">
+    <action
+        android:id="@+id/action_checkCardListFragment_to_shareFragment"
+        app:destination="@id/shareFragment" />
+    </fragment>
 </navigation>
