@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/back"
+    android:background="@drawable/background_12"
     tools:context=".core.ui.CardsFragment">
 
 
@@ -67,6 +67,7 @@
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/blue_main"
         android:clickable="true"
+
         android:src="@drawable/ic_baseline_settings"
         app:fabCustomSize="80dp"
         app:fabSize="auto"
@@ -183,13 +184,14 @@
         android:id="@+id/appbar_cards_fragment"
         android:layout_width="match_parent"
         android:layout_height="590dp"
-        android:background="@color/back">
+        android:background="@color/transparent">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/cards_fragment_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="50dp"
+            android:background="@color/transparent"
             app:contentScrim="@color/white"
             app:expandedTitleMarginBottom="50dp"
             app:expandedTitleMarginEnd="64dp"
@@ -212,6 +214,7 @@
                     android:clipToPadding="false"
                     android:paddingHorizontal="50dp"
                     tools:orientation="horizontal"
+                    android:background="@color/transparent"
                     tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

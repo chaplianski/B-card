@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/back"
     android:orientation="vertical"
-    tools:context=".core.ui.CheckCardListFragment">
+    tools:context=".core.ui.CheckCardListSaveFragment">
 
     <TextView
         android:id="@+id/tv_check_card_list_fragment_quantity_cards"

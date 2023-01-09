@@ -1,14 +1,17 @@
 package com.chaplianski.bcard.core.adapters
 
-import android.graphics.drawable.GradientDrawable
+import android.content.res.ColorStateList
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.graphics.toColorInt
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -62,6 +65,7 @@ class CardsFragmentCardAdapter(
             ADD -> {}
             CARD -> {
                 (holder as CardViewHolder).onBindCard(cardList[position])
+
             }
         }
         holder.itemView.setOnClickListener { recyclerView.smoothScrollToPosition(position) }
@@ -108,6 +112,9 @@ class CardsFragmentCardAdapter(
         val cardLayout: ConstraintLayout = itemView.findViewById(R.id.layout_card_fragment_card)
         val cardId: TextView = itemView.findViewById(R.id.tv_card_fragment_id)
         val avatarUri: TextView = itemView.findViewById(R.id.tv_card_fragment_uri)
+        val cardView: CardView = itemView.findViewById(R.id.cardview_card_fragment_card)
+        val backgroundImage: ImageView = itemView.findViewById(R.id.iv_card_fragment_card_background)
+
 
 
         fun onBindCard(card: Card) {
@@ -122,21 +129,32 @@ class CardsFragmentCardAdapter(
             cardId.text = card.id.toString()
             avatarUri.text = card.photo.toString()
 
+//            itemView.background = itemView.context.getDrawable(R.drawable.paper_035)
+//            cardView.background = itemView.context.getDrawable(R.drawable.paper_035)
+//            cardView.setCardBackgroundResource(ContextCompat.getColor(itemView.context, R.drawable.paper_035))
+            cardView.cardElevation = 4f
 
-            val colorGradient = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                intArrayOf(
-                    itemView.context.resources.getColor(R.color.white),
-                    card.cardColor.toColorInt(),
-                    itemView.context.resources.getColor(R.color.white)
-                )
-            )
-//            colorGradient.setColor(card.cardColor.toColorInt())
+//            cardView.setBackgroundResource(R.drawable.paper_035)
+            backgroundImage.background = itemView.context.getDrawable(R.drawable.paper_033)
+
+//            val colorGradient = GradientDrawable(
+//                GradientDrawable.Orientation.TOP_BOTTOM,
+//                null
+//            )
 
 
-            colorGradient.cornerRadius = card.cornerRound
-            colorGradient.setStroke(20, card.strokeColor.toColorInt())
-            cardLayout.background = colorGradient
+//            val colorGradient = GradientDrawable(
+//                GradientDrawable.Orientation.TOP_BOTTOM,
+//                intArrayOf(
+//                    itemView.context.resources.getColor(R.color.white),
+//                    card.cardColor.toColorInt(),
+//                    itemView.context.resources.getColor(R.color.white)
+//                )
+//            )
+
+//            colorGradient.cornerRadius = card.cornerRound
+//            colorGradient.setStroke(20, card.strokeColor.toColorInt())
+//            cardLayout.background = colorGradient
 
             // form photo
             if (card.formPhoto == "oval") {

@@ -69,7 +69,10 @@
             app:destination="@id/QRFragment" />
         <action
             android:id="@+id/action_shareFragment_to_checkCardListFragment"
-            app:destination="@id/checkCardListFragment" />
+            app:destination="@id/checkCardListSaveFragment" />
+        <action
+            android:id="@+id/action_shareFragment_to_checkCardListLoadFragment"
+            app:destination="@id/checkCardListLoadFragment" />
     </fragment>
     <dialog
         android:id="@+id/deleteCardFragment"
@@ -82,12 +85,21 @@
         android:label="fragment_q_r"
         tools:layout="@layout/fragment_q_r" />
     <fragment
-        android:id="@+id/checkCardListFragment"
-        android:name="com.chaplianski.bcard.core.ui.CheckCardListFragment"
+        android:id="@+id/checkCardListSaveFragment"
+        android:name="com.chaplianski.bcard.core.ui.CheckCardListSaveFragment"
         android:label="fragment_check_card_list"
-        tools:layout="@layout/fragment_check_card_list">
+        tools:layout="@layout/fragment_check_card_list_save">
     <action
-        android:id="@+id/action_checkCardListFragment_to_shareFragment"
+        android:id="@+id/action_checkCardListSaveFragment_to_shareFragment"
         app:destination="@id/shareFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkCardListLoadFragment"
+        android:name="com.chaplianski.bcard.core.ui.CheckCardListLoadFragment"
+        android:label="fragment_check_card_list_load"
+        tools:layout="@layout/fragment_check_card_list_load" >
+        <action
+            android:id="@+id/action_checkCardListLoadFragment_to_shareFragment"
+            app:destination="@id/shareFragment" />
     </fragment>
 </navigation>

@@ -108,11 +108,11 @@ class ShareFragment : Fragment() {
         }
 
         loadContact.setOnClickListener {
-
-            val intent = Intent()
-                .setType("*/*")
-                .setAction(Intent.ACTION_GET_CONTENT)
-            startActivityForResult(Intent.createChooser(intent, "Select a file"), 222)
+            findNavController().navigate(R.id.action_shareFragment_to_checkCardListLoadFragment)
+//            val intent = Intent()
+//                .setType("*/*")
+//                .setAction(Intent.ACTION_GET_CONTENT)
+//            startActivityForResult(Intent.createChooser(intent, "Select a file"), 222)
 
         }
 
@@ -120,9 +120,9 @@ class ShareFragment : Fragment() {
             findNavController().navigate(R.id.action_shareFragment_to_QRFragment)
         }
 
-        shareFragmentViewModel.loadedCardList.observe(this.viewLifecycleOwner){
-            Log.d("MyLog", "cardList = ${it.map { it.surname }}")
-        }
+//        shareFragmentViewModel.loadedCardList.observe(this.viewLifecycleOwner){
+//            Log.d("MyLog", "cardList = ${it.map { it.surname }}")
+//        }
 
     }
 
@@ -172,7 +172,7 @@ class ShareFragment : Fragment() {
                     val inputStream = context?.contentResolver?.openInputStream(it)
 //                val file = File(it.path.toString())
                     val readVcard = Ezvcard.parse(inputStream).all()
-                    shareFragmentViewModel.convertVCardListToCardList(readVcard)
+//                    shareFragmentViewModel.convertVCardListToCardList(readVcard)
 //                    readVcard.forEach {
 //                        Log.d("MyLog", "readVcard = $it.")
 //                    }

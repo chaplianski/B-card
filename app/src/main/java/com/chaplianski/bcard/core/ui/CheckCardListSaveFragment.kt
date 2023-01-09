@@ -20,7 +20,7 @@ import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
 import com.chaplianski.bcard.core.factories.CheckCardListFragmentViewModelFactory
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.core.viewmodels.CheckCardListFragmentViewModel
-import com.chaplianski.bcard.databinding.FragmentCheckCardListBinding
+import com.chaplianski.bcard.databinding.FragmentCheckCardListSaveBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.Card
 import ezvcard.Ezvcard
@@ -32,13 +32,12 @@ import ezvcard.parameter.TelephoneType
 import ezvcard.property.*
 import java.io.File
 import java.io.IOException
-import java.nio.file.Files.createFile
 import javax.inject.Inject
 
 
-class CheckCardListFragment : Fragment() {
+class CheckCardListSaveFragment : Fragment() {
 
-    var _binding: FragmentCheckCardListBinding? = null
+    var _binding: FragmentCheckCardListSaveBinding? = null
     val binding get() = _binding!!
     var vCard: VCard? = null
     val vcardList = mutableListOf<VCard>()
@@ -59,7 +58,7 @@ class CheckCardListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-       _binding = FragmentCheckCardListBinding.inflate(layoutInflater, container, false)
+       _binding = FragmentCheckCardListSaveBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -68,7 +67,7 @@ class CheckCardListFragment : Fragment() {
 
         val cardRV = binding.rvCheckCardFragment
         val cardListAdapter = CardListShareFragmentAdapter()
-        val okButton = binding.btCheckCardFragmentSave
+        val saveButton = binding.btCheckCardFragmentSave
         val cancelButton = binding.btCheckCardFragmentCancel
         val quantityCheckedCards = binding.tvCheckCardListFragmentQuantityCards
         val allCheckBox = binding.checkBoxCheckCardListFragmentCheckAll
@@ -92,7 +91,8 @@ class CheckCardListFragment : Fragment() {
                     }
                 }
                 checkedCardCount = 1
-                quantityCheckedCards.text = "$checkedCardCount cards"
+                saveButton.text = "Save [$checkedCardCount]"
+//                quantityCheckedCards.text = "$checkedCardCount cards"
             }
 
             cardRV.layoutManager = LinearLayoutManager(context)
@@ -109,12 +109,13 @@ class CheckCardListFragment : Fragment() {
                             cardItem.isChecked = !cardItem.isChecked
                             if (cardItem.isChecked) checkedCardCount++ else checkedCardCount--
                         }
-                        quantityCheckedCards.text = "$checkedCardCount cards"
+//                        quantityCheckedCards.text = "$checkedCardCount cards"
+                        saveButton.text = "Save [$checkedCardCount]"
                     }
                 }
             }
 
-            okButton.setOnClickListener {
+            saveButton.setOnClickListener {
                 vcardList.clear()
                 listCard.clear()
                 cardList.forEach { cardItem ->
@@ -159,13 +160,14 @@ class CheckCardListFragment : Fragment() {
                 Log.d("MyLog", "${cardList.map { it.isChecked }}")
                 checkAllFlag = !checkAllFlag
                 cardListAdapter.updateList(cardList.map { it.copy() })
-                quantityCheckedCards.text = "$checkedCardCount cards"
+//                quantityCheckedCards.text = "$checkedCardCount cards"
+                saveButton.text = "Save [$checkedCardCount]"
             }
 
         }
 
         cancelButton.setOnClickListener {
-            findNavController().navigate(R.id.action_checkCardListFragment_to_shareFragment)
+            findNavController().navigate(R.id.action_checkCardListSaveFragment_to_shareFragment)
         }
 
 

@@ -16,7 +16,7 @@ interface AppComponent {
     fun editCardFragmentInject(editCardFragment: EditCardFragment)
     fun deleteCardFragmentInject(deleteCardFragment: DeleteCardFragment)
     fun shareFragmentInject(shareFragment: ShareFragment)
-    fun checkCardListFragmentInject(checkCardListFragment: CheckCardListFragment)
+    fun checkCardListFragmentInject(checkCardListSaveFragment: CheckCardListSaveFragment)
 
     @Component.Builder
     interface Builder{

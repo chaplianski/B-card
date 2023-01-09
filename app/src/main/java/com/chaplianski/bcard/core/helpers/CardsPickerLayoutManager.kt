@@ -1,9 +1,15 @@
 package com.chaplianski.bcard.core.helpers
 
 import android.content.Context
+import android.graphics.Outline
+import android.graphics.Rect
 import android.view.View
+import android.view.ViewOutlineProvider
+import android.widget.ImageView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chaplianski.bcard.R
 
 class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayout: Boolean) :
     LinearLayoutManager(context, orientation, reverseLayout) {
@@ -53,6 +59,12 @@ class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayou
             if (xLocation in 51..899) {
                 scale = 1f
                 child?.alpha = 1f
+                val avatar = child?.findViewById<ImageView>(R.id.iv_card_fragment_item_avatar)
+
+//                child?.translationZ = 25f
+//                child?.outlineProvider = OutlineProvider()
+
+
             } else {
 
                 scale = scaleDownBy
@@ -64,6 +76,22 @@ class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayou
             child?.scaleY = scale
         }
     }
+
+//    inner class OutlineProvider(
+//        private val rect: Rect = Rect(),
+//        var scaleX: Float,
+//        var scaleY: Float,
+//        var yShift: Int
+//    ): ViewOutlineProvider(){
+//        override fun getOutline(view: View?, outline: Outline?) {
+//            view?.background?.copyBounds(rect)
+//            rect.scale(scaleX, scaleY)
+//            rect.offset(0, yShift)
+//
+//            val coronerRadius = resourses.g
+//        }
+//
+//    }
 
 
     override fun onScrollStateChanged(state: Int) {
@@ -91,3 +119,4 @@ class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayou
 
 
 }
+
