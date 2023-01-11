@@ -64,17 +64,17 @@ class EditCardFragmentViewModel @Inject constructor(
             val currentWidth = bitmapPhoto.width.toDouble()
             if (bitmapPhoto.height > bitmapPhoto.width && bitmapPhoto.width > 600) {
                 val cameraCoef = currentHeight / currentWidth
-                val height = 600 * cameraCoef
-                bitmapPhoto = getResizedBitmap(bitmapPhoto, 600.0, height)
+                val height = 150 * cameraCoef
+                bitmapPhoto = getResizedBitmap(bitmapPhoto, 150.0, height)
                val bitmapByteCount: Int? =
                     bitmapPhoto?.let { BitmapCompat.getAllocationByteCount(it) }
             }
 
-            if (currentHeight < currentWidth && currentHeight > 600) {
+            if (currentHeight < currentWidth && currentHeight > 150) {
                 val cameraCoef = (currentWidth / currentHeight)
-                val width = 600 * cameraCoef
+                val width = 150 * cameraCoef
 
-                bitmapPhoto = getResizedBitmap(bitmapPhoto, width, 600.0)
+                bitmapPhoto = getResizedBitmap(bitmapPhoto, width, 150.0)
                 val bitmapByteCount: Int? =
                     bitmapPhoto?.let { BitmapCompat.getAllocationByteCount(it) }
             }

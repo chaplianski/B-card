@@ -104,10 +104,10 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
         val searchView = binding.tvCardsFragmentSearchField
         val voiceSearchButton = binding.fabCardsFragmentSearchVoice
 //        val searchButton = binding.fabCardsFragmentSearchSearch
-
+//
         val appbar: AppBarLayout = binding.appbarCardsFragment
         val nameplate: FrameLayout = binding.flCardsFragmentTopInfo
-        val instruction: TextView = binding.tvCardsFragmentInstruction
+//        val instruction: TextView = binding.tvCardsFragmentInstruction
 
         val profileInfo: TextView = binding.layoutUserInformation.userInformationProfileInfo
         val profSkills: TextView = binding.layoutUserInformation.userInformationProfSkills
@@ -236,13 +236,13 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
                     if (currentPos == listCards.size){
 //                        appbar.isLiftOnScroll = false
                         fabSettings.visibility = View.INVISIBLE
-                        instruction.visibility = View.VISIBLE
+//                        instruction.visibility = View.VISIBLE
                     setAppBarDragging(false, appbar)
 
 
                     } else {
                         fabSettings.visibility = View.VISIBLE
-                        instruction.visibility = View.INVISIBLE
+//                        instruction.visibility = View.INVISIBLE
                         setAppBarDragging(true, appbar)
                     }
 
@@ -282,7 +282,7 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
                         card.surname.uppercase().contains(editText.toString().uppercase()) ||
                         card.organization.uppercase().contains(editText.toString().uppercase()) ||
                         card.town.uppercase().contains(editText.toString().uppercase()) ||
-                        card.phone.uppercase().contains(editText.toString().uppercase())
+                        card.workPhone.uppercase().contains(editText.toString().uppercase())
                     } as MutableList<Card>
                     cardFragmentCardAdapter.updateData(searchFilter)
                     cardsPickerLayoutManager.scrollToPosition(0)
@@ -331,9 +331,13 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
                         activity?.startActivity(Intent.createChooser(i, "Send email"))
                     }
 
-                    override fun shortLinkedinClick(linkedin: String) {
-                        val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/$linkedin"))
+                    override fun shortHomePhoneClick(homePhone: String) {
+                        val i = Intent(Intent.ACTION_DIAL)
+                        i.data = Uri.parse("tel:$homePhone")
                         activity?.startActivity(i)
+
+//                        val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/$homePhone"))
+//                        activity?.startActivity(i)
                     }
                 }
         }

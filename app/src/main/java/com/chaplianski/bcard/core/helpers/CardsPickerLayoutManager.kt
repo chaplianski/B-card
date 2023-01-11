@@ -68,7 +68,7 @@ class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayou
             } else {
 
                 scale = scaleDownBy
-                child?.alpha = 0.4f
+                child?.alpha = 0.8f
             }
 
 

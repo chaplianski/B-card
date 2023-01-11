@@ -216,11 +216,11 @@ class ShareFragment : Fragment() {
 //        adr.label = "123 Main St.\nAlbany, NY 54321\nUSA"
 //        adr.types.add(AddressType.HOME)
 //        vcard.addAddress(adr)
-        vcard.addTelephoneNumber(card.phone, TelephoneType.WORK)
+        vcard.addTelephoneNumber(card.workPhone, TelephoneType.WORK)
 //        vcard.addTelephoneNumber("1-555-555-5678", TelephoneType.WORK, TelephoneType.CELL)
         vcard.addEmail(card.email, EmailType.HOME)
 //        vcard.addEmail("doe.john@acme.com", EmailType.WORK)
-        vcard.addUrl("https://www.linkedin.com/in/${card.linkedin}")
+        vcard.addTelephoneNumber(card.homePhone, TelephoneType.HOME)
 //        vcard.setCategories("widgetphile", "biker", "vCard expert")
 //        vcard.setGeo(37.6, -95.67)
 //        val tz = TimeZone.getTimeZone("America/New_York")
@@ -244,7 +244,7 @@ class ShareFragment : Fragment() {
         val workExperience = vcard.addExtendedProperty(WORK_EXPERIENCE, card.workExperience)
         val reference = vcard.addExtendedProperty(REFERENCE, card.reference)
 
-        val cardColor = vcard.addExtendedProperty(CARD_COLOR, card.cardColor)
+        val cardColor = vcard.addExtendedProperty(CARD_COLOR, card.cardColor.toString())
         val strokeColor = vcard.addExtendedProperty(STROKE_COLOR, card.strokeColor)
         val cardCorner = vcard.addExtendedProperty(CARD_CORNER, card.cornerRound.toString())
         val formPhoto = vcard.addExtendedProperty(FORM_PHOTO, card.formPhoto)
@@ -283,7 +283,7 @@ class ShareFragment : Fragment() {
         var educationValue = ""
         var workExperienceValue = ""
         var referenceValue = ""
-        var cardColorValue = ""
+        var cardColorValue = 0
         var strokeColorValue = ""
         var cardCornerRadiusValue = 0f
         var formPhotoValue = ""
@@ -299,7 +299,7 @@ class ShareFragment : Fragment() {
         }
         for (property in cardSettingsProperties) {
             when (property.propertyName) {
-                CARD_COLOR -> cardColorValue = property.getParameter(CARD_COLOR)
+                CARD_COLOR -> cardColorValue = property.getParameter(CARD_COLOR).toInt()
                 PROFESSIONAL_SKILLS -> strokeColorValue = property.getParameter(STROKE_COLOR)
                 EDUCATION -> cardCornerRadiusValue =
                     property.getParameter(CARD_CORNER).toString().toFloat()

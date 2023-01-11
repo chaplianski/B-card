@@ -122,11 +122,11 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
             android:text="+375447445638"
-            android:textSize="14sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/iv_card_fragment_add_phone"
+            app:layout_constraintStart_toEndOf="@+id/iv_card_fragment_home_phone"
             app:layout_constraintTop_toBottomOf="@+id/tv_card_fragment_item_phone"
             app:layout_constraintVertical_bias="0.0" />
 
@@ -171,7 +171,7 @@
             app:srcCompat="@drawable/ic_phone_call" />
 
         <ImageView
-            android:id="@+id/iv_card_fragment_add_phone"
+            android:id="@+id/iv_card_fragment_home_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -179,7 +179,7 @@
             app:layout_constraintStart_toStartOf="@+id/iv_card_fragment_phone"
             app:layout_constraintTop_toBottomOf="@+id/iv_card_fragment_phone"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_linkedin" />
+            app:srcCompat="@drawable/ic_phone_call" />
 
         <ImageView
             android:id="@+id/iv_card_fragment_email"
@@ -187,8 +187,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/iv_card_fragment_add_phone"
-            app:layout_constraintTop_toBottomOf="@+id/iv_card_fragment_add_phone"
+            app:layout_constraintStart_toStartOf="@+id/iv_card_fragment_home_phone"
+            app:layout_constraintTop_toBottomOf="@+id/iv_card_fragment_home_phone"
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/ic_email_card" />
 

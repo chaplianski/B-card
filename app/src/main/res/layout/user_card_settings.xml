@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_card_settings"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:layout_marginTop="16dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -13,33 +15,183 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_bias="0.0">
 
-    <TextView
-        android:id="@+id/tv_card_settings_color"
-        style="@style/Bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:text="Card color"
-        android:textColor="@color/text_dark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_card_settings_color"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_card_settings_color"
-        app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/card_color_item" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3">
+
+            <TextView
+                android:id="@+id/tv_card_settings_color"
+                style="@style/Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Card color"
+                android:textColor="@color/text_dark"
+                 />
+
+
+            <LinearLayout
+                android:id="@+id/radiogroup_card_settings_card_texture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/radiogroup_card_settings_card_texture_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="#D67A0A"
+                            android:text="1" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="#D67A0A"
+                            android:text="2" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="3" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="4" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="5" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="6" />
+
+                    </RadioGroup>
+
+                    <RadioGroup
+                        android:id="@+id/radiogroup_card_settings_card_texture_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="7" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_8"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="8" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_9"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="9" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_10"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="10" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_11"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="11" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_card_texture_12"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="12" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="36dp"
+                    android:layout_height="match_parent"/>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView_card_settings_card_texture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_card_settings_card_texture"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_card_settings_avatar"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:elevation="11dp"
+                        android:src="@drawable/ic_portrait"/>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/rv_card_settings_color"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                tools:listitem="@layout/card_color_item" />-->
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_card_settings_corners_size"
@@ -49,12 +201,7 @@
         android:layout_marginTop="24dp"
         android:text="Corners round"
         android:textColor="@color/text_dark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_card_settings_color"
-        app:layout_constraintVertical_bias="0.0" />
+         />
 
     <RadioGroup
         android:id="@+id/rg_card_settings_corners_variant"
@@ -63,12 +210,7 @@
         android:layout_marginTop="16dp"
         android:clickable="true"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_card_settings_corners_size"
-        app:layout_constraintVertical_bias="0.0">
+        >
 
         <RadioButton
             android:id="@+id/cb_corner_small"
@@ -113,7 +255,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Stroke color"
+        android:text="Text color"
         android:textColor="@color/text_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -123,7 +265,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_card_settings_stroke_color"
+        android:id="@+id/rv_card_settings_text_color"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
@@ -143,12 +285,7 @@
         android:layout_marginTop="24dp"
         android:text="Form of photo"
         android:textColor="@color/text_dark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tv_card_settings_corners_size"
-        app:layout_constraintTop_toBottomOf="@+id/rv_card_settings_stroke_color"
-        app:layout_constraintVertical_bias="0.0" />
+         />
 
     <RadioGroup
         android:id="@+id/rg_card_settings_form_photo"
@@ -156,12 +293,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_card_settings_form_photo"
-        app:layout_constraintVertical_bias="0.0">
+        >
 
         <RadioButton
             android:id="@+id/cb_form_rectangle"
@@ -179,8 +311,6 @@
             android:buttonTint="@color/blue_main"
             android:text="Oval" />
 
-
     </RadioGroup>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

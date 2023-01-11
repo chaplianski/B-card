@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -219,11 +220,11 @@ class CheckCardListSaveFragment : Fragment() {
 //        adr.label = "123 Main St.\nAlbany, NY 54321\nUSA"
 //        adr.types.add(AddressType.HOME)
 //        vcard.addAddress(adr)
-        vcard.addTelephoneNumber(card.phone, TelephoneType.WORK)
+        vcard.addTelephoneNumber(card.workPhone, TelephoneType.WORK)
 //        vcard.addTelephoneNumber("1-555-555-5678", TelephoneType.WORK, TelephoneType.CELL)
         vcard.addEmail(card.email, EmailType.HOME)
 //        vcard.addEmail("doe.john@acme.com", EmailType.WORK)
-        vcard.addUrl("https://www.linkedin.com/in/${card.linkedin}")
+        vcard.addTelephoneNumber(card.homePhone, TelephoneType.HOME)
 //        vcard.setCategories("widgetphile", "biker", "vCard expert")
 //        vcard.setGeo(37.6, -95.67)
 //        val tz = TimeZone.getTimeZone("America/New_York")
@@ -247,7 +248,7 @@ class CheckCardListSaveFragment : Fragment() {
         val workExperience = vcard.addExtendedProperty(ShareFragment.WORK_EXPERIENCE, card.workExperience)
         val reference = vcard.addExtendedProperty(ShareFragment.REFERENCE, card.reference)
 
-        val cardColor = vcard.addExtendedProperty(ShareFragment.CARD_COLOR, card.cardColor)
+        val cardColor = vcard.addExtendedProperty(ShareFragment.CARD_COLOR, card.cardColor.toString())
         val strokeColor = vcard.addExtendedProperty(ShareFragment.STROKE_COLOR, card.strokeColor)
         val cardCorner = vcard.addExtendedProperty(ShareFragment.CARD_CORNER, card.cornerRound.toString())
         val formPhoto = vcard.addExtendedProperty(ShareFragment.FORM_PHOTO, card.formPhoto)

@@ -44,7 +44,7 @@ class CheckCardListLoadFragmentViewModel @Inject constructor(
             var educationValue = ""
             var workExperienceValue = ""
             var referenceValue = ""
-            var cardColorValue = ""
+            var cardColorValue = 0
             var strokeColorValue = ""
             var cardCornerRadiusValue = 0f
             var formPhotoValue = ""
@@ -65,7 +65,7 @@ class CheckCardListLoadFragmentViewModel @Inject constructor(
             }
             for (property in cardSettingsProperties) {
                 when (property.propertyName) {
-                    ShareFragment.CARD_COLOR -> cardColorValue = property.getParameter(ShareFragment.CARD_COLOR)
+                    ShareFragment.CARD_COLOR -> cardColorValue = property.getParameter(ShareFragment.CARD_COLOR).toInt()
                     ShareFragment.PROFESSIONAL_SKILLS -> strokeColorValue = property.getParameter(
                         ShareFragment.STROKE_COLOR
                     )

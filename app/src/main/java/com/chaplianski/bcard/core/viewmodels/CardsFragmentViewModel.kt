@@ -118,7 +118,7 @@ class CardsFragmentViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val sortedList: List<Card> = when(sortCategory){
                 SORT_NAME -> cardList.sortedBy { it.surname }
-                SORT_PHONE -> cardList.sortedBy { it.phone }
+                SORT_PHONE -> cardList.sortedBy { it.workPhone }
                 SORT_ORGANIZATION -> cardList.sortedBy { it.organization }
                 SORT_TOWN -> cardList.sortedBy { it.town }
                 else -> {cardList.sortedBy { it.town }}

@@ -1,17 +1,14 @@
 package com.chaplianski.bcard.core.adapters
 
-import android.content.res.ColorStateList
-import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -29,7 +26,7 @@ class CardsFragmentCardAdapter(
         fun shortClick()
         fun shortPhoneClick(phone: String)
         fun shortEmailClick(email: String)
-        fun shortLinkedinClick(linkedin: String)
+        fun shortHomePhoneClick(homePhone: String)
     }
 
     var shortOnClickListener: ShortOnClickListener? = null
@@ -38,9 +35,12 @@ class CardsFragmentCardAdapter(
         Log.d("MyLog", "list = $list")
         val diffCallback = CardsDiffCallback(cardList, list)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
-        cardList = list as MutableList<Card>
+//        cardList = list as MutableList<Card>
         diffResult.dispatchUpdatesTo(this)
-        notifyDataSetChanged()
+        this.cardList.clear()
+        this.cardList.addAll(list.map { it.copy() })
+
+//        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -76,13 +76,13 @@ class CardsFragmentCardAdapter(
             }
         } else {
             (holder as CardViewHolder).phone.setOnClickListener {
-                shortOnClickListener?.shortPhoneClick(cardList[position].phone)
+                shortOnClickListener?.shortPhoneClick(cardList[position].workPhone)
             }
             holder.email.setOnClickListener {
                 shortOnClickListener?.shortEmailClick(cardList[position].email)
             }
-            holder.linkedin.setOnClickListener {
-                shortOnClickListener?.shortLinkedinClick(cardList[position].linkedin)
+            holder.homePhone.setOnClickListener {
+                shortOnClickListener?.shortHomePhoneClick(cardList[position].homePhone)
             }
         }
     }
@@ -105,7 +105,8 @@ class CardsFragmentCardAdapter(
         val specialization: TextView =
             itemView.findViewById(R.id.tv_card_fragment_item_specialization)
         val organization: TextView = itemView.findViewById(R.id.tv_card_fragment_item_organization)
-        val linkedin: TextView = itemView.findViewById(R.id.tv_card_fragment_item_addition_phone)
+        val homePhone: TextView = itemView.findViewById(R.id.tv_card_fragment_item_addition_phone)
+        val imageHomePhone: ImageView = itemView.findViewById(R.id.iv_card_fragment_home_phone)
         val email: TextView = itemView.findViewById(R.id.tv_card_fragment_item_email)
         val location: TextView = itemView.findViewById(R.id.tv_card_fragment_item_location)
         val avatar: ImageView = itemView.findViewById(R.id.iv_card_fragment_item_avatar)
@@ -122,8 +123,8 @@ class CardsFragmentCardAdapter(
             name.text = "${card.name} ${card.surname}"
             specialization.text = card.speciality
             organization.text = card.organization
-            phone.text = card.phone
-            linkedin.text = card.linkedin
+            phone.text = card.workPhone
+            homePhone.text = card.homePhone
             email.text = card.email
             location.text = "${card.town}, ${card.country}"
             cardId.text = card.id.toString()
@@ -135,8 +136,13 @@ class CardsFragmentCardAdapter(
             cardView.cardElevation = 4f
 
 //            cardView.setBackgroundResource(R.drawable.paper_035)
-            backgroundImage.background = itemView.context.getDrawable(R.drawable.paper_033)
+            backgroundImage.background = AppCompatResources.getDrawable(itemView.context, card.cardColor)
 
+
+            if (card.homePhone.isNullOrEmpty()){
+                homePhone.visibility = View.GONE
+                imageHomePhone.visibility = View.GONE
+            }
 //            val colorGradient = GradientDrawable(
 //                GradientDrawable.Orientation.TOP_BOTTOM,
 //                null
@@ -159,14 +165,14 @@ class CardsFragmentCardAdapter(
             // form photo
             if (card.formPhoto == "oval") {
                 Glide.with(itemView.context).load(avatarUri.text.toString())
-                    .override(150, 150)
+//                    .override(150, 150)
                     .centerCrop()
                     .placeholder(R.drawable.ic_portrait)
                     .circleCrop()
                     .into(avatar)
             } else {
                 Glide.with(itemView.context).load(avatarUri.text.toString())
-                    .override(150, 150)
+//                    .override(150, 150)
                     .centerCrop()
                     .placeholder(R.drawable.ic_portrait)
                     .into(avatar)
