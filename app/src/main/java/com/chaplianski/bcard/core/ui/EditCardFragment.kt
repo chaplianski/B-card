@@ -113,7 +113,7 @@ class EditCardFragment : Fragment() {
         val cardSettings = binding.cardSettings.clCardSettings
         val cardSettingsButton: TextView = binding.tvEditFragmentProfileCardSettings
 //        val cardColors: RecyclerView = binding.cardSettings.rvCardSettingsColor
-        val strokeColors: RecyclerView = binding.cardSettings.rvCardSettingsStrokeColor
+        val strokeColors: RecyclerView = binding.cardSettings.rvCardSettingsTextColor
         val cornerRound: RadioGroup = binding.cardSettings.rgCardSettingsCornersVariant
         val formAvatar: RadioGroup = binding.cardSettings.rgCardSettingsFormPhoto
         val cardTexture1: RadioGroup = binding.cardSettings.radiogroupCardSettingsCardTexture1

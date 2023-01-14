@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout9"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/paper_01"
+    app:layoutDescription="@xml/fragment_cards_u_scene"
+    tools:context=".core.ui.NewCardFragment">
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/rv_cards_fragment_cards"-->
+<!--        android:layout_width="409dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:background="@color/transparent"-->
+<!--        android:clipToPadding="false"-->
+<!--        android:paddingHorizontal="50dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.533"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="1.0"-->
+<!--        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--        tools:listitem="@layout/fragment_cards_card_item"-->
+<!--        tools:orientation="horizontal" />-->
+
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/bt_cards_fragment_sort_phone"-->
+<!--        android:layout_width="40dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:background="@drawable/button"-->
+<!--        android:clickable="true"-->
+<!--        android:src="@drawable/ic_phone_call"-->
+
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:tint="@color/black"-->
+<!--        tools:layout_editor_absoluteX="136dp" />-->
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/bt_cards_fragment_sort_mail"-->
+<!--        android:layout_width="40dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:background="@drawable/button"-->
+<!--        android:clickable="true"-->
+
+<!--        android:src="@drawable/ic_email_card"-->
+<!--        app:tint="@color/black"-->
+<!--        tools:layout_editor_absoluteX="197dp"-->
+<!--        tools:layout_editor_absoluteY="346dp" />-->
+
+<!--    &lt;!&ndash;        <ImageButton&ndash;&gt;-->
+<!--&lt;!&ndash;            android:id="@+id/bt_cards_fragment_search_voice"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="40dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="40dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:background="@drawable/button"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:clickable="true"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:src="@drawable/ic_voice"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:fabSize="mini"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:layout_anchor="@+id/fab_search_button"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:layout_anchorGravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:layout_behavior=".core.utils.HideFabBehaviour"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:layout_constraintHorizontal_bias="0.878"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:layout_constraintVertical_bias="0.696"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:tint="@color/black" />&ndash;&gt;-->
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/bt_cards_fragment_sort_organisation"-->
+<!--        android:layout_width="40dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:background="@drawable/button"-->
+<!--        android:clickable="true"-->
+
+<!--        android:src="@drawable/ic_organization"-->
+<!--        app:tint="@color/black"-->
+<!--        tools:layout_editor_absoluteX="98dp"-->
+<!--        tools:layout_editor_absoluteY="256dp" />-->
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/bt_cards_fragment_sort_location"-->
+<!--        android:layout_width="40dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:background="@drawable/button"-->
+<!--        android:clickable="true"-->
+<!--        android:src="@drawable/ic_location_card"-->
+
+<!--        app:tint="@color/black"-->
+<!--        tools:layout_editor_absoluteX="304dp"-->
+<!--        tools:layout_editor_absoluteY="346dp" />-->
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/bt_cards_fragment_sort_name"-->
+<!--        android:layout_width="40dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:background="@drawable/button"-->
+<!--        android:src="@drawable/ic_black_user"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:tint="@color/black"-->
+<!--        tools:layout_editor_absoluteX="87dp" />-->
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/bt_cards_fragment_sort"-->
+<!--        android:layout_width="53dp"-->
+<!--        android:layout_height="53dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:background="@drawable/button"-->
+<!--        android:src="@drawable/ic_sort_up"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.7"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.858"-->
+<!--        app:tint="@color/black" />-->
+
+<!--    <ImageButton-->
+<!--            android:id="@+id/bt_search_button"-->
+<!--            android:layout_width="53dp"-->
+<!--            android:layout_height="53dp"-->
+<!--            android:background="@drawable/button"-->
+<!--            android:clickable="true"-->
+<!--            android:maxHeight="60dp"-->
+<!--            android:src="@drawable/ic_search"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="1.0"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.858"-->
+<!--            app:tint="@color/black" />-->
+
+    <!--    <ImageButton-->
+    <!--        android:id="@+id/bt_cards_fragment_add_card"-->
+    <!--        android:layout_width="80dp"-->
+    <!--        android:layout_height="80dp"-->
+    <!--        android:background="@drawable/button"-->
+    <!--        android:clickable="true"-->
+    <!--        android:src="@drawable/ic_add_user"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.498"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="0.924"-->
+    <!--        app:tint="@color/black" />-->
+
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

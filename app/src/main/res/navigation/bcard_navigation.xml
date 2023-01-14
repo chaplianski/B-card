@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_loginFragment_to_cardsFragment"
             app:destination="@id/cardsFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_newCardFragment"
+            app:destination="@id/newCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -102,4 +105,9 @@
             android:id="@+id/action_checkCardListLoadFragment_to_shareFragment"
             app:destination="@id/shareFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/newCardFragment"
+        android:name="com.chaplianski.bcard.core.ui.NewCardFragment"
+        android:label="fragment_new_card"
+        tools:layout="@layout/fragment_new_card" />
 </navigation>

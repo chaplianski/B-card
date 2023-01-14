@@ -1,13 +1,13 @@
 package com.chaplianski.bcard.core.ui
 
+import android.R.id.button1
+import android.R.id.button2
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +17,6 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -30,22 +29,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
-import com.bumptech.glide.Glide
-import com.chaplianski.bcard.databinding.FragmentCardsBinding
-import com.chaplianski.bcard.di.DaggerApp
-import com.chaplianski.bcard.domain.model.Card
+import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardsFragmentCardAdapter
 import com.chaplianski.bcard.core.factories.CardsFragmentViewModelFactory
 import com.chaplianski.bcard.core.helpers.CardsPickerLayoutManager
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
-import com.chaplianski.bcard.core.utils.CustomFab
 import com.chaplianski.bcard.core.utils.animateVisibility
 import com.chaplianski.bcard.core.utils.init
 import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel
-import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel.Companion.SORT_NAME
-import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel.Companion.SORT_ORGANIZATION
-import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel.Companion.SORT_PHONE
-import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel.Companion.SORT_TOWN
+import com.chaplianski.bcard.databinding.FragmentCardsBinding
+import com.chaplianski.bcard.di.DaggerApp
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.Behavior.DragCallback
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -85,37 +78,136 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val additionalInfoText: ConstraintLayout = binding.layoutUserInformation.clUserInfo
-        val closeButton: Button = binding.layoutUserInformation.btUserInfoClose
+//        val additionalInfoText = binding.layoutUserInformation.clUserInfo
+//        val closeButton = binding.layoutUserInformation.btUserInfoClose
 
-        val fabSettings: CustomFab = binding.fabCardsFragmentSettings
-        val fabEdit: FloatingActionButton = binding.fabCardsFragmentEdit
-        val fabDelete: FloatingActionButton = binding.fabCardsFragmentDelete
-        val fabShare: FloatingActionButton = binding.fabCardsFragmentShare
-        val fabExit: FloatingActionButton = binding.fabCardsFragmentExit
+        val fabSettings = binding.btCardsFragmentSettings
+        val fabEdit = binding.btCardsFragmentEdit
+        val fabDelete = binding.fabCardsFragmentDelete
+        val fabShare = binding.fabCardsFragmentShare
+        val fabExit = binding.fabCardsFragmentExit
 
-        val fabSort = binding.fabSortButton
-        val fabSortName = binding.fabCardsFragmentSortName
-        val fabSortPhone = binding.fabCardsFragmentSortPhone
-        val fabSortOrganization = binding.fabCardsFragmentSortOrganisation
-        val fabSortLocation = binding.fabCardsFragmentSortLocation
 
-        val fabSearch = binding.fabSearchButton
-        val searchView = binding.tvCardsFragmentSearchField
-        val voiceSearchButton = binding.fabCardsFragmentSearchVoice
+        val motionLayout = binding.motionLayoutFragmentCards
+        val sortButton = binding.btCardsFragmentSort
+        val searchButton = binding.btCardsFragmentSearch
+        val leftPanelImage = binding.ivFragmentCardsLeftPanel
+        val rightPanelImage = binding.ivFragmentCardsRightPanel
+
+
+//        view.setOnClickListener{
+//            when(it){
+//                sortButton -> {
+////                    motionLayout.setTransition(R.id.sort_button_click_start, R.id.sort_button_click_finish)
+//                    motionLayout.setTransition(R.id.sort_button_click)
+//
+//                }
+//                searchButton -> {
+//                    motionLayout.setTransition(R.id.search_button_click)
+//
+////                    motionLayout.setTransition(R.id.search_button_click_start, R.id.search_button_click_finish)
+//                }
+//            }
+//
+//            motionLayout.transitionToEnd()
+//        }
+        var sortButtonSwitch = true
+        var searchButtonSwitch = true
+        var leftPanelSwitch = true
+        var rightPanelSwitch = true
+
+        sortButton.setOnClickListener {
+            if (sortButtonSwitch){
+                motionLayout.setTransition(R.id.sort_button_click_forward)
+                motionLayout.transitionToEnd()
+                sortButtonSwitch = false
+            } else{
+//                motionLayout.setTransition(R.id.search_button_click_back)
+//                motionLayout.transitionToEnd()
+//                searchButtonSwitch = false
+
+                motionLayout.setTransition(R.id.sort_button_click_back)
+                motionLayout.transitionToEnd()
+                sortButtonSwitch = true
+            }
+        }
+
+
+        searchButton.setOnClickListener {
+            if (searchButtonSwitch){
+                motionLayout.setTransition(R.id.search_button_click_forward)
+                motionLayout.transitionToEnd()
+                searchButtonSwitch = false
+
+
+            } else{
+//                motionLayout.setTransition(R.id.sort_button_click_back)
+//                motionLayout.transitionToEnd()
+//                sortButtonSwitch = false
+
+                motionLayout.setTransition(R.id.search_button_click_back)
+                motionLayout.transitionToEnd()
+                searchButtonSwitch = true
+            }
+        }
+
+        leftPanelImage.setOnClickListener {
+            if (leftPanelSwitch){
+                motionLayout.setTransition(R.id.left_panel_click_forward)
+                motionLayout.transitionToEnd()
+                leftPanelSwitch = false
+
+                Log.d("MyLog","click left panel")
+//                motionLayout.setTransition(R.id.search_button_click)
+//                motionLayout.transitionToEnd()
+//                searchButtonSwitch = true
+            } else{
+                motionLayout.setTransition(R.id.left_panel_click_back)
+                motionLayout.transitionToEnd()
+                leftPanelSwitch = true
+            }
+        }
+
+        rightPanelImage.setOnClickListener {
+            if (rightPanelSwitch){
+                motionLayout.setTransition(R.id.right_panel_click_forward)
+                motionLayout.transitionToEnd()
+                rightPanelSwitch = false
+                Log.d("MyLog","click right panel")
+
+//                motionLayout.setTransition(R.id.search_button_click)
+//                motionLayout.transitionToEnd()
+//                searchButtonSwitch = true
+            } else{
+                motionLayout.setTransition(R.id.right_panel_click_back)
+                motionLayout.transitionToEnd()
+                rightPanelSwitch = true
+            }
+        }
+
+
+//        val fabSort = binding.btCardsFragmentSortButton
+//        val fabSortName = binding.btCardsFragmentSortName
+//        val fabSortPhone = binding.fabCardsFragmentSortPhone
+//        val fabSortOrganization = binding.fabCardsFragmentSortOrganisation
+//        val fabSortLocation = binding.fabCardsFragmentSortLocation
+
+//        val fabSearch = binding.fabSearchButton
+//        val searchView = binding.tvCardsFragmentSearchField
+//        val voiceSearchButton = binding.fabCardsFragmentSearchVoice
 //        val searchButton = binding.fabCardsFragmentSearchSearch
 //
-        val appbar: AppBarLayout = binding.appbarCardsFragment
-        val nameplate: FrameLayout = binding.flCardsFragmentTopInfo
+//        val appbar: AppBarLayout = binding.appbarCardsFragment
+//        val nameplate: FrameLayout = binding.flCardsFragmentTopInfo
 //        val instruction: TextView = binding.tvCardsFragmentInstruction
 
-        val profileInfo: TextView = binding.layoutUserInformation.userInformationProfileInfo
-        val profSkills: TextView = binding.layoutUserInformation.userInformationProfSkills
-        val education: TextView = binding.layoutUserInformation.userInformationEducation
-        val workExperience: TextView = binding.layoutUserInformation.userInformationWorkExperience
-        val reference: TextView = binding.layoutUserInformation.userInformationReference
+//        val profileInfo: TextView = binding.layoutUserInformation.userInformationProfileInfo
+//        val profSkills: TextView = binding.layoutUserInformation.userInformationProfSkills
+//        val education: TextView = binding.layoutUserInformation.userInformationEducation
+//        val workExperience: TextView = binding.layoutUserInformation.userInformationWorkExperience
+//        val reference: TextView = binding.layoutUserInformation.userInformationReference
 
-        val sortButton = binding.fabSortButton
+//        val sortButton = binding.btCardsFragmentSort
 
 
 //        sortButton.setOnClickListener {
@@ -128,7 +220,9 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 //        sortSearchRV.adapter = sortSearchAdapter
 
 
-
+//        sortButton.setOnClickListener {
+//            Log.d("MyLog", " click sort button")
+//        }
 
 
 
@@ -143,14 +237,14 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 //            collapseAppbar(appbar, nameplate)
 //        }
 
-        setupFABs(fabSettings, fabEdit, fabDelete, fabShare, fabExit)
-        sortFABs(fabSort, fabSortName, fabSortPhone, fabSortOrganization, fabSortLocation)
-        searchFABs(fabSearch, searchView, voiceSearchButton)
+//        setupFABs(fabSettings, fabEdit, fabDelete, fabShare, fabExit)
+//        sortFABs(fabSort, fabSortName, fabSortPhone, fabSortOrganization, fabSortLocation)
+//        searchFABs(fabSearch, searchView, voiceSearchButton)
 
-        closeButton.setOnClickListener {
-            additionalInfoText.visibility = View.GONE
-            expandAppbar(appbar, nameplate)
-        }
+//        closeButton.setOnClickListener {
+//            additionalInfoText.visibility = View.GONE
+//            expandAppbar(appbar, nameplate)
+//        }
 
         fabEdit.setOnClickListener {
             val bundle = Bundle()
@@ -173,16 +267,16 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
             activity?.finishAffinity()
         }
 
-        appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            if (Math.abs(verticalOffset - 250) > (appbar.height)) {
-                fabSettings.hide()
-                additionalInfoText.visibility = View.VISIBLE
-            }
-            if (Math.abs(verticalOffset) == 0) {
-                fabSettings.show()
-                additionalInfoText.visibility = View.GONE
-            }
-        }
+//        appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+//            if (Math.abs(verticalOffset - 250) > (appbar.height)) {
+//                fabSettings.hide()
+//                additionalInfoText.visibility = View.VISIBLE
+//            }
+//            if (Math.abs(verticalOffset) == 0) {
+//                fabSettings.show()
+//                additionalInfoText.visibility = View.GONE
+//            }
+//        }
 
         // ******  Cards wheel  ********
 
@@ -213,13 +307,13 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 
 
 
-            // Condition not empty list cards
-            if (listCards.size > 0){
-                val currentPosition = cardsSnapHelper.getSnapPosition(cardsRV)
-                listCards[currentPosition].id
-                Log.d("MyLog", "position1 = $currentPosition, listSize1 = ${listCards.size} " )
-                cardsFragmentViewModel.getCard(listCards[currentPosition].id)
-            }
+            // Condition not empty list cards TODO Пересмотреть что это за проверка была. Сейчас отключена
+//            if (listCards.size > 0){
+//                val currentPosition = cardsSnapHelper.getSnapPosition(cardsRV)
+//           //     listCards[currentPosition].id     // java.lang.ArrayIndexOutOfBoundsException: length=3; index=-1
+//                Log.d("MyLog", "position1 = $currentPosition, listSize1 = ${listCards.size} " )
+//                cardsFragmentViewModel.getCard(listCards[currentPosition].id)
+//            }
 
             setupDialog(cardFragmentCardAdapter, launcher)
 //            Log.updateData(listCards)
@@ -232,19 +326,19 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
                     val userAvatar =
                         view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_uri)
 
-                    val currentPos = cardsSnapHelper.getSnapPosition(cardsRV)
-                    if (currentPos == listCards.size){
-//                        appbar.isLiftOnScroll = false
-                        fabSettings.visibility = View.INVISIBLE
-//                        instruction.visibility = View.VISIBLE
-                    setAppBarDragging(false, appbar)
-
-
-                    } else {
-                        fabSettings.visibility = View.VISIBLE
-//                        instruction.visibility = View.INVISIBLE
-                        setAppBarDragging(true, appbar)
-                    }
+//                    val currentPos = cardsSnapHelper.getSnapPosition(cardsRV)
+//                    if (currentPos == listCards.size){
+////                        appbar.isLiftOnScroll = false
+//                        fabSettings.visibility = View.INVISIBLE
+////                        instruction.visibility = View.VISIBLE
+//                    setAppBarDragging(false, appbar)
+//
+//
+//                    } else {
+//                        fabSettings.visibility = View.VISIBLE
+////                        instruction.visibility = View.INVISIBLE
+//                        setAppBarDragging(true, appbar)
+//                    }
 
 //                    nestedScrollView.isNestedScrollingEnabled = currentPos != listCards.size
 
@@ -262,55 +356,55 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 
             })
 
-            searchView.addTextChangedListener (object : TextWatcher{
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-                }
-
-                override fun afterTextChanged(editText: Editable?) {
-                    val searchFilter = listCards.filter { card ->
-                        card.name.uppercase().contains(editText.toString().uppercase()) ||
-                        card.surname.uppercase().contains(editText.toString().uppercase()) ||
-                        card.organization.uppercase().contains(editText.toString().uppercase()) ||
-                        card.town.uppercase().contains(editText.toString().uppercase()) ||
-                        card.workPhone.uppercase().contains(editText.toString().uppercase())
-                    } as MutableList<Card>
-                    cardFragmentCardAdapter.updateData(searchFilter)
-                    cardsPickerLayoutManager.scrollToPosition(0)
-                }
-
-            })
+//            searchView.addTextChangedListener (object : TextWatcher{
+//                override fun beforeTextChanged(
+//                    s: CharSequence?,
+//                    start: Int,
+//                    count: Int,
+//                    after: Int
+//                ) {
+//
+//                }
+//
+//                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//
+//                }
+//
+//                override fun afterTextChanged(editText: Editable?) {
+//                    val searchFilter = listCards.filter { card ->
+//                        card.name.uppercase().contains(editText.toString().uppercase()) ||
+//                        card.surname.uppercase().contains(editText.toString().uppercase()) ||
+//                        card.organization.uppercase().contains(editText.toString().uppercase()) ||
+//                        card.town.uppercase().contains(editText.toString().uppercase()) ||
+//                        card.workPhone.uppercase().contains(editText.toString().uppercase())
+//                    } as MutableList<Card>
+//                    cardFragmentCardAdapter.updateData(searchFilter)
+//                    cardsPickerLayoutManager.scrollToPosition(0)
+//                }
+//
+//            })
 
 
 
 
             cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
-                val userName: TextView = view.findViewById(com.chaplianski.bcard.R.id.tv_cards_fragment_name)
-                val userAvatar: ImageView = view.findViewById(com.chaplianski.bcard.R.id.iv_cards_fragment_avatar)
-                currentCardId = card.id
+//                val userName: TextView = view.findViewById(com.chaplianski.bcard.R.id.tv_cards_fragment_name)
+//                val userAvatar: ImageView = view.findViewById(com.chaplianski.bcard.R.id.iv_cards_fragment_avatar)
+//                currentCardId = card.id
                 imageUri = card.photo
-                userName.text = "${card.name} ${card.surname}"
-                context?.let {
-                    Glide.with(it).load(card.photo)
-                        .override(150, 150)
-                        .centerCrop()
-                        .into(userAvatar)
-                }
+//                userName.text = "${card.name} ${card.surname}"
+//                context?.let {
+//                    Glide.with(it).load(card.photo)
+//                        .override(150, 150)
+//                        .centerCrop()
+//                        .into(userAvatar)
+//                }
 
-                profileInfo.text = card.profileInfo
-                profSkills.text = card.professionalSkills
-                education.text = card.education
-                workExperience.text = card.workExperience
-                reference.text = card.reference
+//                profileInfo.text = card.profileInfo
+//                profSkills.text = card.professionalSkills
+//                education.text = card.education
+//                workExperience.text = card.workExperience
+//                reference.text = card.reference
             }
 
             cardFragmentCardAdapter.shortOnClickListener =
@@ -342,21 +436,21 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
                 }
         }
 
-        fabSortName.setOnClickListener {
-            cardsFragmentViewModel.sortCards(SORT_NAME)
-        }
-
-        fabSortPhone.setOnClickListener {
-            cardsFragmentViewModel.sortCards(SORT_PHONE)
-        }
-
-        fabSortOrganization.setOnClickListener {
-            cardsFragmentViewModel.sortCards(SORT_ORGANIZATION)
-        }
-
-        fabSortLocation.setOnClickListener {
-            cardsFragmentViewModel.sortCards(SORT_TOWN)
-        }
+//        fabSortName.setOnClickListener {
+//            cardsFragmentViewModel.sortCards(SORT_NAME)
+//        }
+//
+//        fabSortPhone.setOnClickListener {
+//            cardsFragmentViewModel.sortCards(SORT_PHONE)
+//        }
+//
+//        fabSortOrganization.setOnClickListener {
+//            cardsFragmentViewModel.sortCards(SORT_ORGANIZATION)
+//        }
+//
+//        fabSortLocation.setOnClickListener {
+//            cardsFragmentViewModel.sortCards(SORT_TOWN)
+//        }
 
     }
 

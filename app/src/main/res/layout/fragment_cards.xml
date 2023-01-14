@@ -5,244 +5,344 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_12"
+    android:background="@drawable/background_32"
     tools:context=".core.ui.CardsFragment">
 
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_cards_fragment_exit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/blue_main"
-        android:clickable="true"
-        app:layout_behavior=".core.utils.HideFabBehaviour"
-        android:src="@drawable/ic_baseline_exit_to_app"
-        app:layout_anchor="@+id/fab_cards_fragment_settings"
-        app:layout_anchorGravity="center"
-        app:tint="@color/white" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_cards_fragment_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/blue_main"
-        android:clickable="true"
-        app:layout_behavior=".core.utils.HideFabBehaviour"
-        android:src="@drawable/ic_baseline_delete_sweep"
-        app:layout_anchor="@+id/fab_cards_fragment_settings"
-        app:layout_anchorGravity="center"
-        app:tint="@color/white"
-        android:focusable="true" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_cards_fragment_share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/blue_main"
-        android:clickable="true"
-        app:layout_behavior=".core.utils.HideFabBehaviour"
-        android:src="@drawable/ic_baseline_share"
-        app:layout_anchor="@+id/fab_cards_fragment_settings"
-        app:layout_anchorGravity="center"
-        app:tint="@color/white" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_cards_fragment_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/blue_main"
-        android:clickable="true"
-        app:layout_behavior=".core.utils.HideFabBehaviour"
-        android:src="@drawable/ic_baseline_edit_note"
-        app:layout_anchor="@+id/fab_cards_fragment_settings"
-        app:layout_anchorGravity="center"
-        app:tint="@color/white" />
-
-    <com.chaplianski.bcard.core.utils.CustomFab
-        android:id="@+id/fab_cards_fragment_settings"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/blue_main"
-        android:clickable="true"
-
-        android:src="@drawable/ic_baseline_settings"
-        app:fabCustomSize="80dp"
-        app:fabSize="auto"
-        app:layout_anchor="@+id/nsv_cards_fragment_scroll"
-        app:layout_anchorGravity="center_vertical|center_horizontal"
-        app:maxImageSize="56dp"
-        app:useCompatPadding="true"
-        app:tint="@color/white"
-        android:focusable="true" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_cards_fragment_sort_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="mini"
-        android:backgroundTint="@color/blue_main"
-        app:layout_behavior=".core.utils.HideFabBehaviour"
-        android:clickable="true"
-        android:src="@drawable/ic_black_user"
-        app:tint="@color/white"
-        app:layout_anchor="@+id/fab_sort_button"
-        app:layout_anchorGravity="center"
-        />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_cards_fragment_sort_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="mini"
-        android:backgroundTint="@color/blue_main"
-        app:layout_behavior=".core.utils.HideFabBehaviour"
-        android:clickable="true"
-        android:src="@drawable/ic_phone_call"
-        app:tint="@color/white"
-        app:layout_anchor="@+id/fab_sort_button"
-        app:layout_anchorGravity="center"
-        />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_cards_fragment_sort_organisation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="mini"
-        android:backgroundTint="@color/blue_main"
-        app:layout_behavior=".core.utils.HideFabBehaviour"
-        android:clickable="true"
-        android:src="@drawable/ic_organization"
-        app:tint="@color/white"
-        app:layout_anchor="@+id/fab_sort_button"
-        app:layout_anchorGravity="center"
-        />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_cards_fragment_sort_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="mini"
-        android:backgroundTint="@color/blue_main"
-        app:layout_behavior=".core.utils.HideFabBehaviour"
-        android:clickable="true"
-        android:src="@drawable/ic_location_card"
-        app:tint="@color/white"
-        app:layout_anchor="@+id/fab_sort_button"
-        app:layout_anchorGravity="center"
-        />
-
-    <com.chaplianski.bcard.core.utils.CustomFab
-        android:id="@+id/fab_sort_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_marginStart="40dp"
-
-        android:backgroundTint="@color/blue_main"
-        app:layout_anchor="@+id/nsv_cards_fragment_scroll"
-        app:layout_anchorGravity="center_vertical"
-
-        android:clickable="true"
-        android:layout_gravity="start"
-        android:src="@drawable/ic_sort_up"
-        app:tint="@color/white"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_cards_fragment_search_voice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="mini"
-        android:backgroundTint="@color/blue_main"
-        app:layout_behavior=".core.utils.HideFabBehaviour"
-        android:clickable="true"
-        android:src="@drawable/ic_voice"
-        app:tint="@color/white"
-        app:layout_anchor="@+id/fab_search_button"
-        app:layout_anchorGravity="center"
-        />
-
-
-    <com.chaplianski.bcard.core.utils.CustomFab
-        android:id="@+id/fab_search_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginEnd="40dp"
-        android:backgroundTint="@color/blue_main"
-        android:layout_marginBottom="30dp"
-        app:layout_anchor="@+id/nsv_cards_fragment_scroll"
-        app:layout_anchorGravity="center_vertical|right"
-        android:clickable="true"
-        android:layout_gravity="start"
-        android:src="@drawable/ic_search"
-        app:tint="@color/white"/>
-
-
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_cards_fragment"
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="4"
-        android:background="@color/transparent">
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/cards_fragment_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="80dp"
-            android:background="@color/transparent"
-            app:contentScrim="@color/white"
-            app:expandedTitleMarginBottom="50dp"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:expandedTitleTextColor="@color/white"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:statusBarScrim="@color/black">
+            app:scrimAnimationDuration="0"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+            <androidx.constraintlayout.motion.widget.MotionLayout
+                android:id="@+id/motionLayout_fragment_cards"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutDescription="@xml/fragment_cards_scene"
+                tools:context=".core.ui.CardFragment">
+
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:elevation="5dp"
+                    android:src="@drawable/button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_cards_fragment_cards"
                     android:layout_width="409dp"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/transparent"
                     android:clipToPadding="false"
                     android:paddingHorizontal="50dp"
-                    tools:orientation="horizontal"
-                    android:background="@color/transparent"
-                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.224"
+                    app:layout_constraintHorizontal_bias="0.533"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/fragment_cards_card_item"
+                    tools:orientation="horizontal" />
+
+                <ImageButton
+                    android:id="@+id/bt_cards_fragment_sort_phone"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+                    android:src="@drawable/ic_phone_call"
+                    app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintVertical_bias="0.5"
+                    app:tint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/bt_cards_fragment_sort_mail"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+
+                    android:src="@drawable/ic_email_card"
+                    app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintVertical_bias="0.5"
+                    app:tint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/bt_cards_fragment_sort_organisation"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+
+                    android:src="@drawable/ic_organization"
+                    app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintVertical_bias="0.5"
+                    app:tint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/bt_cards_fragment_sort_location"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+                    android:src="@drawable/ic_location_card"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintVertical_bias="0.5"
+                    app:tint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/bt_cards_fragment_sort_name"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button"
+                    android:src="@drawable/ic_black_user"
+                    app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintVertical_bias="0.5"
+                    app:tint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/bt_cards_fragment_search_voice"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="-80dp"
+                    android:layout_marginEnd="20dp"
+                    android:alpha="0"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+                    android:src="@drawable/ic_voice"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
-                    tools:listitem="@layout/fragment_cards_card_item" />
+                    app:tint="@color/black" />
+
+                <EditText
+                    android:id="@+id/tv_cards_fragment_search_field"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="-80dp"
+                    android:layout_marginEnd="16dp"
+                    android:alpha="0"
+                    android:background="@drawable/search_field"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/bt_cards_fragment_search_voice"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+
+                    />
 
 
+                <ImageButton
+                    android:id="@+id/fab_cards_fragment_add_card"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+                    android:src="@drawable/ic_add_user"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_fragment_cards_right_panel"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_fragment_cards_right_panel"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/iv_fragment_cards_left_panel"
+                    app:layout_constraintTop_toTopOf="@+id/iv_fragment_cards_right_panel"
+                    app:layout_constraintVertical_bias="0.5"
+                    app:tint="@color/black" />
 
 
+                <ImageView
+                    android:id="@+id/iv_fragment_cards_left_panel"
+                    android:layout_width="220dp"
+                    android:layout_height="155dp"
+                    android:layout_marginStart="-170dp"
+                    android:layout_marginBottom="20dp"
+                    android:clickable="true"
+                    android:src="@drawable/left_panel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1" />
 
-            <!--            <androidx.appcompat.widget.Toolbar-->
-<!--                android:id="@+id/toolbar"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="?attr/actionBarSize"-->
-<!--                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
-<!--                app:collapsedTitleTextAppearance="@style/Bold"-->
-<!--                app:expandedTitleTextAppearance="@color/black"-->
-<!--                app:layout_collapseMode="pin"-->
-<!--                app:layout_scrollFlags="scroll|enterAlways"-->
-<!--                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
-<!--                app:titleMarginTop="30dp"-->
-<!--                app:titleTextAppearance="@style/Bold" />-->
+                <ImageButton
+                    android:id="@+id/fab_cards_fragment_delete"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_baseline_delete_sweep"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_edit"
+                    app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_edit"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:tint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/fab_cards_fragment_share"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+                    android:src="@drawable/ic_baseline_share"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_fragment_cards_backing_button"
+                    app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_edit"
+                    app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_edit"
+                    app:tint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/bt_cards_fragment_edit"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+                    android:src="@drawable/ic_baseline_edit_note"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_fragment_cards_left_panel"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_fragment_cards_left_panel"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/iv_fragment_cards_left_panel"
+                    app:layout_constraintTop_toTopOf="@+id/iv_fragment_cards_left_panel"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:tint="@color/black" />
+
+                <ImageView
+                    android:id="@+id/iv_fragment_cards_right_panel"
+                    android:layout_width="180dp"
+                    android:layout_height="155dp"
+                    android:layout_marginEnd="-145dp"
+                    android:layout_marginBottom="20dp"
+                    android:clickable="true"
+                    android:src="@drawable/right_panel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1" />
+
+                <ImageButton
+                    android:id="@+id/bt_cards_fragment_sort"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/button"
+                    android:src="@drawable/ic_sort_up"
+                    app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_search"
+                    app:layout_constraintEnd_toStartOf="@+id/bt_cards_fragment_search"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintStart_toStartOf="@+id/iv_fragment_cards_right_panel"
+                    app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_search"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:tint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/bt_cards_fragment_search"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+                    android:maxHeight="60dp"
+                    android:src="@drawable/ic_search"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_fragment_cards_right_panel"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_fragment_cards_right_panel"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/iv_fragment_cards_right_panel"
+                    app:layout_constraintTop_toTopOf="@+id/iv_fragment_cards_right_panel"
+                    app:layout_constraintVertical_bias="0"
+                    app:tint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/bt_cards_fragment_settings"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_baseline_settings"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_fragment_cards_right_panel"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintHorizontal_bias="0.997"
+                    app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_sort"
+                    app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_search"
+                    app:layout_constraintVertical_bias="0.971"
+                    app:maxImageSize="56dp"
+                    app:tint="@color/black"
+                    app:useCompatPadding="false" />
+
+                <ImageButton
+                    android:id="@+id/fab_cards_fragment_exit"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/button"
+                    android:clickable="true"
+                    android:src="@drawable/ic_baseline_exit_to_app"
+                    app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_settings"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_search"
+                    app:layout_constraintHorizontal_bias="0.849"
+                    app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_search"
+                    app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_settings"
+                    app:layout_constraintVertical_bias="0.948"
+                    app:tint="@color/black" />
+
+
+            </androidx.constraintlayout.motion.widget.MotionLayout>
+
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 
     </com.google.android.material.appbar.AppBarLayout>
-
-
-
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_cards_fragment_scroll"
@@ -251,7 +351,6 @@
         android:layout_gravity="fill_vertical"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        android:layout_weight="4"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
@@ -260,48 +359,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-            <EditText
-                android:id="@+id/tv_cards_fragment_search_field"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|bottom"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/search_field"
-                android:elevation="10dp"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:visibility="invisible"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.2" />
-
-<!--            <TextView-->
-<!--                android:id="@+id/tv_cards_fragment_instruction"-->
-<!--                style="@style/Regular"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="32dp"-->
-<!--                android:layout_marginEnd="32dp"-->
-<!--                android:text="Please click on the button to create a new B-card. \nIn the future, it is possible to change the content of the card and its presentation. \nIt is also possible to transfer the card to another device in the format of a contact or QR code."-->
-<!--                android:textColor="@color/text_dark"-->
-<!--                android:textSize="18sp"-->
-<!--                android:visibility="invisible"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.5"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
             <include
                 android:id="@+id/layout_user_information"
                 layout="@layout/user_information"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -314,54 +375,505 @@
     </androidx.core.widget.NestedScrollView>
 
 
-    <FrameLayout
-        android:id="@+id/fl_cards_fragment_top_info"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_above="@+id/profile_appbar"
-        android:layout_gravity="start"
-        android:layout_marginTop="-80dp"
-        android:layout_marginBottom="100dp"
-        android:elevation="5dp"
-        app:layout_behavior=".core.helpers.CardFragmentBehavior">
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tv_cards_fragment_name"
-                style="@style/Bold"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginStart="24dp"
-                android:text="Andrew"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.242"
-
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/iv_cards_fragment_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/iv_cards_fragment_avatar"
-                app:layout_constraintVertical_bias="0.612" />
-
-            <ImageView
-                android:id="@+id/iv_cards_fragment_avatar"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_portrait"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <!--            <androidx.appcompat.widget.Toolbar-->
+    <!--                android:id="@+id/toolbar"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="?attr/actionBarSize"-->
+    <!--                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+    <!--                app:collapsedTitleTextAppearance="@style/Bold"-->
+    <!--                app:expandedTitleTextAppearance="@color/black"-->
+    <!--                app:layout_collapseMode="pin"-->
+    <!--                app:layout_scrollFlags="scroll|enterAlways"-->
+    <!--                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+    <!--                app:titleMarginTop="30dp"-->
+    <!--                app:titleTextAppearance="@style/Bold" />-->
+
+
+    <!--    <androidx.core.widget.NestedScrollView-->
+    <!--        android:id="@+id/nsv_cards_fragment_scroll"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="fill_vertical"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:layout_marginBottom="16dp"-->
+    <!--        android:layout_weight="4"-->
+    <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+
+    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="vertical">-->
+
+
+    <!--            <EditText-->
+    <!--                android:id="@+id/tv_cards_fragment_search_field"-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_gravity="center_horizontal|bottom"-->
+    <!--                android:layout_marginTop="25dp"-->
+    <!--                android:background="@drawable/search_field"-->
+    <!--                android:elevation="10dp"-->
+    <!--                android:paddingStart="8dp"-->
+    <!--                android:paddingTop="8dp"-->
+    <!--                android:paddingBottom="8dp"-->
+    <!--                android:visibility="invisible"-->
+
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.5"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent"-->
+    <!--                app:layout_constraintVertical_bias="0.2" />-->
+
+    <!--            &lt;!&ndash;            <TextView&ndash;&gt;-->
+    <!--            &lt;!&ndash;                android:id="@+id/tv_cards_fragment_instruction"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                style="@style/Regular"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                android:layout_width="0dp"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                android:layout_marginStart="32dp"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                android:layout_marginEnd="32dp"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                android:text="Please click on the button to create a new B-card. \nIn the future, it is possible to change the content of the card and its presentation. \nIt is also possible to transfer the card to another device in the format of a contact or QR code."&ndash;&gt;-->
+    <!--            &lt;!&ndash;                android:textColor="@color/text_dark"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                android:textSize="18sp"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                android:visibility="invisible"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                app:layout_constraintHorizontal_bias="0.5"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                app:layout_constraintTop_toTopOf="parent" />&ndash;&gt;-->
+
+    <!--            <include-->
+    <!--                android:id="@+id/layout_user_information"-->
+    <!--                layout="@layout/user_information"-->
+    <!--                android:visibility="gone"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.5"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent"-->
+    <!--                app:layout_constraintVertical_bias="0.5" />-->
+
+    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+    <!--    </androidx.core.widget.NestedScrollView>-->
+
+
+    <!--    <FrameLayout-->
+    <!--        android:id="@+id/fl_cards_fragment_top_info"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="80dp"-->
+    <!--        android:layout_above="@+id/profile_appbar"-->
+    <!--        android:layout_gravity="start"-->
+    <!--        android:layout_marginTop="-80dp"-->
+    <!--        android:layout_marginBottom="100dp"-->
+    <!--        android:elevation="5dp"-->
+    <!--        app:layout_behavior=".core.helpers.CardFragmentBehavior">-->
+
+
+    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="50dp"-->
+    <!--            android:layout_gravity="bottom"-->
+    <!--            android:background="@color/white">-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_cards_fragment_name"-->
+    <!--                style="@style/Bold"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="0dp"-->
+    <!--                android:layout_marginStart="24dp"-->
+    <!--                android:text="Andrew"-->
+    <!--                android:textColor="@color/black"-->
+    <!--                android:textSize="24sp"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.242"-->
+
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="@+id/iv_cards_fragment_avatar"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/iv_cards_fragment_avatar"-->
+    <!--                app:layout_constraintVertical_bias="0.612" />-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/iv_cards_fragment_avatar"-->
+    <!--                android:layout_width="40dp"-->
+    <!--                android:layout_height="40dp"-->
+    <!--                android:layout_marginStart="20dp"-->
+    <!--                android:src="@drawable/ic_portrait"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.0"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent"-->
+    <!--                app:layout_constraintVertical_bias="0.0" />-->
+    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+    <!--    </FrameLayout>-->
+    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:id="@+id/frameLayout2"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:background="@drawable/background_12"-->
+    <!--    tools:context=".core.ui.CardsFragment">-->
+
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab_cards_fragment_exit"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        android:clickable="true"-->
+    <!--        app:layout_behavior=".core.utils.HideFabBehaviour"-->
+    <!--        android:src="@drawable/ic_baseline_exit_to_app"-->
+    <!--        app:layout_anchor="@+id/fab_cards_fragment_settings"-->
+    <!--        app:layout_anchorGravity="center"-->
+    <!--        app:tint="@color/white" />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab_cards_fragment_delete"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        android:clickable="true"-->
+    <!--        app:layout_behavior=".core.utils.HideFabBehaviour"-->
+    <!--        android:src="@drawable/ic_baseline_delete_sweep"-->
+    <!--        app:layout_anchor="@+id/fab_cards_fragment_settings"-->
+    <!--        app:layout_anchorGravity="center"-->
+    <!--        app:tint="@color/white"-->
+    <!--        android:focusable="true" />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab_cards_fragment_share"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        android:clickable="true"-->
+    <!--        app:layout_behavior=".core.utils.HideFabBehaviour"-->
+    <!--        android:src="@drawable/ic_baseline_share"-->
+    <!--        app:layout_anchor="@+id/fab_cards_fragment_settings"-->
+    <!--        app:layout_anchorGravity="center"-->
+    <!--        app:tint="@color/white" />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab_cards_fragment_edit"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        android:clickable="true"-->
+    <!--        app:layout_behavior=".core.utils.HideFabBehaviour"-->
+    <!--        android:src="@drawable/ic_baseline_edit_note"-->
+    <!--        app:layout_anchor="@+id/fab_cards_fragment_settings"-->
+    <!--        app:layout_anchorGravity="center"-->
+    <!--        app:tint="@color/white" />-->
+
+    <!--    <com.chaplianski.bcard.core.utils.CustomFab-->
+    <!--        android:id="@+id/fab_cards_fragment_settings"-->
+    <!--        android:layout_width="80dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="bottom|center"-->
+    <!--        android:layout_marginBottom="16dp"-->
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        android:clickable="true"-->
+
+    <!--        android:src="@drawable/ic_baseline_settings"-->
+    <!--        app:fabCustomSize="80dp"-->
+    <!--        app:fabSize="auto"-->
+    <!--        app:layout_anchor="@+id/nsv_cards_fragment_scroll"-->
+    <!--        app:layout_anchorGravity="center_vertical|center_horizontal"-->
+    <!--        app:maxImageSize="56dp"-->
+    <!--        app:useCompatPadding="true"-->
+    <!--        app:tint="@color/white"-->
+    <!--        android:focusable="true" />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab_cards_fragment_sort_name"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:fabSize="mini"-->
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        app:layout_behavior=".core.utils.HideFabBehaviour"-->
+    <!--        android:clickable="true"-->
+    <!--        android:src="@drawable/ic_black_user"-->
+    <!--        app:tint="@color/white"-->
+    <!--        app:layout_anchor="@+id/fab_sort_button"-->
+    <!--        app:layout_anchorGravity="center"-->
+    <!--        />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab_cards_fragment_sort_phone"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:fabSize="mini"-->
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        app:layout_behavior=".core.utils.HideFabBehaviour"-->
+    <!--        android:clickable="true"-->
+    <!--        android:src="@drawable/ic_phone_call"-->
+    <!--        app:tint="@color/white"-->
+    <!--        app:layout_anchor="@+id/fab_sort_button"-->
+    <!--        app:layout_anchorGravity="center"-->
+    <!--        />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab_cards_fragment_sort_organisation"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:fabSize="mini"-->
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        app:layout_behavior=".core.utils.HideFabBehaviour"-->
+    <!--        android:clickable="true"-->
+    <!--        android:src="@drawable/ic_organization"-->
+    <!--        app:tint="@color/white"-->
+    <!--        app:layout_anchor="@+id/fab_sort_button"-->
+    <!--        app:layout_anchorGravity="center"-->
+    <!--        />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab_cards_fragment_sort_location"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:fabSize="mini"-->
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        app:layout_behavior=".core.utils.HideFabBehaviour"-->
+    <!--        android:clickable="true"-->
+    <!--        android:src="@drawable/ic_location_card"-->
+    <!--        app:tint="@color/white"-->
+    <!--        app:layout_anchor="@+id/fab_sort_button"-->
+    <!--        app:layout_anchorGravity="center"-->
+    <!--        />-->
+
+    <!--    <com.chaplianski.bcard.core.utils.CustomFab-->
+    <!--        android:id="@+id/fab_sort_button"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginBottom="30dp"-->
+    <!--        android:layout_marginStart="40dp"-->
+
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        app:layout_anchor="@+id/nsv_cards_fragment_scroll"-->
+    <!--        app:layout_anchorGravity="center_vertical"-->
+
+    <!--        android:clickable="true"-->
+    <!--        android:layout_gravity="start"-->
+    <!--        android:src="@drawable/ic_sort_up"-->
+    <!--        app:tint="@color/white"/>-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab_cards_fragment_search_voice"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:fabSize="mini"-->
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        app:layout_behavior=".core.utils.HideFabBehaviour"-->
+    <!--        android:clickable="true"-->
+    <!--        android:src="@drawable/ic_voice"-->
+    <!--        app:tint="@color/white"-->
+    <!--        app:layout_anchor="@+id/fab_search_button"-->
+    <!--        app:layout_anchorGravity="center"-->
+    <!--        />-->
+
+
+    <!--    <com.chaplianski.bcard.core.utils.CustomFab-->
+    <!--        android:id="@+id/fab_search_button"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+
+    <!--        android:layout_marginEnd="40dp"-->
+    <!--        android:backgroundTint="@color/blue_main"-->
+    <!--        android:layout_marginBottom="30dp"-->
+    <!--        app:layout_anchor="@+id/nsv_cards_fragment_scroll"-->
+    <!--        app:layout_anchorGravity="center_vertical|right"-->
+    <!--        android:clickable="true"-->
+    <!--        android:layout_gravity="start"-->
+    <!--        android:src="@drawable/ic_search"-->
+    <!--        app:tint="@color/white"/>-->
+
+
+    <!--    <com.google.android.material.appbar.AppBarLayout-->
+    <!--        android:id="@+id/appbar_cards_fragment"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_weight="4"-->
+    <!--        android:background="@color/transparent">-->
+
+    <!--        <com.google.android.material.appbar.CollapsingToolbarLayout-->
+    <!--            android:id="@+id/cards_fragment_collapsing_toolbar"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:paddingTop="80dp"-->
+    <!--            android:background="@color/transparent"-->
+    <!--            app:contentScrim="@color/white"-->
+    <!--            app:expandedTitleMarginBottom="50dp"-->
+    <!--            app:expandedTitleMarginEnd="64dp"-->
+    <!--            app:expandedTitleMarginStart="48dp"-->
+    <!--            app:expandedTitleTextColor="@color/white"-->
+    <!--            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"-->
+    <!--            app:statusBarScrim="@color/black">-->
+
+    <!--                <androidx.recyclerview.widget.RecyclerView-->
+    <!--                    android:id="@+id/rv_cards_fragment_cards"-->
+    <!--                    android:layout_width="409dp"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:clipToPadding="false"-->
+    <!--                    android:paddingHorizontal="50dp"-->
+    <!--                    tools:orientation="horizontal"-->
+    <!--                    android:background="@color/transparent"-->
+    <!--                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+    <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                    app:layout_constraintHorizontal_bias="0.224"-->
+    <!--                    app:layout_constraintStart_toStartOf="parent"-->
+    <!--                    app:layout_constraintTop_toTopOf="parent"-->
+    <!--                    app:layout_constraintVertical_bias="0.0"-->
+    <!--                    tools:listitem="@layout/fragment_cards_card_item" />-->
+
+
+    <!--            &lt;!&ndash;            <androidx.appcompat.widget.Toolbar&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:id="@+id/toolbar"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:layout_height="?attr/actionBarSize"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:collapsedTitleTextAppearance="@style/Bold"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:expandedTitleTextAppearance="@color/black"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:layout_collapseMode="pin"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:layout_scrollFlags="scroll|enterAlways"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:titleMarginTop="30dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:titleTextAppearance="@style/Bold" />&ndash;&gt;-->
+
+    <!--        </com.google.android.material.appbar.CollapsingToolbarLayout>-->
+
+
+    <!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+
+    <!--    <androidx.core.widget.NestedScrollView-->
+    <!--        android:id="@+id/nsv_cards_fragment_scroll"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="fill_vertical"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:layout_marginBottom="16dp"-->
+    <!--        android:layout_weight="4"-->
+    <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+
+    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="vertical">-->
+
+
+    <!--            <EditText-->
+    <!--                android:id="@+id/tv_cards_fragment_search_field"-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_gravity="center_horizontal|bottom"-->
+    <!--                android:layout_marginTop="25dp"-->
+    <!--                android:background="@drawable/search_field"-->
+    <!--                android:elevation="10dp"-->
+    <!--                android:paddingStart="8dp"-->
+    <!--                android:paddingTop="8dp"-->
+    <!--                android:paddingBottom="8dp"-->
+    <!--                android:visibility="invisible"-->
+
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.5"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent"-->
+    <!--                app:layout_constraintVertical_bias="0.2" />-->
+
+    <!--&lt;!&ndash;            <TextView&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:id="@+id/tv_cards_fragment_instruction"&ndash;&gt;-->
+    <!--&lt;!&ndash;                style="@style/Regular"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:layout_width="0dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:layout_marginStart="32dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:layout_marginEnd="32dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:text="Please click on the button to create a new B-card. \nIn the future, it is possible to change the content of the card and its presentation. \nIt is also possible to transfer the card to another device in the format of a contact or QR code."&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:textColor="@color/text_dark"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:textSize="18sp"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:visibility="invisible"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:layout_constraintHorizontal_bias="0.5"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;                app:layout_constraintTop_toTopOf="parent" />&ndash;&gt;-->
+
+    <!--            <include-->
+    <!--                android:id="@+id/layout_user_information"-->
+    <!--                layout="@layout/user_information"-->
+    <!--                android:visibility="gone"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.5"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent"-->
+    <!--                app:layout_constraintVertical_bias="0.5" />-->
+
+    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+    <!--    </androidx.core.widget.NestedScrollView>-->
+
+
+    <!--    <FrameLayout-->
+    <!--        android:id="@+id/fl_cards_fragment_top_info"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="80dp"-->
+    <!--        android:layout_above="@+id/profile_appbar"-->
+    <!--        android:layout_gravity="start"-->
+    <!--        android:layout_marginTop="-80dp"-->
+    <!--        android:layout_marginBottom="100dp"-->
+    <!--        android:elevation="5dp"-->
+    <!--        app:layout_behavior=".core.helpers.CardFragmentBehavior">-->
+
+
+    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="50dp"-->
+    <!--            android:layout_gravity="bottom"-->
+    <!--            android:background="@color/white">-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_cards_fragment_name"-->
+    <!--                style="@style/Bold"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="0dp"-->
+    <!--                android:layout_marginStart="24dp"-->
+    <!--                android:text="Andrew"-->
+    <!--                android:textColor="@color/black"-->
+    <!--                android:textSize="24sp"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.242"-->
+
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="@+id/iv_cards_fragment_avatar"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/iv_cards_fragment_avatar"-->
+    <!--                app:layout_constraintVertical_bias="0.612" />-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/iv_cards_fragment_avatar"-->
+    <!--                android:layout_width="40dp"-->
+    <!--                android:layout_height="40dp"-->
+    <!--                android:layout_marginStart="20dp"-->
+    <!--                android:src="@drawable/ic_portrait"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.0"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent"-->
+    <!--                app:layout_constraintVertical_bias="0.0" />-->
+    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+    <!--    </FrameLayout>-->
+    <!--</androidx.coordinatorlayout.widget.CoordinatorLayout>-->
+

@@ -60,6 +60,13 @@ class LoginFragment : Fragment() {
         val errorMessage = binding.tvLoginFragmentError
         val rememberCheck = binding.cbLoginFragmentRemember
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+
+
+//        val button = binding.button5
+//        button.setOnClickListener {
+//            findNavController().navigate(R.id.action_loginFragment_to_newCardFragment)
+//        }
+
 //        auth = FirebaseAuth.getInstance()
 
         emailText.setText(sharedPref?.getString(LAST_USER_LOGIN, "").toString())
