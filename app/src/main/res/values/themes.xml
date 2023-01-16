@@ -45,32 +45,54 @@
         <item name="fontFamily">@font/medium</item>
         <item name="android:textSize">16sp</item>
         <item name="textAllCaps">false</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/semibold</item>
         <item name="cornerFamily">rounded</item>
-        <item name="cornerRadius">10dp</item>
+        <item name="cornerRadius">20dp</item>
     </style>
 
     <style name="BCard.OldButton" parent="TextAppearance.MaterialComponents.Button">
         <item name="fontFamily">@font/medium</item>
         <item name="android:textSize">16sp</item>
         <item name="textAllCaps">false</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/semibold</item>
         <item name="cornerFamily">rounded</item>
         <item name="cornerRadius">10dp</item>
-        <item name="background">@drawable/button</item>
+        <item name="background">@drawable/square_button</item>
     </style>
 
     <!-- Field style  -->
-    <style name="BCard.OutlinedBox.Field" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="colorPrimary">@color/field_background</item>
-        <item name="android:textColor">@color/text_middle</item>
+    <style name="BCard.OutlinedBox.Field" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="backgroundTint">@color/transparent</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="boxStrokeColor">@color/light_brown</item>
+        <item name="boxStrokeWidth">2dp</item>
         <item name="android:fontFamily">@font/bold</item>
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">10dp</item>
+        <item name="colorOnSurface">@color/transparent</item>
+        <item name="colorError">@color/accent_3</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
+        <item name="editTextStyle">@style/Regular</item>
     </style>
 
+<!--    <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">-->
+<!--        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextInputLayout</item>-->
+<!--        <item name="shapeAppearance">@style/ShapeAppearance.Material3.SmallComponent</item>-->
+<!--        <item name="hintTextColor">?attr/colorOnSurface</item>-->
+<!--    </style>-->
+
+<!--    <style name="ThemeOverlay.App.TextInputLayout" parent="">-->
+<!--        <item name="colorPrimary">@color/black</item>-->
+<!--        <item name="colorOnSurface">@color/transparent</item>-->
+<!--        <item name="colorError">@color/accent_3</item>-->
+<!--        <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>-->
+<!--        <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>-->
+<!--        <item name="editTextStyle">@style/Regular</item>-->
+<!--    </style>-->
 
 
 </resources>

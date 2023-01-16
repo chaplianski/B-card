@@ -19,6 +19,8 @@
     <color name="text_middle">#737C97</color>
     <color name="field_background">#EAECF5</color>
     <color name="transparent">#00000000</color>
+    <color name="light_brown">#FFAB67</color>
+    <color name="dark_brown">#451A03</color>
 
 
 </resources>

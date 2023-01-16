@@ -6,7 +6,7 @@
     <string name="email_address">Email Address</string>
     <string name="welcome_to_b_card">Welcome to B-card</string>
     <string name="enter_instruction">Please enter your email address and password for authorization or register in the application</string>
-    <string name="remember_for_the_next_entry">Remember for the next entry</string>
+    <string name="remember">Remember</string>
     <string name="sign_in">Sign In</string>
     <string name="registration_account">Registration account</string>
     <string name="check_all">Check All</string>

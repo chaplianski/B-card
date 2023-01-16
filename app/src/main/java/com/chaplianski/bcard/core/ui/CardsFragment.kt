@@ -1,7 +1,5 @@
 package com.chaplianski.bcard.core.ui
 
-import android.R.id.button1
-import android.R.id.button2
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -17,6 +15,8 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
+import com.bumptech.glide.load.engine.Resource
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardsFragmentCardAdapter
 import com.chaplianski.bcard.core.factories.CardsFragmentViewModelFactory
@@ -95,29 +96,45 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
         val rightPanelImage = binding.ivFragmentCardsRightPanel
 
 
-//        view.setOnClickListener{
-//            when(it){
-//                sortButton -> {
-////                    motionLayout.setTransition(R.id.sort_button_click_start, R.id.sort_button_click_finish)
-//                    motionLayout.setTransition(R.id.sort_button_click)
-//
-//                }
-//                searchButton -> {
-//                    motionLayout.setTransition(R.id.search_button_click)
-//
-////                    motionLayout.setTransition(R.id.search_button_click_start, R.id.search_button_click_finish)
-//                }
-//            }
-//
-//            motionLayout.transitionToEnd()
-//        }
+//        motionLayout.setTransition(R.id.right_panel_click_back)
+//        motionLayout.transitionToEnd()
+
+        motionLayout.setTransition(R.id.begin_position_start, R.id.begin_position_finish)
+        motionLayout.transitionToEnd()
+
+//        motionLayout.setTransition(R.id.right_panel_click_forward)
+//        motionLayout.transitionToEnd()
+//        rightPanelImage.setMarginExtensionFunction(0, 0, -200, 20)
+//        motionLayout.getTransition(R.id.sort_button_click_forward).setEnable(false)
+
         var sortButtonSwitch = true
         var searchButtonSwitch = true
         var leftPanelSwitch = true
         var rightPanelSwitch = true
 
+        rightPanelImage.setOnClickListener {
+            if (rightPanelSwitch){
+                motionLayout.setTransition(R.id.right_panel_click_forward)
+                motionLayout.transitionToEnd()
+                rightPanelSwitch = false
+                Log.d("MyLog","click right panel")
+
+//                motionLayout.setTransition(R.id.search_button_click)
+//                motionLayout.transitionToEnd()
+//                searchButtonSwitch = true
+            } else{
+                motionLayout.setTransition(R.id.right_panel_click_back)
+                motionLayout.transitionToEnd()
+                rightPanelSwitch = true
+            }
+        }
+
+
         sortButton.setOnClickListener {
             if (sortButtonSwitch){
+
+
+
                 motionLayout.setTransition(R.id.sort_button_click_forward)
                 motionLayout.transitionToEnd()
                 sortButtonSwitch = false
@@ -125,6 +142,10 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 //                motionLayout.setTransition(R.id.search_button_click_back)
 //                motionLayout.transitionToEnd()
 //                searchButtonSwitch = false
+//                val lp = ConstraintLayout.LayoutParams(rightPanelImage.layoutParams)
+//                lp.setMargins(0, 0, 0, 20)
+//                rightPanelImage.layoutParams = lp
+
 
                 motionLayout.setTransition(R.id.sort_button_click_back)
                 motionLayout.transitionToEnd()
@@ -135,6 +156,7 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 
         searchButton.setOnClickListener {
             if (searchButtonSwitch){
+
                 motionLayout.setTransition(R.id.search_button_click_forward)
                 motionLayout.transitionToEnd()
                 searchButtonSwitch = false
@@ -168,22 +190,7 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
             }
         }
 
-        rightPanelImage.setOnClickListener {
-            if (rightPanelSwitch){
-                motionLayout.setTransition(R.id.right_panel_click_forward)
-                motionLayout.transitionToEnd()
-                rightPanelSwitch = false
-                Log.d("MyLog","click right panel")
 
-//                motionLayout.setTransition(R.id.search_button_click)
-//                motionLayout.transitionToEnd()
-//                searchButtonSwitch = true
-            } else{
-                motionLayout.setTransition(R.id.right_panel_click_back)
-                motionLayout.transitionToEnd()
-                rightPanelSwitch = true
-            }
-        }
 
 
 //        val fabSort = binding.btCardsFragmentSortButton
@@ -609,4 +616,10 @@ private fun animationMove(button: View, from: Float, to: Float): Animator {
     logoBegin.interpolator = AccelerateInterpolator()
     logoBegin.duration = 700
     return logoBegin
+}
+
+fun View.setMarginExtensionFunction(left: Int, top: Int, right: Int, bottom: Int) {
+    val params = layoutParams as ViewGroup.MarginLayoutParams
+    params.setMargins(left, top, right, bottom)
+    layoutParams = params
 }
