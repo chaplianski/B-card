@@ -11,16 +11,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
-import com.chaplianski.bcard.core.adapters.CardsFragmentCardAdapter
 import com.chaplianski.bcard.core.factories.CheckCardListLoadFragmentViewModelFactory
-import com.chaplianski.bcard.core.helpers.CardsPickerLayoutManager
 import com.chaplianski.bcard.core.viewmodels.CheckCardListLoadFragmentViewModel
 import com.chaplianski.bcard.databinding.FragmentCheckCardListLoadBinding
 import com.chaplianski.bcard.domain.model.Card
 import ezvcard.Ezvcard
-import java.io.File
 import javax.inject.Inject
 
 
@@ -36,7 +32,7 @@ class CheckCardListLoadFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCheckCardListLoadBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -56,52 +52,68 @@ class CheckCardListLoadFragment : Fragment() {
 
         saveButton.text = "Save [$checkedCardCount]"
 
-        checkCardListLoadFragmentViewModel.loadedCardList.observe(this.viewLifecycleOwner){cardList ->
+        checkCardListLoadFragmentViewModel.loadedCardList.observe(this.viewLifecycleOwner) { cardList ->
+
+
+            val fullContactList = mutableListOf<ContactContent>()
+            val letterList =
+                cardList.sortedBy { it.surname }.map { it.surname.first().uppercaseChar() }.toSet()
+            letterList.forEach { letter ->
+                cardList.sortedBy { it.surname }.forEach { card ->
+                    if (letter == card.surname.first().uppercaseChar()) {
+                        if (!fullContactList.contains(ContactContent.Letter(letter))){
+                            fullContactList.add(ContactContent.Letter(letter))
+                        }
+                            fullContactList.add(ContactContent.Contact(card))
+                    }
+                }
+            }
+
             cardRV.layoutManager = LinearLayoutManager(context)
             cardRV.adapter = cardAdapter
-            cardAdapter.updateList(cardList)
+            cardAdapter.updateList(fullContactList)
 
-            cardAdapter.checkBoxListener = object : CardListShareFragmentAdapter.CheckBoxListener{
-                override fun onCheck(card: Card) {
-                    cardList.forEach { cardItem ->
-                        if (card.surname == cardItem.surname){
-                            cardItem.isChecked = !cardItem.isChecked
-                            if (cardItem.isChecked) checkedCardCount++ else checkedCardCount--
-                        }
-                        saveButton.text = "Save [$checkedCardCount]"
-                    }
-                }
-            }
+//            cardAdapter.checkBoxListener = object : CardListShareFragmentAdapter.CheckBoxListener {
+//                override fun onCheck(card: ContactContent) {
+//                    cardList.forEach { cardItem ->
+//                        if (card.surname == cardItem.surname) {
+//                            cardItem.isChecked = !cardItem.isChecked
+//                            if (cardItem.isChecked) checkedCardCount++ else checkedCardCount--
+//                        }
+//                        saveButton.text = "Save [$checkedCardCount]"
+//                    }
+//                }
+//            }
 
-            allCheckBox.setOnClickListener {
-                if (!checkAllFlag){
-                    cardList.forEach { cardItem ->
-                        cardItem.isChecked = true
-                    }
-                    checkedCardCount = cardList.size
-                } else {
-                    cardList.forEach { cardItem ->
-                        cardItem.isChecked = false
-                    }
-                    checkedCardCount = 0
-                }
-                Log.d("MyLog", "${cardList.map { it.isChecked }}")
-                checkAllFlag = !checkAllFlag
-                cardAdapter.updateList(cardList.map { it.copy() })
-                saveButton.text = "Save [$checkedCardCount]"
-            }
+//            allCheckBox.setOnClickListener {
+//                if (!checkAllFlag) {
+//                    cardList.forEach { cardItem ->
+//                        cardItem.isChecked = true
+//                    }
+//                    checkedCardCount = cardList.size
+//                } else {
+//                    cardList.forEach { cardItem ->
+//                        cardItem.isChecked = false
+//                    }
+//                    checkedCardCount = 0
+//                }
+//                Log.d("MyLog", "${cardList.map { it.isChecked }}")
+//                checkAllFlag = !checkAllFlag
+//                cardAdapter.updateList(cardList.map { it.copy() })
+//                saveButton.text = "Save [$checkedCardCount]"
+//            }
 
             saveButton.setOnClickListener {
                 listCard.clear()
                 cardList.forEach { cardItem ->
-                    if (cardItem.isChecked){
+                    if (cardItem.isChecked) {
                         listCard.add(cardItem)
                     }
 
                 }
 
                 Log.d("MyLog", "${listCard.size}")
-                if (!listCard.isNullOrEmpty()){
+                if (!listCard.isNullOrEmpty()) {
                     checkCardListLoadFragmentViewModel.saveCheckedCardToDB(listCard)
                 }
 
@@ -121,13 +133,11 @@ class CheckCardListLoadFragment : Fragment() {
         startActivityForResult(Intent.createChooser(intent, "Select a file"), 222)
 
 
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 222 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 222 && resultCode == Activity.RESULT_OK) {
             data?.data?.also {
                 lifecycleScope.launchWhenResumed {
                     val inputStream = context?.contentResolver?.openInputStream(it)
@@ -150,4 +160,11 @@ class CheckCardListLoadFragment : Fragment() {
         _binding = null
     }
 
+
+
+}
+
+sealed class ContactContent {
+    data class Letter(val letter: Char) : ContactContent()
+    data class Contact(val card: Card) : ContactContent()
 }

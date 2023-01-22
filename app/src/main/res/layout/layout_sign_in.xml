@@ -2,15 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
+    android:id="@+id/layout_sign_in"
+    android:layout_width="250dp"
     android:layout_height="450dp"
     android:layout_marginStart="0dp"
-    android:background="@drawable/drawer_panel"
-    android:paddingEnd="40dp">
+   >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="250dp"
-        android:layout_height="400dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:background="@drawable/paper_07"
@@ -26,7 +26,7 @@
             style="@style/SemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:text="Sign In"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -43,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Login"
+            android:layout_marginTop="10dp"
 
             app:startIconTint="@color/light_brown"
             app:layout_constraintBottom_toBottomOf="parent"

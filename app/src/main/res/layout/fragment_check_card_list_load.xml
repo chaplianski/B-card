@@ -67,7 +67,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBox_check_card_list_load_fragment_check_all"
         app:layout_constraintVertical_bias="0.5"
-        tools:listitem="@layout/item_card_list_share_fragment" />
+        tools:listitem="@layout/item_card_list_share_contact" />
 
     <LinearLayout
         android:id="@+id/layout_check_card_list_load_fragment_buttons"

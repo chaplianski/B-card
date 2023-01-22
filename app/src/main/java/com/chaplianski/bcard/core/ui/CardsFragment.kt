@@ -15,8 +15,6 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -29,9 +27,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
-import com.bumptech.glide.load.engine.Resource
+import com.bumptech.glide.Glide
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardsFragmentCardAdapter
+import com.chaplianski.bcard.core.dialogs.*
 import com.chaplianski.bcard.core.factories.CardsFragmentViewModelFactory
 import com.chaplianski.bcard.core.helpers.CardsPickerLayoutManager
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
@@ -40,6 +39,7 @@ import com.chaplianski.bcard.core.utils.init
 import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel
 import com.chaplianski.bcard.databinding.FragmentCardsBinding
 import com.chaplianski.bcard.di.DaggerApp
+import com.chaplianski.bcard.domain.model.Card
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.Behavior.DragCallback
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
+class CardsFragment : Fragment() {
 
     @Inject
     lateinit var cardsFragmentViewModelFactory: CardsFragmentViewModelFactory
@@ -83,18 +83,30 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 //        val closeButton = binding.layoutUserInformation.btUserInfoClose
 
         val fabSettings = binding.btCardsFragmentSettings
-        val fabEdit = binding.btCardsFragmentEdit
+        val buttonEdit = binding.btCardsFragmentEdit
         val fabDelete = binding.fabCardsFragmentDelete
-        val fabShare = binding.fabCardsFragmentShare
+        val shareButton = binding.btCardsFragmentShare
         val fabExit = binding.fabCardsFragmentExit
 
+        val addCardButton = binding.btCardsFragmentAddCard
 
         val motionLayout = binding.motionLayoutFragmentCards
         val sortButton = binding.btCardsFragmentSort
         val searchButton = binding.btCardsFragmentSearch
         val leftPanelImage = binding.ivFragmentCardsLeftPanel
         val rightPanelImage = binding.ivFragmentCardsRightPanel
+        val cardsRV: RecyclerView =
+            view.findViewById(com.chaplianski.bcard.R.id.rv_cards_fragment_cards)
 
+        val avatarUserInformation = binding.layoutUserInformation.ivUserInformationProfileAvatar
+        val nameUserInformation = binding.layoutUserInformation.tvUserInformationProfileName
+        val specialityUserInfo = binding.layoutUserInformation.tvUserInformationProfileSpeciality
+        val organizationUserInfo = binding.layoutUserInformation.tvUserInformationProfileOrganization
+        val profileInfo = binding.layoutUserInformation.userInformationProfileInfo
+        val profSkills = binding.layoutUserInformation.userInformationProfSkills
+        val education = binding.layoutUserInformation.userInformationEducation
+        val workExperience = binding.layoutUserInformation.userInformationWorkExperience
+        val reference = binding.layoutUserInformation.userInformationReference
 
 //        motionLayout.setTransition(R.id.right_panel_click_back)
 //        motionLayout.transitionToEnd()
@@ -113,84 +125,94 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
         var rightPanelSwitch = true
 
         rightPanelImage.setOnClickListener {
-            if (rightPanelSwitch){
+            if (!leftPanelSwitch){
+                motionLayout.setTransition(R.id.left_panel_click_back)
+                motionLayout.transitionToEnd()
+                leftPanelSwitch = true
+                Log.d("MyLog", "click right panel 1")
+            }
+            if (rightPanelSwitch && leftPanelSwitch) {
                 motionLayout.setTransition(R.id.right_panel_click_forward)
                 motionLayout.transitionToEnd()
                 rightPanelSwitch = false
-                Log.d("MyLog","click right panel")
+                Log.d("MyLog", "click right panel 2")
 
 //                motionLayout.setTransition(R.id.search_button_click)
 //                motionLayout.transitionToEnd()
 //                searchButtonSwitch = true
-            } else{
+            } else {
                 motionLayout.setTransition(R.id.right_panel_click_back)
                 motionLayout.transitionToEnd()
                 rightPanelSwitch = true
+                Log.d("MyLog", "click right panel 3")
+            }
+        }
+
+        leftPanelImage.setOnClickListener {
+            if (!rightPanelSwitch) {
+                motionLayout.setTransition(R.id.right_panel_click_back)
+                motionLayout.transitionToEnd()
+                rightPanelSwitch = true
+                Log.d("MyLog", "click left panel 1")
+            }
+            if (leftPanelSwitch && rightPanelSwitch) {
+                motionLayout.setTransition(R.id.left_panel_click_forward)
+                motionLayout.transitionToEnd()
+                leftPanelSwitch = false
+                Log.d("MyLog", "click left panel 2")
+//                motionLayout.setTransition(R.id.search_button_click)
+//                motionLayout.transitionToEnd()
+//                searchButtonSwitch = true
+            } else {
+                motionLayout.setTransition(R.id.left_panel_click_back)
+                motionLayout.transitionToEnd()
+                leftPanelSwitch = true
+                Log.d("MyLog", "click left panel 3")
             }
         }
 
 
         sortButton.setOnClickListener {
-            if (sortButtonSwitch){
-
-
-
+            if (!searchButtonSwitch){
+                motionLayout.setTransition(R.id.search_button_click_back)
+                motionLayout.transitionToEnd()
+                searchButtonSwitch = true
+            }
+            if (sortButtonSwitch) {
                 motionLayout.setTransition(R.id.sort_button_click_forward)
                 motionLayout.transitionToEnd()
                 sortButtonSwitch = false
-            } else{
-//                motionLayout.setTransition(R.id.search_button_click_back)
-//                motionLayout.transitionToEnd()
-//                searchButtonSwitch = false
-//                val lp = ConstraintLayout.LayoutParams(rightPanelImage.layoutParams)
-//                lp.setMargins(0, 0, 0, 20)
-//                rightPanelImage.layoutParams = lp
-
-
+            }
+            else {
                 motionLayout.setTransition(R.id.sort_button_click_back)
                 motionLayout.transitionToEnd()
                 sortButtonSwitch = true
             }
         }
 
-
         searchButton.setOnClickListener {
-            if (searchButtonSwitch){
-
+            if (!sortButtonSwitch){
+                motionLayout.setTransition(R.id.sort_button_click_back)
+                motionLayout.transitionToEnd()
+                sortButtonSwitch = true
+            }
+            if (searchButtonSwitch) {
                 motionLayout.setTransition(R.id.search_button_click_forward)
                 motionLayout.transitionToEnd()
                 searchButtonSwitch = false
 
-
-            } else{
-//                motionLayout.setTransition(R.id.sort_button_click_back)
-//                motionLayout.transitionToEnd()
-//                sortButtonSwitch = false
-
+            } else {
                 motionLayout.setTransition(R.id.search_button_click_back)
                 motionLayout.transitionToEnd()
                 searchButtonSwitch = true
             }
         }
 
-        leftPanelImage.setOnClickListener {
-            if (leftPanelSwitch){
-                motionLayout.setTransition(R.id.left_panel_click_forward)
-                motionLayout.transitionToEnd()
-                leftPanelSwitch = false
 
-                Log.d("MyLog","click left panel")
-//                motionLayout.setTransition(R.id.search_button_click)
-//                motionLayout.transitionToEnd()
-//                searchButtonSwitch = true
-            } else{
-                motionLayout.setTransition(R.id.left_panel_click_back)
-                motionLayout.transitionToEnd()
-                leftPanelSwitch = true
-            }
+
+        addCardButton.setOnClickListener {
+            findNavController().navigate(com.chaplianski.bcard.R.id.action_cardsFragment_to_editCardFragment)
         }
-
-
 
 
 //        val fabSort = binding.btCardsFragmentSortButton
@@ -232,7 +254,6 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 //        }
 
 
-
         val launcher: ActivityResultLauncher<IntentSenderRequest> =
             registerForActivityResult(
                 ActivityResultContracts.StartIntentSenderForResult()
@@ -253,18 +274,26 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 //            expandAppbar(appbar, nameplate)
 //        }
 
-        fabEdit.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putLong(CURRENT_CARD_ID, currentCardId)
-            findNavController().navigate(com.chaplianski.bcard.R.id.action_cardsFragment_to_editCardFragment, bundle)
+        buttonEdit.setOnClickListener {
+            showEditDialog(currentCardId)
+
+//            val bundle = Bundle()
+//            bundle.putLong(CURRENT_CARD_ID, currentCardId)
+//            findNavController().navigate(
+//                com.chaplianski.bcard.R.id.action_cardsFragment_to_editCardFragment,
+//                bundle
+//            )
         }
 
+        setupEditDialog()
+
+
         // **** Share card
-        fabShare.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putLong(CURRENT_CARD_ID, currentCardId)
-            findNavController().navigate(com.chaplianski.bcard.R.id.action_cardsFragment_to_shareFragment, bundle)
+        shareButton.setOnClickListener {
+            showShareDialog(currentCardId)
         }
+
+        setupShareDialog()
 
         fabDelete.setOnClickListener {
             showDialog(currentCardId)
@@ -287,7 +316,7 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 
         // ******  Cards wheel  ********
 
-        val cardsRV: RecyclerView = view.findViewById(com.chaplianski.bcard.R.id.rv_cards_fragment_cards)
+
         val cardsPickerLayoutManager =
             CardsPickerLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val cardFragmentCardAdapter = CardsFragmentCardAdapter(cardsRV) //(listCards, cardsRV)
@@ -298,29 +327,33 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
         cardsSnapHelper.attachToRecyclerView(cardsRV)
 
         lifecycleScope.launchWhenCreated {
-            delay(500)
+//            delay(500)
             cardsRV.scrollToPosition(0)
         }
 
 
         cardsFragmentViewModel.getCards()
-
         cardsFragmentViewModel.cards.observe(this.viewLifecycleOwner) {
 
-            val listCards = it.sortedBy { it.surname }
+            var listCards = emptyList<Card>()
+            if(!it.isNullOrEmpty()){
+                listCards = it.sortedBy { it.surname }
+                cardsFragmentViewModel.getCard(listCards.first().id)
+            }
+
 
             cardFragmentCardAdapter.updateData(listCards)
-
-
-
+            Log.d("MyLog", "list card size = ${listCards.size}")
 
             // Condition not empty list cards TODO Пересмотреть что это за проверка была. Сейчас отключена
-//            if (listCards.size > 0){
-//                val currentPosition = cardsSnapHelper.getSnapPosition(cardsRV)
-//           //     listCards[currentPosition].id     // java.lang.ArrayIndexOutOfBoundsException: length=3; index=-1
-//                Log.d("MyLog", "position1 = $currentPosition, listSize1 = ${listCards.size} " )
+            if (listCards.size > 0){
+                val currentPosition = cardsSnapHelper.getSnapPosition(cardsRV)
+           //     listCards[currentPosition].id     // java.lang.ArrayIndexOutOfBoundsException: length=3; index=-1
+                Log.d("MyLog", "current position = $currentPosition" )
 //                cardsFragmentViewModel.getCard(listCards[currentPosition].id)
-//            }
+
+                Log.d("MyLog", "position1 = ${listCards.first().id}, listSize1 = ${listCards.size} " )
+            }
 
             setupDialog(cardFragmentCardAdapter, launcher)
 //            Log.updateData(listCards)
@@ -328,34 +361,37 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
             cardsPickerLayoutManager.setOnScrollStopListener(object :
                 CardsPickerLayoutManager.CardScrollStopListener {
                 override fun selectedView(view: View?) {
-                    val cardId = view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_id)
-                    val userName = view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_item_name)
+                    val cardId =
+                        view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_id)
+                    val userName =
+                        view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_item_name)
                     val userAvatar =
                         view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_uri)
 
-//                    val currentPos = cardsSnapHelper.getSnapPosition(cardsRV)
+                    Log.d("MyLog", "userName - ${userName?.text}, cardId = ${cardId?.text}")
+
+
+                    val currentPos = cardsSnapHelper.getSnapPosition(cardsRV)
 //                    if (currentPos == listCards.size){
-////                        appbar.isLiftOnScroll = false
+//                        appbar.isLiftOnScroll = false
 //                        fabSettings.visibility = View.INVISIBLE
-////                        instruction.visibility = View.VISIBLE
+//                        instruction.visibility = View.VISIBLE
 //                    setAppBarDragging(false, appbar)
 //
 //
 //                    } else {
 //                        fabSettings.visibility = View.VISIBLE
-////                        instruction.visibility = View.INVISIBLE
+//                        instruction.visibility = View.INVISIBLE
 //                        setAppBarDragging(true, appbar)
 //                    }
 
 //                    nestedScrollView.isNestedScrollingEnabled = currentPos != listCards.size
 
 
-                    if (userName?.text?.equals(null) != true && userAvatar?.text?.equals(null) != true && cardId?.text?.equals(
-                            null
-                        ) != true
-                    ) {
+                    if (userName?.text?.equals(null) != true && userAvatar?.text?.equals(null) != true && cardId?.text?.equals(null) != true) {
                         if (cardId != null) {
-                            cardsFragmentViewModel.getCard(cardId.text.toString().toLong()
+                            cardsFragmentViewModel.getCard(
+                                cardId.text.toString().toLong()
                             )
                         }
                     }
@@ -392,34 +428,36 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 //            })
 
 
-
-
             cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
 //                val userName: TextView = view.findViewById(com.chaplianski.bcard.R.id.tv_cards_fragment_name)
 //                val userAvatar: ImageView = view.findViewById(com.chaplianski.bcard.R.id.iv_cards_fragment_avatar)
-//                currentCardId = card.id
-                imageUri = card.photo
-//                userName.text = "${card.name} ${card.surname}"
-//                context?.let {
-//                    Glide.with(it).load(card.photo)
-//                        .override(150, 150)
-//                        .centerCrop()
-//                        .into(userAvatar)
-//                }
+                Log.d("MyLog", "card = $card")
 
-//                profileInfo.text = card.profileInfo
-//                profSkills.text = card.professionalSkills
+                currentCardId = card.id
+                imageUri = card.photo
+
+
+                Glide.with(this).load(card.photo)
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_portrait)
+                    .into(avatarUserInformation)
+
+                nameUserInformation.text = "${card.surname} ${card.name}"
+                specialityUserInfo.text = card.speciality
+                organizationUserInfo.text = card.organization
+                profileInfo.text = card.additionalContactInfo
+                profSkills.text = card.professionalInfo
 //                education.text = card.education
-//                workExperience.text = card.workExperience
-//                reference.text = card.reference
+                workExperience.text = card.privateInfo
+                reference.text = card.reference
             }
 
             cardFragmentCardAdapter.shortOnClickListener =
                 object : CardsFragmentCardAdapter.ShortOnClickListener {
 
-                    override fun shortClick() {
-                        findNavController().navigate(com.chaplianski.bcard.R.id.action_cardsFragment_to_editCardFragment)
-                    }
+//                    override fun shortClick() {
+//                        findNavController().navigate(com.chaplianski.bcard.R.id.action_cardsFragment_to_editCardFragment)
+//                    }
 
                     override fun shortPhoneClick(phone: String) {
                         val i = Intent(Intent.ACTION_DIAL)
@@ -461,7 +499,80 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
 
     }
 
-    private fun searchFABs(fabSearch: FloatingActionButton, searchText: EditText, fabVoice: FloatingActionButton) {
+    private fun setupEditDialog() {
+        EditCardDialog.setupListener(parentFragmentManager, this) { cardId, status ->
+            when (status) {
+                EditCardDialog.PERSON_INFO_STATUS -> {
+                    showPersonInfoDialog(cardId)
+                }
+                EditCardDialog.ADD_INFO_STATUS -> {
+                    showAdditionalInfoDialog(cardId)
+                }
+                EditCardDialog.SETTINGS_CARD_STATUS -> {
+                    showSettingsCardDialog(cardId)
+                }
+            }
+            setupPersonInfoDialog()
+            setupAdditionalDialog()
+        }
+
+    }
+
+    private fun setupAdditionalDialog() {
+        AdditionalInformationDialog.setupListener(parentFragmentManager,this){cardId, additionalInfo ->
+            Log.d("MyLog", "addInfo = $additionalInfo")
+            showEditDialog(currentCardId)
+        }
+    }
+
+    private fun setupPersonInfoDialog() {
+        PersonInformationDialog.setupListener(parentFragmentManager, this) { cardId, personInfo ->
+            Log.d("MyLog", "person info = $personInfo")
+            showEditDialog(cardId)
+        }
+    }
+
+    private fun showSettingsCardDialog(cardId: Long) {
+        CardSettingsDialog.show(parentFragmentManager, cardId)
+    }
+
+    private fun showAdditionalInfoDialog(cardId: Long) {
+        AdditionalInformationDialog.show(parentFragmentManager, cardId)
+    }
+
+    private fun showPersonInfoDialog(cardId: Long) {
+        PersonInformationDialog.show(parentFragmentManager, cardId)
+    }
+
+    private fun showEditDialog(currentCardId: Long) {
+        EditCardDialog.show(parentFragmentManager, currentCardId)
+    }
+
+    private fun setupShareDialog() {
+        ShareContactsDialog.setupListener(parentFragmentManager, this){cardId, status ->
+            when(status){
+                ShareContactsDialog.SAVE_STATUS -> {
+                    val bundle = Bundle()
+                    bundle.putLong(CURRENT_CARD_ID, currentCardId)
+                    findNavController().navigate(R.id.action_cardsFragment_to_checkCardListSaveFragment, bundle)
+                }
+                ShareContactsDialog.LOAD_STATUS -> {
+                    findNavController().navigate(R.id.action_cardsFragment_to_checkCardListLoadFragment)
+                }
+            }
+        }
+    }
+
+    private fun showShareDialog(currentCardId: Long) {
+
+        ShareContactsDialog.show(parentFragmentManager, currentCardId)
+    }
+
+    private fun searchFABs(
+        fabSearch: FloatingActionButton,
+        searchText: EditText,
+        fabVoice: FloatingActionButton
+    ) {
         fabVoice.init(20f, -430f)
 
         fabSearch.setOnClickListener {
@@ -486,7 +597,6 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
         })
         params.behavior = behavior
     }
-
 
 
     private fun setupFABs(
@@ -546,6 +656,8 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
     }
 
 
+
+
     fun SnapHelper.getSnapPosition(recyclerView: RecyclerView): Int {
         val layoutManager = recyclerView.layoutManager ?: return RecyclerView.NO_POSITION
         val snapView = findSnapView(layoutManager) ?: return RecyclerView.NO_POSITION
@@ -581,14 +693,14 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
     }
 
     fun showDialog(cardId: Long) {
-        DeleteCardFragment.show(parentFragmentManager, cardId)
+        DeleteCardDialog.show(parentFragmentManager, cardId)
     }
 
     fun setupDialog(
         cardFragmentCardAdapter: CardsFragmentCardAdapter,
         launcher: ActivityResultLauncher<IntentSenderRequest>
     ) {
-        DeleteCardFragment.setupListener(parentFragmentManager, this) {
+        DeleteCardDialog.setupListener(parentFragmentManager, this) {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
@@ -606,9 +718,9 @@ class CardsFragment : Fragment(com.chaplianski.bcard.R.layout.fragment_cards) {
     }
 
 
+
+
 }
-
-
 
 
 private fun animationMove(button: View, from: Float, to: Float): Animator {

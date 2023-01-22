@@ -30,7 +30,7 @@ class StrokeColorAdapter (private val beginStrokeColor: String) : RecyclerView.A
     var strokeColorListener: StrokeColorListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.stroke_color_item, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.text_color_item, parent, false)
         return ViewHolder(v)
     }
 

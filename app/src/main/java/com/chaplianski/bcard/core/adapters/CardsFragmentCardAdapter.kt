@@ -4,15 +4,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.chaplianski.bcard.R
+import com.chaplianski.bcard.databinding.FragmentCardsCardItemBinding
 import com.chaplianski.bcard.domain.model.Card
 
 class CardsFragmentCardAdapter(
@@ -23,7 +21,7 @@ class CardsFragmentCardAdapter(
     private var cardList = mutableListOf<Card>()
 
     interface ShortOnClickListener {
-        fun shortClick()
+//        fun shortClick()
         fun shortPhoneClick(phone: String)
         fun shortEmailClick(email: String)
         fun shortHomePhoneClick(homePhone: String)
@@ -45,15 +43,18 @@ class CardsFragmentCardAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ADD -> {
+            ADBLOCK -> {
                 val v = LayoutInflater.from(parent.context)
                     .inflate(R.layout.fragment_cards_card_add_item, parent, false)
                 AddCardViewHolder(v)
             }
             CARD -> {
-                val v = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.fragment_cards_card_item, parent, false)
-                CardViewHolder(v)
+                val binding = FragmentCardsCardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+
+//                val v = LayoutInflater.from(parent.context)
+//                    .inflate(R.layout.fragment_cards_card_item, parent, false)
+                CardViewHolder(binding)
             }
 
             else -> throw IllegalArgumentException("Unknown view type $viewType")
@@ -62,7 +63,7 @@ class CardsFragmentCardAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            ADD -> {}
+            ADBLOCK -> {}
             CARD -> {
                 (holder as CardViewHolder).onBindCard(cardList[position])
 
@@ -70,9 +71,9 @@ class CardsFragmentCardAdapter(
         }
         holder.itemView.setOnClickListener { recyclerView.smoothScrollToPosition(position) }
 
-        if (getItemViewType(position) == ADD) {
+        if (getItemViewType(position) == ADBLOCK) {
             (holder as AddCardViewHolder).itemView.setOnClickListener {
-                shortOnClickListener?.shortClick()
+//                shortOnClickListener?.shortClick()
             }
         } else {
             (holder as CardViewHolder).phone.setOnClickListener {
@@ -88,33 +89,42 @@ class CardsFragmentCardAdapter(
     }
 
     override fun getItemCount(): Int {
-        return cardList.size + 1
+        return cardList.size
     }
 
     override fun getItemViewType(position: Int): Int {
+//        val adPosition = position % 20
         return when (position) {
-            cardList.size -> ADD
+             100  -> ADBLOCK
             else -> CARD
+
         }
+
+
+
+//        return when (position) {
+//            cardList.size -> ADD
+//            else -> CARD
+//        }
     }
 
-    class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CardViewHolder(binding: FragmentCardsCardItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        val phone: TextView = itemView.findViewById(R.id.tv_card_fragment_item_phone)
-        val name: TextView = itemView.findViewById(R.id.tv_card_fragment_item_name)
-        val specialization: TextView =
-            itemView.findViewById(R.id.tv_card_fragment_item_specialization)
-        val organization: TextView = itemView.findViewById(R.id.tv_card_fragment_item_organization)
-        val homePhone: TextView = itemView.findViewById(R.id.tv_card_fragment_item_addition_phone)
-        val imageHomePhone: ImageView = itemView.findViewById(R.id.iv_card_fragment_home_phone)
-        val email: TextView = itemView.findViewById(R.id.tv_card_fragment_item_email)
-        val location: TextView = itemView.findViewById(R.id.tv_card_fragment_item_location)
-        val avatar: ImageView = itemView.findViewById(R.id.iv_card_fragment_item_avatar)
+        val phone = binding.tvCardFragmentItemAdditionPhone
+        val name = binding.tvCardFragmentItemName
+        val specialization = binding.tvCardFragmentItemSpecialization
+        val organization = binding.tvCardFragmentItemOrganization
+        val workPhone = binding.tvCardFragmentItemPhone
+        val homePhone = binding.tvCardFragmentItemAdditionPhone
+        val imageHomePhone = binding.ivCardFragmentHomePhone
+        val email = binding.tvCardFragmentItemEmail
+        val location = binding.tvCardFragmentItemLocation
+        val avatar = binding.ivCardFragmentItemAvatar
         val cardLayout: ConstraintLayout = itemView.findViewById(R.id.layout_card_fragment_card)
-        val cardId: TextView = itemView.findViewById(R.id.tv_card_fragment_id)
-        val avatarUri: TextView = itemView.findViewById(R.id.tv_card_fragment_uri)
-        val cardView: CardView = itemView.findViewById(R.id.cardview_card_fragment_card)
-        val backgroundImage: ImageView = itemView.findViewById(R.id.iv_card_fragment_card_background)
+        val cardId = binding.tvCardFragmentId
+        val avatarUri = binding.tvCardFragmentUri
+        val cardView = binding.cardviewCardFragmentCard
+        val backgroundImage = binding.ivCardFragmentCardBackground
 
 
 
@@ -123,7 +133,7 @@ class CardsFragmentCardAdapter(
             name.text = "${card.name} ${card.surname}"
             specialization.text = card.speciality
             organization.text = card.organization
-            phone.text = card.workPhone
+            workPhone.text = card.workPhone
             homePhone.text = card.homePhone
             email.text = card.email
             location.text = "${card.town}, ${card.country}"
@@ -136,7 +146,12 @@ class CardsFragmentCardAdapter(
             cardView.cardElevation = 4f
 
 //            cardView.setBackgroundResource(R.drawable.paper_035)
-            backgroundImage.background = AppCompatResources.getDrawable(itemView.context, card.cardColor)
+            backgroundImage.background = AppCompatResources.getDrawable(itemView.context, card.cardTexture)
+
+
+//            val avatarResource = this.backgroundImage.resources.getIdentifier(avatarId, "drawable", this.backgroundImage.context.packageName)
+//            backgroundImage.setImageResource(avatarResource)
+
 
 
             if (card.homePhone.isNullOrEmpty()){
@@ -163,7 +178,7 @@ class CardsFragmentCardAdapter(
 //            cardLayout.background = colorGradient
 
             // form photo
-            if (card.formPhoto == "oval") {
+            if (card.cardFormPhoto == "oval") {
                 Glide.with(itemView.context).load(avatarUri.text.toString())
 //                    .override(150, 150)
                     .centerCrop()
@@ -188,7 +203,7 @@ class CardsFragmentCardAdapter(
 
     companion object {
         private val CARD = 0
-        private val ADD = 1
+        private val ADBLOCK = 1
     }
 
 }

@@ -33,7 +33,7 @@
         android:minWidth="0dp"
         android:minHeight="0dp"
         android:text="@string/check_all"
-        android:buttonTint="@color/blue_main"
+        android:buttonTint="@color/light_brown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -44,7 +44,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/blue_main"
+        android:background="@color/light_brown"
         android:layout_marginTop="8dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -69,7 +69,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBox_check_card_list_fragment_check_all"
         app:layout_constraintVertical_bias="0.5"
-        tools:listitem="@layout/item_card_list_share_fragment" />
+        tools:listitem="@layout/item_card_list_share_contact" />
 
     <LinearLayout
         android:id="@+id/layout_check_card_list_fragment_buttons"
@@ -86,26 +86,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_check_card_fragment_save"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             style="@style/BCard.Button"
             android:layout_weight="1"
-            android:backgroundTint="@color/blue_main"
+            android:background="@drawable/square_button"
             android:text="@string/save" />
 
         <View
             android:layout_width="16dp"
             android:layout_height="0dp" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_check_card_fragment_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             style="@style/BCard.Button"
             android:layout_weight="1"
-            android:backgroundTint="@color/blue_main"
+            android:background="@drawable/square_button"
             android:text="@string/cancel" />
     </LinearLayout>
 

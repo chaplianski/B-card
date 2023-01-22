@@ -30,7 +30,8 @@ class CardsFragmentViewModel @Inject constructor(
     private val getCardsUseCase: GetCardsUseCase,
     private val addCardUseCase: AddCardUseCase,
     private val deleteCardUseCase: DeleteCardUseCase,
-    private val getCardUseCase: GetCardUseCase
+    private val getCardUseCase: GetCardUseCase,
+
 ) : ViewModel() {
 
     private var _cards = MutableLiveData<List<Card>>()
@@ -48,6 +49,7 @@ class CardsFragmentViewModel @Inject constructor(
     }
 
     fun getCard(cardId: Long){
+        Log.d("MyLog", "card id = $cardId")
         viewModelScope.launch(Dispatchers.IO) {
             val card = getCardUseCase.execute(cardId)
             _currentCard.postValue(card)
@@ -65,12 +67,9 @@ class CardsFragmentViewModel @Inject constructor(
         viewModelScope.cancel()
     }
 
-    fun deleteCard(cardId: Long
-    ) {
+    fun deleteCard(cardId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteCardUseCase.execute(cardId)
-
-
         }
     }
 

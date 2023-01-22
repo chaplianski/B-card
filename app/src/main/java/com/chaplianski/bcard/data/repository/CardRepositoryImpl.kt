@@ -13,7 +13,17 @@ class CardRepositoryImpl @Inject constructor(private val cardStorageImpl: CardSt
     }
 
     override fun getCards(): List<Card> {
-        return cardStorageImpl.getCards().map { it.cardMapDataToDomain() }
+        val addedCardList = mutableListOf<Card>()
+        val cardList = cardStorageImpl.getCards().map { it.cardMapDataToDomain() }
+        var cardCount = 0
+        cardList.forEach {
+            if (cardCount%20 == 0){
+                addedCardList.add(Card(name = "advertisement"))
+            }
+            addedCardList.add(it)
+            cardCount++
+        }
+        return cardList
     }
 
 

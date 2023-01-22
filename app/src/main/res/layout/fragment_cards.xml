@@ -168,7 +168,7 @@
 
 
                 <ImageButton
-                    android:id="@+id/fab_cards_fragment_add_card"
+                    android:id="@+id/bt_cards_fragment_add_card"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:background="@drawable/button_over"
@@ -214,7 +214,7 @@
                     app:tint="@color/black" />
 
                 <ImageButton
-                    android:id="@+id/fab_cards_fragment_share"
+                    android:id="@+id/bt_cards_fragment_share"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginBottom="16dp"
@@ -348,6 +348,11 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/paper_015"
             android:orientation="vertical">
 
             <include

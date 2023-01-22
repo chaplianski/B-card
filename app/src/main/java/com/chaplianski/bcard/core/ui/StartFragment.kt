@@ -27,7 +27,7 @@ class StartFragment : Fragment() {
         val startButton = view.findViewById<Button>(R.id.bt_start_fragment_1)
 
         startButton.setOnClickListener {
-            findNavController().navigate(R.id.action_startFragment_to_loginFragment)
+//            findNavController().navigate(R.id.action_startFragment_to_loginFragment)
         }
     }
 

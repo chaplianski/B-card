@@ -20,15 +20,14 @@ fun Card.cardMapDomainToData(): CardDTO {
         organization = organization,
         town = town,
         country = country,
-        profileInfo = profileInfo,
-        education = education,
-        professionalSkills = professionalSkills,
-        workExperience = workExperience,
+        additionalContactInfo = additionalContactInfo,
+        professionalInfo = professionalInfo,
+        privateInfo = privateInfo,
         reference = reference,
-        cardColor = cardColor,
-        strokeColor = strokeColor,
-        cornerRound = cornerRound,
-        formPhoto = formPhoto
+        cardTexture = cardTexture,
+        cardTextColor = cardTextColor,
+        isCardCorner = isCardCorner,
+        cardFormPhoto = cardFormPhoto
     )
 }
 
@@ -46,15 +45,14 @@ fun CardDTO.cardMapDataToDomain(): Card {
         organization = organization,
         town = town,
         country = country,
-        profileInfo = profileInfo,
-        education = education,
-        professionalSkills = professionalSkills,
-        workExperience = workExperience,
+        additionalContactInfo = additionalContactInfo,
+        professionalInfo = professionalInfo,
+        privateInfo = privateInfo,
         reference = reference,
-        cardColor = cardColor,
-        strokeColor = strokeColor,
-        cornerRound = cornerRound,
-        formPhoto = formPhoto
+        cardTexture = cardTexture,
+        cardTextColor = cardTextColor,
+        isCardCorner = isCardCorner,
+        cardFormPhoto = cardFormPhoto
     )
 }
 

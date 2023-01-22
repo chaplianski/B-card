@@ -5,6 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+
     <ImageView
         android:id="@+id/iv_stroke_color_item"
         android:layout_width="50dp"

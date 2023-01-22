@@ -18,7 +18,6 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.factories.ShareFragmentViewModelFactory
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
@@ -82,7 +81,7 @@ class ShareFragment : Fragment() {
             if (cardId != null) {
                 bundle.putLong(CURRENT_CARD_ID, cardId)
             }
-            findNavController().navigate(R.id.action_shareFragment_to_checkCardListFragment, bundle)
+//            findNavController().navigate(R.id.action_shareFragment_to_checkCardListFragment, bundle)
 
 //            if (cardId != null) {
 //                shareFragmentViewModel.getCard(cardId)
@@ -108,7 +107,7 @@ class ShareFragment : Fragment() {
         }
 
         loadContact.setOnClickListener {
-            findNavController().navigate(R.id.action_shareFragment_to_checkCardListLoadFragment)
+//            findNavController().navigate(R.id.action_shareFragment_to_checkCardListLoadFragment)
 //            val intent = Intent()
 //                .setType("*/*")
 //                .setAction(Intent.ACTION_GET_CONTENT)
@@ -117,7 +116,7 @@ class ShareFragment : Fragment() {
         }
 
         saveQR.setOnClickListener {
-            findNavController().navigate(R.id.action_shareFragment_to_QRFragment)
+//            findNavController().navigate(R.id.action_shareFragment_to_QRFragment)
         }
 
 //        shareFragmentViewModel.loadedCardList.observe(this.viewLifecycleOwner){
@@ -238,16 +237,16 @@ class ShareFragment : Fragment() {
         vcard.revision = Revision.now()
 
 
-        val profile = vcard.addExtendedProperty(PROFIL_INFO, card.profileInfo)
-        val skills = vcard.addExtendedProperty(PROFESSIONAL_SKILLS, card.professionalSkills)
+        val profile = vcard.addExtendedProperty(PROFIL_INFO, card.additionalContactInfo)
+        val skills = vcard.addExtendedProperty(PROFESSIONAL_SKILLS, card.professionalInfo)
         val education = vcard.addExtendedProperty(EDUCATION, card.education)
-        val workExperience = vcard.addExtendedProperty(WORK_EXPERIENCE, card.workExperience)
+        val workExperience = vcard.addExtendedProperty(WORK_EXPERIENCE, card.privateInfo)
         val reference = vcard.addExtendedProperty(REFERENCE, card.reference)
 
-        val cardColor = vcard.addExtendedProperty(CARD_COLOR, card.cardColor.toString())
-        val strokeColor = vcard.addExtendedProperty(STROKE_COLOR, card.strokeColor)
-        val cardCorner = vcard.addExtendedProperty(CARD_CORNER, card.cornerRound.toString())
-        val formPhoto = vcard.addExtendedProperty(FORM_PHOTO, card.formPhoto)
+        val cardColor = vcard.addExtendedProperty(CARD_COLOR, card.cardTexture.toString())
+        val strokeColor = vcard.addExtendedProperty(STROKE_COLOR, card.cardTextColor)
+        val cardCorner = vcard.addExtendedProperty(CARD_CORNER, card.isCardCorner.toString())
+        val formPhoto = vcard.addExtendedProperty(FORM_PHOTO, card.cardFormPhoto)
 
         profile.group = ADD_INFO
         skills.group = ADD_INFO

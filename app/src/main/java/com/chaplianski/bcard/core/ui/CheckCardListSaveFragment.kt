@@ -11,12 +11,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
 import com.chaplianski.bcard.core.factories.CheckCardListFragmentViewModelFactory
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
@@ -68,6 +65,7 @@ class CheckCardListSaveFragment : Fragment() {
 
         val cardRV = binding.rvCheckCardFragment
         val cardListAdapter = CardListShareFragmentAdapter()
+        val cardAdapter = CardListShareFragmentAdapter()
         val saveButton = binding.btCheckCardFragmentSave
         val cancelButton = binding.btCheckCardFragmentCancel
         val quantityCheckedCards = binding.tvCheckCardListFragmentQuantityCards
@@ -80,36 +78,50 @@ class CheckCardListSaveFragment : Fragment() {
 
         checkCardListFragmentViewModel.getCardList()
 
-        checkCardListFragmentViewModel.cardList.observe(this.viewLifecycleOwner){
+        checkCardListFragmentViewModel.cardList.observe(this.viewLifecycleOwner){ cardList ->
 
-            val cardList = it.sortedBy { it.surname }
             var positionCurrentCheckedCard = 0
-            if (currentCardId != null){
-                cardList.forEachIndexed { index, cardItem ->
-                    if (cardItem.id == currentCardId) {
-                        cardItem.isChecked = true
-                        positionCurrentCheckedCard = index
+            val fullContactList = mutableListOf<ContactContent>()
+            val letterList =
+                cardList.sortedBy { it.surname }.map { it.surname.first().uppercaseChar() }.toSet()
+            letterList.forEach { letter ->
+                cardList.sortedBy { it.surname }.forEachIndexed { index, card ->
+                    if (letter == card.surname.first().uppercaseChar()) {
+                        if (!fullContactList.contains(ContactContent.Letter(letter))){
+                            fullContactList.add(ContactContent.Letter(letter))
+                        }
+                        if (card.id == currentCardId){
+                            card.isChecked = true
+                            positionCurrentCheckedCard = index
+                        }
+                        fullContactList.add(ContactContent.Contact(card))
                     }
                 }
                 checkedCardCount = 1
                 saveButton.text = "Save [$checkedCardCount]"
-//                quantityCheckedCards.text = "$checkedCardCount cards"
             }
-
             cardRV.layoutManager = LinearLayoutManager(context)
-            cardRV.adapter = cardListAdapter
-            cardListAdapter.updateList(cardList)
+            cardRV.adapter = cardAdapter
+            cardAdapter.updateList(fullContactList)
+
+
+
+
+
+//            cardListAdapter.updateList(cardList)
             cardRV.scrollToPosition(positionCurrentCheckedCard)
 
             val listCard = mutableListOf<Card>()
 
-            cardListAdapter.checkBoxListener = object : CardListShareFragmentAdapter.CheckBoxListener{
-                override fun onCheck(card: Card) {
+            cardAdapter.checkBoxListener = object : CardListShareFragmentAdapter.CheckBoxListener{
+                override fun onCheck(card: ContactContent.Contact) {
+                    Log.d("MyLog", "check $checkedCardCount")
                     cardList.forEach { cardItem ->
-                        if (cardItem.id == card.id) {
+                        if (cardItem.id == card.card.id) {
                             cardItem.isChecked = !cardItem.isChecked
                             if (cardItem.isChecked) checkedCardCount++ else checkedCardCount--
                         }
+
 //                        quantityCheckedCards.text = "$checkedCardCount cards"
                         saveButton.text = "Save [$checkedCardCount]"
                     }
@@ -148,19 +160,46 @@ class CheckCardListSaveFragment : Fragment() {
 
             allCheckBox.setOnClickListener {
                if (!checkAllFlag){
-                    cardList.forEach { cardItem ->
-                        cardItem.isChecked = true
-                    }
+                   fullContactList.forEach { item ->
+                       if (item is ContactContent.Contact){
+                           item.card.isChecked = true
+                       }
+                   }
+//                    cardList.forEach { cardItem ->
+//                        cardItem.isChecked = true
+//                    }
                     checkedCardCount = cardList.size
                } else {
-                    cardList.forEach { cardItem ->
-                        cardItem.isChecked = false
-                    }
+                   fullContactList.forEach { item ->
+                       if (item is ContactContent.Contact){
+                           item.card.isChecked = false
+                       }
+                   }
+//                   cardList.forEach { cardItem ->
+//                        cardItem.isChecked = false
+//                    }
                    checkedCardCount = 0
                }
                 Log.d("MyLog", "${cardList.map { it.isChecked }}")
                 checkAllFlag = !checkAllFlag
-                cardListAdapter.updateList(cardList.map { it.copy() })
+
+                fullContactList.map {
+                    if (it is ContactContent.Contact) ContactContent.Contact(it.card.copy())
+                }
+
+                val newList = mutableListOf<ContactContent>()
+                fullContactList.forEach {
+                    if (it is ContactContent.Contact) {
+                        val newContact = ContactContent.Contact(it.card.copy())
+                        newList.add(newContact)
+                    } else newList.add(it)
+                }
+
+
+//                cardListAdapter.updateList(fullContactList)
+                cardListAdapter.updateList(newList)
+//                cardListAdapter.notifyDataSetChanged()
+//                cardAdapter.updateList(cardList.map { it.copy() })
 //                quantityCheckedCards.text = "$checkedCardCount cards"
                 saveButton.text = "Save [$checkedCardCount]"
             }
@@ -168,7 +207,7 @@ class CheckCardListSaveFragment : Fragment() {
         }
 
         cancelButton.setOnClickListener {
-            findNavController().navigate(R.id.action_checkCardListSaveFragment_to_shareFragment)
+//            findNavController().navigate(R.id.action_checkCardListSaveFragment_to_shareFragment)
         }
 
 
@@ -242,20 +281,20 @@ class CheckCardListSaveFragment : Fragment() {
         vcard.revision = Revision.now()
 
 
-        val profile = vcard.addExtendedProperty(ShareFragment.PROFIL_INFO, card.profileInfo)
-        val skills = vcard.addExtendedProperty(ShareFragment.PROFESSIONAL_SKILLS, card.professionalSkills)
-        val education = vcard.addExtendedProperty(ShareFragment.EDUCATION, card.education)
-        val workExperience = vcard.addExtendedProperty(ShareFragment.WORK_EXPERIENCE, card.workExperience)
+        val profile = vcard.addExtendedProperty(ShareFragment.PROFIL_INFO, card.additionalContactInfo)
+        val skills = vcard.addExtendedProperty(ShareFragment.PROFESSIONAL_SKILLS, card.professionalInfo)
+//        val education = vcard.addExtendedProperty(ShareFragment.EDUCATION, card.education)
+        val workExperience = vcard.addExtendedProperty(ShareFragment.WORK_EXPERIENCE, card.privateInfo)
         val reference = vcard.addExtendedProperty(ShareFragment.REFERENCE, card.reference)
 
-        val cardColor = vcard.addExtendedProperty(ShareFragment.CARD_COLOR, card.cardColor.toString())
-        val strokeColor = vcard.addExtendedProperty(ShareFragment.STROKE_COLOR, card.strokeColor)
-        val cardCorner = vcard.addExtendedProperty(ShareFragment.CARD_CORNER, card.cornerRound.toString())
-        val formPhoto = vcard.addExtendedProperty(ShareFragment.FORM_PHOTO, card.formPhoto)
+        val cardColor = vcard.addExtendedProperty(ShareFragment.CARD_COLOR, card.cardTexture.toString())
+        val strokeColor = vcard.addExtendedProperty(ShareFragment.STROKE_COLOR, card.cardTextColor)
+        val cardCorner = vcard.addExtendedProperty(ShareFragment.CARD_CORNER, card.isCardCorner.toString())
+        val formPhoto = vcard.addExtendedProperty(ShareFragment.FORM_PHOTO, card.cardFormPhoto)
 
         profile.group = ShareFragment.ADD_INFO
         skills.group = ShareFragment.ADD_INFO
-        education.group = ShareFragment.ADD_INFO
+//        education.group = ShareFragment.ADD_INFO
         workExperience.group = ShareFragment.ADD_INFO
         reference.group = ShareFragment.ADD_INFO
         cardColor.group = ShareFragment.CARD_SETTINGS

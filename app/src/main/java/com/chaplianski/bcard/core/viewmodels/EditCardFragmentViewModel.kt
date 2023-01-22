@@ -22,7 +22,6 @@ import javax.inject.Inject
 
 
 class EditCardFragmentViewModel @Inject constructor(
-//    application: Application,
     private val addCardUseCase: AddCardUseCase,
     private val getCardUseCase: GetCardUseCase,
     private val updateCardUseCase: UpdateCardUseCase

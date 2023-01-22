@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.RadioGroup.OnCheckedChangeListener
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -18,11 +17,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.chaplianski.bcard.R
-import com.chaplianski.bcard.core.adapters.StrokeColorAdapter
 import com.chaplianski.bcard.core.factories.EditCardFragmentViewModelFactory
 import com.chaplianski.bcard.core.helpers.PhotoPicker
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
@@ -53,6 +49,7 @@ class EditCardFragment : Fragment() {
     var cardColorVariant = -1
     var strokeColorVariant = ""
     var avatarUri = ""
+    var checkedColorTextVariant = 0
 
     override fun onAttach(context: Context) {
         (context.applicationContext as DaggerApp)
@@ -113,7 +110,7 @@ class EditCardFragment : Fragment() {
         val cardSettings = binding.cardSettings.clCardSettings
         val cardSettingsButton: TextView = binding.tvEditFragmentProfileCardSettings
 //        val cardColors: RecyclerView = binding.cardSettings.rvCardSettingsColor
-        val strokeColors: RecyclerView = binding.cardSettings.rvCardSettingsTextColor
+        val strokeColors = binding.cardSettings.rgCardSettingsTextColor
         val cornerRound: RadioGroup = binding.cardSettings.rgCardSettingsCornersVariant
         val formAvatar: RadioGroup = binding.cardSettings.rgCardSettingsFormPhoto
         val cardTexture1: RadioGroup = binding.cardSettings.radiogroupCardSettingsCardTexture1
@@ -149,15 +146,15 @@ class EditCardFragment : Fragment() {
             countryText.setText(card.country)
             specialityText.setText(card.speciality)
             organizationText.setText(card.organization)
-            profileInfo.setText(card.profileInfo)
-            profSkills.setText(card.professionalSkills)
-            education.setText(card.education)
-            workExperience.setText(card.workExperience)
+            profileInfo.setText(card.additionalContactInfo)
+            profSkills.setText(card.professionalInfo)
+//            education.setText(card.education)
+            workExperience.setText(card.privateInfo)
             reference.setText(card.reference)
-            checkedCardTextureVariant = card.cardColor
-            strokeColorVariant = card.strokeColor
-            checkedFormAvatarVariant = card.formPhoto
-            checkedCornerSizeVariant = card.cornerRound
+            checkedCardTextureVariant = card.cardTexture
+            strokeColorVariant = card.cardTextColor
+            checkedFormAvatarVariant = card.cardFormPhoto
+//            checkedCornerSizeVariant = card.isCardCorner
 
             Log.d("MyLog", "cardTexture = $checkedCardTextureVariant")
 
@@ -259,11 +256,11 @@ class EditCardFragment : Fragment() {
                     educationValue,
                     profSkillsValue,
                     workExperienceValue,
-                    referenceValue,
-                    cardColorValue,
-                    strokeColorValue,
-                    cardCornerValue,
-                    formCardValue
+//                    referenceValue,
+//                    cardColorValue,
+//                    strokeColorValue,
+//                    cardCornerValue,
+//                    formCardValue
                 )
                 Log.d("MyLog", "card = $newCard")
 
@@ -299,7 +296,7 @@ class EditCardFragment : Fragment() {
         cardTexture2: RadioGroup,
         cornerRound: RadioGroup,
         formAvatar: RadioGroup,
-        strokeColors: RecyclerView
+        strokeColors: RadioGroup
     ) {
 
         val texture1 = view?.findViewById<RadioButton>(R.id.radioButton_card_texture_1)
@@ -317,16 +314,24 @@ class EditCardFragment : Fragment() {
         val cardTextureImage = view?.findViewById<ImageView>(R.id.iv_card_settings_card_texture)
         val cardViewTextureImage = view?.findViewById<CardView>(R.id.cardView_card_settings_card_texture)
         val cardAvatar = view?.findViewById<ImageView>(R.id.iv_card_settings_avatar)
+        val cardTextSchema = view?.findViewById<RadioGroup>(R.id.rg_card_settings_text_color)
+        val textSchemaImage = view?.findViewById<ImageView>(R.id.iv_card_settings_text_schema)
+
 
 //        texture1?.isChecked = true
         Log.d("MyLog", "cardCheckedVariant = $checkedCardTextureVariant")
-        if (checkedCardTextureVariant != 0){
-            cardTextureImage?.background = AppCompatResources.getDrawable(requireContext(), checkedCardTextureVariant)
+        if (checkedCardTextureVariant == 0){
+            cardTextureImage?.background = AppCompatResources.getDrawable(requireContext(), R.drawable.paper_07)
         }
+
+//        else {
+//            cardTextureImage?.background = AppCompatResources.getDrawable(requireContext(), R.drawable.paper_016)
+//        }
 
 
 
         var isChecking = true
+//        var currentTexture = 0
         cardTexture1.setOnCheckedChangeListener { group, checkedId ->
 
             val checkedItem = group.checkedRadioButtonId
@@ -347,8 +352,13 @@ class EditCardFragment : Fragment() {
                 else -> {R.drawable.paper_034}
             }
             cardTextureImage?.background = AppCompatResources.getDrawable(requireContext(), checkedCardTextureVariant)
-
+            Log.d("MyLog",
+                context?.resources?.getResourceEntryName(checkedCardTextureVariant).toString()
+            )
         }
+
+
+
 
         cardTexture2.setOnCheckedChangeListener { group, checkedId ->
 
@@ -373,7 +383,9 @@ class EditCardFragment : Fragment() {
                 }
             }
             cardTextureImage?.background = AppCompatResources.getDrawable(requireContext(), checkedCardTextureVariant)
-
+            Log.d("MyLog",
+                context?.resources?.getResourceEntryName(checkedCardTextureVariant).toString()
+            )
         }
 
 
@@ -394,28 +406,31 @@ class EditCardFragment : Fragment() {
             }
         }
 
-
-//        val cardColorsAdapter = CardColorAdapter(cardColorVariant)
-//        cardColors.layoutManager = GridLayoutManager(context, 2)
-//        cardColors.adapter = cardColorsAdapter
-//
-//        cardColorsAdapter.colorCardClickListener =
-//            object : CardColorAdapter.ColorCardClickListener {
-//                override fun onShortClick(texture: Int) {
-//                    cardColorVariant = texture
-//                    Log.d("MyLog", "texture = $texture")
-//                }
-//            }
+        cardTextSchema?.setOnCheckedChangeListener { group, checkedId ->
+            checkedColorTextVariant = when (checkedId) {
+                R.id.rg_card_settings_text_color_black -> R.color.black
+                R.id.rg_card_settings_text_color_purple -> R.color.purple_700
+                R.id.rg_card_settings_text_color_green -> R.color.green
+                R.id.rg_card_settings_text_color_violet -> R.color.violet
+                R.id.rg_card_settings_text_color_red -> R.color.red
+                R.id.rg_card_settings_text_color_dark_yellow -> R.color.dark_yellow
+                R.id.rg_card_settings_text_color_light_yellow -> R.color.light_yellow
+                else -> {R.color.black}
+            }
+//            textSchemaImage?.tint = AppCompatResources.getDrawable(requireContext(), checkedColorTextVariant)
+            getContext()?.getResources()?.getColor(checkedColorTextVariant)
+                ?.let { textSchemaImage?.setColorFilter(it) };
+        }
 
         val smallCorner = view?.findViewById<RadioButton>(R.id.cb_corner_small)
-        val middleCorner = view?.findViewById<RadioButton>(R.id.cb_corner_middle)
+//        val middleCorner = view?.findViewById<RadioButton>(R.id.cb_corner_middle)
         val bigCorner = view?.findViewById<RadioButton>(R.id.cb_corner_big)
         val withoutCorner = view?.findViewById<RadioButton>(R.id.cb_corner_without)
 
         if (checkedCornerSizeVariant != 1F) {
             when (checkedCornerSizeVariant) {
                 5F -> smallCorner?.isChecked = true
-                25F -> middleCorner?.isChecked = true
+//                25F -> middleCorner?.isChecked = true
                 50F -> bigCorner?.isChecked = true
                 else -> withoutCorner?.isChecked = true
             }
@@ -426,7 +441,7 @@ class EditCardFragment : Fragment() {
         cornerRound.setOnCheckedChangeListener { group, checkedId ->
             checkedCornerSizeVariant = when (checkedId) {
                 R.id.cb_corner_small -> 5F
-                R.id.cb_corner_middle -> 25F
+//                R.id.cb_corner_middle -> 25F
                 R.id.cb_corner_big -> 50F
                 else -> 0F
             }
@@ -454,16 +469,16 @@ class EditCardFragment : Fragment() {
             }
         }
 
-        val strokeColorsAdapter = StrokeColorAdapter(strokeColorVariant)
-        strokeColors.layoutManager = GridLayoutManager(context, 6)
-        strokeColors.adapter = strokeColorsAdapter
+//        val strokeColorsAdapter = StrokeColorAdapter(strokeColorVariant)
+//        strokeColors.layoutManager = GridLayoutManager(context, 6)
+//        strokeColors.adapter = strokeColorsAdapter
 
-        strokeColorsAdapter.strokeColorListener = object : StrokeColorAdapter.StrokeColorListener {
-            override fun onShortClick(strokeColor: String) {
-                strokeColorVariant = strokeColor
-            }
-
-        }
+//        strokeColorsAdapter.strokeColorListener = object : StrokeColorAdapter.StrokeColorListener {
+//            override fun onShortClick(strokeColor: String) {
+//                strokeColorVariant = strokeColor
+//            }
+//
+//        }
     }
 
 

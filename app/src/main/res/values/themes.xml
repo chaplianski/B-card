@@ -68,6 +68,7 @@
         <item name="backgroundTint">@color/transparent</item>
         <item name="android:textColor">@color/black</item>
         <item name="boxStrokeColor">@color/light_brown</item>
+        <item name="startIconTint">@color/light_brown</item>
         <item name="boxStrokeWidth">2dp</item>
         <item name="android:fontFamily">@font/bold</item>
         <item name="cornerFamily">rounded</item>
