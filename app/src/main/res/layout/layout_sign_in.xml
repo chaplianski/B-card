@@ -44,7 +44,6 @@
             android:layout_height="wrap_content"
             android:hint="Login"
             android:layout_marginTop="10dp"
-
             app:startIconTint="@color/light_brown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -83,10 +82,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:inputType="textPersonName" />
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
+        <TextView
+            android:id="@+id/tv_layout_sign_in_error"
+            style="@style/SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email or password is incorrect"
+            android:textColor="@color/accent_3"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/cb_layout_sign_in_remember"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otf_layout_sign_in_password"
+            app:layout_constraintVertical_bias="0.5" />
 
         <CheckBox
             android:id="@+id/cb_layout_sign_in_remember"

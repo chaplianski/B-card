@@ -1,11 +1,13 @@
 package com.chaplianski.bcard.core.adapters
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -30,7 +32,7 @@ class CardsFragmentCardAdapter(
     var shortOnClickListener: ShortOnClickListener? = null
 
     fun updateData(list: List<Card>) {
-        Log.d("MyLog", "list = $list")
+//        Log.d("MyLog", "list = $list")
         val diffCallback = CardsDiffCallback(cardList, list)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 //        cardList = list as MutableList<Card>
@@ -117,8 +119,11 @@ class CardsFragmentCardAdapter(
         val workPhone = binding.tvCardFragmentItemPhone
         val homePhone = binding.tvCardFragmentItemAdditionPhone
         val imageHomePhone = binding.ivCardFragmentHomePhone
+        val imageWorkPhone = binding.ivCardFragmentWorkPhone
         val email = binding.tvCardFragmentItemEmail
+        val imageEmail = binding.ivCardFragmentEmail
         val location = binding.tvCardFragmentItemLocation
+        val imageLocation = binding.ivCardFragmentLocation
         val avatar = binding.ivCardFragmentItemAvatar
         val cardLayout: ConstraintLayout = itemView.findViewById(R.id.layout_card_fragment_card)
         val cardId = binding.tvCardFragmentId
@@ -140,42 +145,75 @@ class CardsFragmentCardAdapter(
             cardId.text = card.id.toString()
             avatarUri.text = card.photo.toString()
 
+            Log.d("MyLog", "card town  = ${card.town} ${card.town.isEmpty()}, card country = ${card.country}")
+            when {
+                card.town.isEmpty() && card.country.isNotEmpty() -> location.text = card.country
+                card.town.isNotEmpty() && card.country.isEmpty() -> location.text = card.town
+                card.town.isNotEmpty() && card.country.isNotEmpty() -> {
+                    location.text = "${card.town}, ${card.country}"
+                }
+                else -> {
+                    location.isVisible = false
+                    imageLocation.isVisible = false
+                }
+            }
+
+
 //            itemView.background = itemView.context.getDrawable(R.drawable.paper_035)
 //            cardView.background = itemView.context.getDrawable(R.drawable.paper_035)
 //            cardView.setCardBackgroundResource(ContextCompat.getColor(itemView.context, R.drawable.paper_035))
             cardView.cardElevation = 4f
 
 //            cardView.setBackgroundResource(R.drawable.paper_035)
-            backgroundImage.background = AppCompatResources.getDrawable(itemView.context, card.cardTexture)
+            val textureResource = backgroundImage.resources.getIdentifier(card.cardTexture, "drawable", backgroundImage.context.packageName)
+            backgroundImage.setImageResource(textureResource)
+//            backgroundImage.background = AppCompatResources.getDrawable(itemView.context, card.cardTexture)
 
+//            val currentCardTextColor = card.cardTextColor.ifEmpty { "#ff000000" }
+            val currentCardTextColor = card.cardTextColor
+            name.setTextColor(Color.parseColor(currentCardTextColor))
+            specialization.setTextColor(Color.parseColor(currentCardTextColor))
+            organization.setTextColor(Color.parseColor(currentCardTextColor))
+            workPhone.setTextColor(Color.parseColor(currentCardTextColor))
+            homePhone.setTextColor(Color.parseColor(currentCardTextColor))
+            email.setTextColor(Color.parseColor(currentCardTextColor))
+            location.setTextColor(Color.parseColor(currentCardTextColor))
+            val currentColor = Color.parseColor(currentCardTextColor)
+
+
+
+//            name.setTextColor(Color.parseColor(card.cardTextColor))
+//            specialization.setTextColor(Color.parseColor(card.cardTextColor))
+//            organization.setTextColor(Color.parseColor(card.cardTextColor))
+//            workPhone.setTextColor(Color.parseColor(card.cardTextColor))
+//            homePhone.setTextColor(Color.parseColor(card.cardTextColor))
+//            email.setTextColor(Color.parseColor(card.cardTextColor))
+//            location.setTextColor(Color.parseColor(card.cardTextColor))
+//            val currentColor = Color.parseColor(card.cardTextColor)
+            imageHomePhone.setColorFilter(currentColor)
+            imageWorkPhone.setColorFilter(currentColor)
+            imageEmail.setColorFilter(currentColor)
+            imageLocation.setColorFilter(currentColor)
 
 //            val avatarResource = this.backgroundImage.resources.getIdentifier(avatarId, "drawable", this.backgroundImage.context.packageName)
 //            backgroundImage.setImageResource(avatarResource)
 
-
+//            Log.d("MyLog", "card home phone  = ${card.homePhone} ${card.homePhone.isEmpty()}")
 
             if (card.homePhone.isNullOrEmpty()){
                 homePhone.visibility = View.GONE
                 imageHomePhone.visibility = View.GONE
             }
-//            val colorGradient = GradientDrawable(
-//                GradientDrawable.Orientation.TOP_BOTTOM,
-//                null
-//            )
 
+            if (card.workPhone.isNullOrEmpty()){
+                workPhone.visibility = View.GONE
+                imageWorkPhone.visibility = View.GONE
+            }
 
-//            val colorGradient = GradientDrawable(
-//                GradientDrawable.Orientation.TOP_BOTTOM,
-//                intArrayOf(
-//                    itemView.context.resources.getColor(R.color.white),
-//                    card.cardColor.toColorInt(),
-//                    itemView.context.resources.getColor(R.color.white)
-//                )
-//            )
-
-//            colorGradient.cornerRadius = card.cornerRound
-//            colorGradient.setStroke(20, card.strokeColor.toColorInt())
-//            cardLayout.background = colorGradient
+            if (card.email.isNullOrEmpty()){
+                email.visibility = View.GONE
+                imageEmail.visibility = View.GONE
+            }
 
             // form photo
             if (card.cardFormPhoto == "oval") {
@@ -198,8 +236,6 @@ class CardsFragmentCardAdapter(
     class AddCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     }
-
-
 
     companion object {
         private val CARD = 0

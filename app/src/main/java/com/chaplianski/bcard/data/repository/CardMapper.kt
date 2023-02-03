@@ -59,15 +59,19 @@ fun CardDTO.cardMapDataToDomain(): Card {
 fun User.userMapDomainToData(): UserDTO {
     return UserDTO(
         id = id,
-        email = email,
-        password = password
+        login = login,
+        password = password,
+        secretQuestion = secretQuestion,
+        secretAnswer = secretAnswer
     )
 }
 
 fun UserDTO.userMapDataToDomain(): User {
     return User(
         id = id,
-        email = email,
-        password = password
+        login = login,
+        password = password,
+        secretQuestion = secretQuestion,
+        secretAnswer = secretAnswer
     )
 }

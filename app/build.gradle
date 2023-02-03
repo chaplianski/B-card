@@ -89,5 +89,9 @@ dependencies {
 
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
 
+    implementation 'me.grantland:autofittextview:0.2.1'
+
+    // Load bar
+    implementation 'com.airbnb.android:lottie:5.2.0'
 
 }

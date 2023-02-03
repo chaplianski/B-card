@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey
 data class UserDTO(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val email: String,
-    val password: String
+    val login: String,
+    val password: String,
+    val secretQuestion: String,
+    val secretAnswer: String
 )

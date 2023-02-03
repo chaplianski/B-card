@@ -17,4 +17,12 @@ class UserStorageImpl @Inject constructor(): UserStorage {
     override fun checkUser(userDTO: UserDTO): Long {
        return cardDao.checkCurrentUser(userDTO)
     }
+
+    override fun getSecretQuestion(login: String): UserDTO? {
+        return cardDao.getSecretQuestion(login)
+    }
+
+    override fun updateUser(userDTO: UserDTO) {
+        return  cardDao.updateUser(userDTO)
+    }
 }

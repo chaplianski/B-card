@@ -41,7 +41,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentRegistrationBinding.inflate(inflater, container, false)
         return binding.root
@@ -97,7 +97,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
     fun registerUser(email: String, password: String){
 
-        registrationFragmentViewModel.addUser(email, password)
+//        registrationFragmentViewModel.addUser(email, password)
 
 
 

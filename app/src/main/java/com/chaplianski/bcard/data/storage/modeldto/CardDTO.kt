@@ -23,9 +23,9 @@ data class CardDTO(
     val professionalInfo: String = "",
     val privateInfo: String = "",
     val reference: String = "",
-    val cardTexture: Int = 0,
+    val cardTexture: String = "",
     val cardTextColor: String = "#0097A7",
-    val isCardCorner: Float = 0F,
+    val isCardCorner: Boolean = false,
     val cardFormPhoto: String = "oval",
     var isChecked: Boolean = false
 

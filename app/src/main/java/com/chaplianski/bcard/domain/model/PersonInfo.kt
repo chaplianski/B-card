@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PersonInfo(
-    val id: Long = 0,
+    var id: Long = 0,
     val userId: Long = 0,
     val name: String = "",
     val surname: String = "",

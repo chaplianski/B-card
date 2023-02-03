@@ -15,10 +15,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chaplianski.bcard.domain.model.Card
-import com.chaplianski.bcard.domain.usecases.AddCardUseCase
-import com.chaplianski.bcard.domain.usecases.DeleteCardUseCase
-import com.chaplianski.bcard.domain.usecases.GetCardUseCase
-import com.chaplianski.bcard.domain.usecases.GetCardsUseCase
+import com.chaplianski.bcard.domain.usecases.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -31,8 +28,8 @@ class CardsFragmentViewModel @Inject constructor(
     private val addCardUseCase: AddCardUseCase,
     private val deleteCardUseCase: DeleteCardUseCase,
     private val getCardUseCase: GetCardUseCase,
-
-) : ViewModel() {
+    private val updateCardUseCase: UpdateCardUseCase
+    ) : ViewModel() {
 
     private var _cards = MutableLiveData<List<Card>>()
     val cards: LiveData<List<Card>> get() = _cards
@@ -48,7 +45,7 @@ class CardsFragmentViewModel @Inject constructor(
         }
     }
 
-    fun getCard(cardId: Long){
+    fun getCard(cardId: Long) {
         Log.d("MyLog", "card id = $cardId")
         viewModelScope.launch(Dispatchers.IO) {
             val card = getCardUseCase.execute(cardId)
@@ -73,54 +70,65 @@ class CardsFragmentViewModel @Inject constructor(
         }
     }
 
-    fun deleteImage(imageUri: String, contentResolver: ContentResolver, launcher: ActivityResultLauncher<IntentSenderRequest>){
+    fun deleteImage(
+        imageUri: String,
+        contentResolver: ContentResolver,
+        launcher: ActivityResultLauncher<IntentSenderRequest>
+    ) {
 
 
         val file = File(imageUri)
         val uri1 = file.absolutePath
-        val uri  = uri1.toUri()
+        val uri = uri1.toUri()
 
         Log.d("MyLog", "uri1 = $uri")
-            try {
-                contentResolver.delete(uri, null, null)
-            } catch (e: SecurityException) {
-                var pendingIntent: PendingIntent? = null
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    val collection = ArrayList<Uri>()
-                    collection.add(uri)
-                    pendingIntent = MediaStore.createDeleteRequest(contentResolver, collection)
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        try {
+            contentResolver.delete(uri, null, null)
+        } catch (e: SecurityException) {
+            var pendingIntent: PendingIntent? = null
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val collection = ArrayList<Uri>()
+                collection.add(uri)
+                pendingIntent = MediaStore.createDeleteRequest(contentResolver, collection)
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
-                    //if exception is recoverable then again send delete request using intent
-                    if (e is RecoverableSecurityException) {
-                        pendingIntent = e.userAction.actionIntent
-                    }
-                }
-                if (pendingIntent != null) {
-                    val sender = pendingIntent.intentSender
-                    val request = IntentSenderRequest.Builder(sender).build()
-                    launcher.launch(request)
+                //if exception is recoverable then again send delete request using intent
+                if (e is RecoverableSecurityException) {
+                    pendingIntent = e.userAction.actionIntent
                 }
             }
-
-
+            if (pendingIntent != null) {
+                val sender = pendingIntent.intentSender
+                val request = IntentSenderRequest.Builder(sender).build()
+                launcher.launch(request)
+            }
+        }
     }
 
 
+    suspend fun addCard(card: Card) {
+        viewModelScope.launch(Dispatchers.IO) {
+            addCardUseCase.execute(card)
+        }
+    }
 
-
-    fun addCard(card: Card) {
-        addCardUseCase.execute(card)
+    fun updateCard(card: Card){
+        viewModelScope.launch(Dispatchers.IO) {
+            updateCardUseCase.execute(card)
+            getCards()
+        }
     }
 
     fun sortCards(sortCategory: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val sortedList: List<Card> = when(sortCategory){
+            val sortedList: List<Card> = when (sortCategory) {
                 SORT_NAME -> cardList.sortedBy { it.surname }
                 SORT_PHONE -> cardList.sortedBy { it.workPhone }
                 SORT_ORGANIZATION -> cardList.sortedBy { it.organization }
                 SORT_TOWN -> cardList.sortedBy { it.town }
-                else -> {cardList.sortedBy { it.town }}
+                else -> {
+                    cardList.sortedBy { it.town }
+                }
             }
             _cards.postValue(sortedList)
         }

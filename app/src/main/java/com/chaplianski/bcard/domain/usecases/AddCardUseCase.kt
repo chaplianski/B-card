@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class AddCardUseCase @Inject constructor(private val cardRepository: CardRepository) {
 
-    fun execute(card: Card){
+    suspend fun execute(card: Card){
         cardRepository.addCard(card)
     }
 }

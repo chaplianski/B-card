@@ -21,7 +21,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="123dp"
+            android:layout_height="186dp"
             android:background="@drawable/square_background"/>
 
         <LinearLayout
@@ -50,10 +50,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="center|center_horizontal"
-
-
                 android:gravity="center"
-                android:text="Load contacts"
+                android:text="Load from file"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/black"/>
+            <TextView
+                android:id="@+id/tv_share_dialog_load_from_account"
+                style="@style/Regular"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center|center_horizontal"
+                android:gravity="center"
+                android:text="Load from account"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 

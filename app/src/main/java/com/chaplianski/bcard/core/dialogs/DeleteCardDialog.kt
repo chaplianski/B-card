@@ -16,22 +16,6 @@ import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 
 class DeleteCardDialog : DialogFragment() {
 
-//    @Inject
-//    lateinit var deleteCardFragmentViewModelFactory: DeleteCardFragmentViewModelFactory
-//    val deleteCardFragmentViewModel: DeleteCardFragmentViewModel by viewModels { deleteCardFragmentViewModelFactory }
-//
-////    @Inject
-////    lateinit var cardsFragmentViewModelFactory: CardsFragmentViewModelFactory
-////    val cardsFragmentViewModel: CardsFragmentViewModel by viewModels { cardsFragmentViewModelFactory }
-//
-//    override fun onAttach(context: Context) {
-//        DaggerAppComponent.builder()
-//            .context(context)
-//            .build()
-//            .deleteCardFragmentInject(this)
-//        super.onAttach(context)
-//    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

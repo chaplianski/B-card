@@ -32,17 +32,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1" />
-        <Constraint
-            android:id="@+id/fab_cards_fragment_exit"
-            app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_search"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_settings"
-            app:layout_constraintVertical_bias="0.948"
-            app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_settings"
-            app:layout_constraintHorizontal_bias="0.849"
-            app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_search"
-            android:alpha="1" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/right_panel_click_start">
@@ -313,7 +302,7 @@
             android:alpha="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.215"
+            app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.733" />
@@ -321,44 +310,48 @@
             android:id="@+id/bt_cards_fragment_sort_phone"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginStart="8dp"
             android:alpha="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.382"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_sort_name"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.733" />
         <Constraint
             android:id="@+id/bt_cards_fragment_sort_mail"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginStart="8dp"
             android:alpha="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.547"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_sort_phone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.733" />
         <Constraint
             android:id="@+id/bt_cards_fragment_sort_organisation"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginStart="8dp"
             android:alpha="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.711"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_sort_mail"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.733" />
         <Constraint
             android:id="@+id/bt_cards_fragment_sort_location"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginStart="8dp"
             android:alpha="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.881"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.01"
+            app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_sort_organisation"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.733" />
 <!--        <Constraint-->

@@ -19,14 +19,14 @@
     <color name="text_middle">#737C97</color>
     <color name="field_background">#EAECF5</color>
     <color name="transparent">#00000000</color>
-    <color name="light_brown">#FFAB67</color>
-    <color name="dark_brown">#451A03</color>
+    <color name="light_brown">#FFFFAB67</color>
+    <color name="dark_brown">#FF451A03</color>
 
-    <color name="green">#1C3A02</color>
-    <color name="violet">#880061</color>
-    <color name="red">#880101</color>
-    <color name="dark_yellow">#F39E20</color>
-    <color name="light_yellow">#FAD652</color>
+    <color name="green">#FF1C3A02</color>
+    <color name="violet">#FF880061</color>
+    <color name="red">#FF880101</color>
+    <color name="dark_yellow">#FFF39E20</color>
+    <color name="light_yellow">#FFFAD652</color>
 
 
 </resources>

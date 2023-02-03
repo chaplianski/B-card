@@ -59,25 +59,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Address"
+                android:text="Personal additional information"
                 android:textColor="@color/black"/>
 
             <EditText
-                android:id="@+id/et_user_additional_info_address"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_marginStart="16dp"
-                android:drawablePadding="18dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:background="@drawable/search_field"
-                android:ems="10"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:inputType="textMultiLine"
-                android:minHeight="48dp"
-                 />
+                android:id="@+id/et_user_additional_info_address"
+                android:hint="Nickname, full postal address, timezone, links and ets."
+                style="@style/EditTextAdditionalInformation" />
 
             <TextView
                 android:id="@+id/textView9"
@@ -94,18 +84,9 @@
                 android:id="@+id/et_user_additional_info_prof_skills"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="10dp"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:background="@drawable/search_field"
-                android:ems="10"
-                android:inputType="textMultiLine"
+                android:hint="Educational institution, courses, technology stack"
+                style="@style/EditTextAdditionalInformation"
                  />
-
-
 
             <TextView
                 android:id="@+id/textView11"
@@ -122,13 +103,7 @@
                 android:id="@+id/et_user_additional_info_private_info"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:background="@drawable/search_field"
-                android:ems="10"
-                android:inputType="textMultiLine"
+                style="@style/EditTextAdditionalInformation"
                  />
 
             <TextView
@@ -146,14 +121,8 @@
                 android:id="@+id/edit_user_additional_info_reference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="36dp"
-                android:background="@drawable/search_field"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:ems="10"
-                android:inputType="textMultiLine"
+                android:layout_marginBottom="20dp"
+                style="@style/EditTextAdditionalInformation"
                 android:minHeight="48dp"
                  />
 

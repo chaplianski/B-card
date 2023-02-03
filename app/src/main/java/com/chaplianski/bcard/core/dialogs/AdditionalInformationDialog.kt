@@ -8,9 +8,12 @@ import android.os.Parcelable
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
-import androidx.fragment.app.*
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
-import com.chaplianski.bcard.core.factories.AdditionalInfoDialogViewModelFactory
+import androidx.lifecycle.ViewModelProvider
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.core.viewmodels.AdditionalInfoDialogViewModel
 import com.chaplianski.bcard.databinding.DialogAdditionalInformationBinding
@@ -25,8 +28,8 @@ class AdditionalInformationDialog : DialogFragment() {
     val binding get() = _binding!!
 
     @Inject
-    lateinit var additionalInfoDialogViewModelFactory: AdditionalInfoDialogViewModelFactory
-    val additionalInfoDialogViewModel: AdditionalInfoDialogViewModel by viewModels { additionalInfoDialogViewModelFactory }
+    lateinit var vmFactory: ViewModelProvider.Factory
+    val additionalInfoDialogViewModel: AdditionalInfoDialogViewModel by viewModels { vmFactory }
 
     override fun onAttach(context: Context) {
         (context.applicationContext as DaggerApp)
@@ -54,7 +57,7 @@ class AdditionalInformationDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val addressText = binding.etUserAdditionalInfoAddress
+        val addInfoText = binding.etUserAdditionalInfoAddress
         val workInformationText = binding.etUserAdditionalInfoProfSkills
         val privateInfoText = binding.etUserAdditionalInfoPrivateInfo
         val referenceText = binding.editUserAdditionalInfoReference
@@ -62,13 +65,12 @@ class AdditionalInformationDialog : DialogFragment() {
         val cancelButton = binding.btAdditionalInfoCancel
         val currentCardId = arguments?.getLong(CURRENT_CARD_ID)
 
-
-        if (currentCardId != null) {
+        if (currentCardId != null && currentCardId != 0L) {
             additionalInfoDialogViewModel.getCardData(currentCardId)
         }
 
         additionalInfoDialogViewModel.currentCard.observe(this.viewLifecycleOwner){ card ->
-            addressText.setText(card.country)
+            addInfoText.setText(card.additionalContactInfo)
             workInformationText.setText(card.professionalInfo)
             privateInfoText.setText(card.privateInfo)
             referenceText.setText(card.reference)
@@ -77,19 +79,23 @@ class AdditionalInformationDialog : DialogFragment() {
         saveButton.setOnClickListener {
             val additionalInfo = AdditionalInfo(
                 cardId = currentCardId ?: 0L,
-                address = addressText.text.toString(),
+                address = addInfoText.text.toString(),
                 workInfo = workInformationText.text.toString(),
                 privateInfo = privateInfoText.text.toString(),
                 reference = referenceText.text.toString()
             )
             parentFragmentManager.setFragmentResult(
                 REQUEST_KEY,
-                bundleOf(ADDITIONAL_INFO to additionalInfo)
+                bundleOf(CHECKED_OPTION to SAVE_STATUS, ADDITIONAL_INFO to additionalInfo)
             )
             dismiss()
         }
 
         cancelButton.setOnClickListener {
+            parentFragmentManager.setFragmentResult(
+                REQUEST_KEY,
+                bundleOf(CHECKED_OPTION to CANCEL_STATUS, ADDITIONAL_INFO to AdditionalInfo())
+            )
             dismiss()
         }
     }
@@ -107,6 +113,8 @@ class AdditionalInformationDialog : DialogFragment() {
     companion object {
 
         val CHECKED_OPTION = "checked option"
+        val SAVE_STATUS = "additional info save button status"
+        val CANCEL_STATUS = "additional info cancel button status"
         val ADDITIONAL_INFO = "additional information"
 
         val TAG = AdditionalInformationDialog::class.java.simpleName
@@ -124,16 +132,17 @@ class AdditionalInformationDialog : DialogFragment() {
         fun setupListener(
             manager: FragmentManager,
             lifecycleOwner: LifecycleOwner,
-            listener: (Long, Parcelable) -> Unit
+            listener: (Long, String, Parcelable) -> Unit
         ) {
             manager.setFragmentResultListener(
                 REQUEST_KEY,
                 lifecycleOwner,
                 FragmentResultListener { key, result ->
                     val cardId = result.getLong(CURRENT_CARD_ID)
+                    val status = result.getString(CHECKED_OPTION)
                     val additionalInfo = result.getParcelable<AdditionalInfo>(ADDITIONAL_INFO)
-                    if (additionalInfo != null) {
-                        listener.invoke(cardId, additionalInfo)
+                    if (additionalInfo != null && status != null ) {
+                        listener.invoke(cardId, status, additionalInfo)
                     }
                 })
         }

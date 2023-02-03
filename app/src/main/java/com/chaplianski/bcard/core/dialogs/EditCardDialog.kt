@@ -3,21 +3,16 @@ package com.chaplianski.bcard.core.dialogs
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
-import com.chaplianski.bcard.R
-import com.chaplianski.bcard.core.dialogs.ShareContactsDialog.Companion.CHECKED_OPTION
-import com.chaplianski.bcard.core.dialogs.ShareContactsDialog.Companion.LOAD_STATUS
-import com.chaplianski.bcard.core.dialogs.ShareContactsDialog.Companion.SAVE_STATUS
-import com.chaplianski.bcard.core.helpers.PhotoPicker
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.databinding.DialogEditCardBinding
-import com.google.android.material.textview.MaterialTextView
 
 
 class EditCardDialog : DialogFragment() {
@@ -25,6 +20,18 @@ class EditCardDialog : DialogFragment() {
     private var _binding: DialogEditCardBinding? = null
     val binding get() = _binding!!
 
+    private val isPersonInfoEnable: Boolean
+        get() = requireArguments().getBoolean(PERSON_INFO_ENABLE)
+
+    private val isAdditionalInfoEnable: Boolean
+        get() = requireArguments().getBoolean(
+            ADDITIONAL_INFO_ENABLE
+        )
+    private val isCardSettingsEnable: Boolean
+        get() = requireArguments().getBoolean(
+            CARD_SETTING_INFO_ENABLE
+        )
+//    val isPersonInfoEnable = arguments?.getBoolean(PERSON_INFO_ENABLE)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +40,7 @@ class EditCardDialog : DialogFragment() {
         val window: Window? = dialog!!.window
         window?.setGravity(Gravity.BOTTOM or Gravity.NO_GRAVITY)
         val params: WindowManager.LayoutParams? = window?.getAttributes()
-        params?.y = 30
+        params?.y = 300
         window?.setAttributes(params)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -48,29 +55,55 @@ class EditCardDialog : DialogFragment() {
         val personInfoButton = binding.tvEditCardDialogPersonInfo
         val additionalInfoButton = binding.tvEditCardDialogAddInfo
         val settingsCardButton = binding.tvEditCardDialogSettings
+        val personInfoButtonIcon = binding.tvEditCardDialogPersonInfoPlus
+        val additionalInfoButtonIcon = binding.tvEditCardDialogAddInfoPlus
+        val cardSettingsButtonIcon = binding.tvEditCardDialogCardSettingsPlus
+        val saveSettingsButton = binding.tvEditCardDialogSave
         val cancelButton = binding.tvEditCardDialogCancel
         val currentCardId = arguments?.getLong(CURRENT_CARD_ID)
+
+        Log.d("MyLog", "edit dialog onViewCreated, id = $currentCardId")
+
+        if (isPersonInfoEnable == true) personInfoButtonIcon.isVisible = true
+        if (isAdditionalInfoEnable == true) additionalInfoButtonIcon.isVisible = true
+        if (isCardSettingsEnable == true) cardSettingsButtonIcon.isVisible = true
 
         personInfoButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
                 REQUEST_KEY,
-                bundleOf(CHECKED_OPTION to PERSON_INFO_STATUS, CURRENT_CARD_ID to currentCardId)
+                bundleOf(
+                    CHECKED_OPTION to PERSON_INFO_STATUS,
+                    CURRENT_CARD_ID to currentCardId
+                )
             )
             dismiss()
         }
         additionalInfoButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
                 REQUEST_KEY,
-                bundleOf(CHECKED_OPTION to ADD_INFO_STATUS, CURRENT_CARD_ID to currentCardId)
+                bundleOf(
+                    CHECKED_OPTION to ADD_INFO_STATUS,
+                    CURRENT_CARD_ID to currentCardId
+                )
             )
             dialog?.dismiss()
         }
         settingsCardButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
                 REQUEST_KEY,
-                bundleOf(CHECKED_OPTION to SETTINGS_CARD_STATUS, CURRENT_CARD_ID to currentCardId)
+                bundleOf(
+                    CHECKED_OPTION to SETTINGS_CARD_STATUS,
+                    CURRENT_CARD_ID to currentCardId
+                )
             )
             dialog?.dismiss()
+        }
+        saveSettingsButton.setOnClickListener {
+            parentFragmentManager.setFragmentResult(
+                REQUEST_KEY,
+                bundleOf(CHECKED_OPTION to SAVE_STATUS, CURRENT_CARD_ID to currentCardId)
+            )
+            dismiss()
         }
         cancelButton.setOnClickListener {
             dismiss()
@@ -84,22 +117,46 @@ class EditCardDialog : DialogFragment() {
 
     companion object {
 
-        //        val KEY_RESPONSE = "key response"
         val CHECKED_OPTION = "checked option"
         val PERSON_INFO_STATUS = "person information status"
         val ADD_INFO_STATUS = "additional information status"
+        val SAVE_STATUS = "save button status"
         val SETTINGS_CARD_STATUS = "settings card status"
+        val PERSON_INFO_ENABLE = "person information enable"
+        val ADDITIONAL_INFO_ENABLE = "additional information enable"
+        val CARD_SETTING_INFO_ENABLE = "card settings information enable"
 
 
         val TAG = EditCardDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
 
         //
-        fun show(manager: FragmentManager, currentCardId: Long) {
+        fun show(
+            manager: FragmentManager,
+            currentCardId: Long,
+            isPersonInfoEnable: Boolean,
+            isAdditionalInfoEnable: Boolean,
+            isCardSettingsEnable: Boolean
+        ) {
             val dialogFragment = EditCardDialog()
-            dialogFragment.arguments = bundleOf(
-                CURRENT_CARD_ID to currentCardId
+            Log.d(
+                "MyLog",
+                "show Edit Dialog, cardId = $currentCardId"
             )
+//            val bundle = Bundle()
+//            bundle.putLong(CURRENT_CARD_ID, currentCardId)
+//            bundle.putBoolean(PERSON_INFO_ENABLE, isPersonInfoEnable)
+//            bundle.putBoolean(ADDITIONAL_INFO_ENABLE, isAdditionalInfoEnable)
+//            bundle.putBoolean(CARD_SETTING_INFO_ENABLE, isCardSettingsEnable)
+//            dialogFragment.arguments = bundle
+
+            dialogFragment.arguments = bundleOf(
+                PERSON_INFO_ENABLE to isPersonInfoEnable,
+                ADDITIONAL_INFO_ENABLE to isAdditionalInfoEnable,
+                CARD_SETTING_INFO_ENABLE to isCardSettingsEnable,
+                CURRENT_CARD_ID to currentCardId,
+            )
+//            Log.d("MyLog", "bundle = ${bundle}")
             dialogFragment.show(manager, TAG)
         }
 
@@ -114,8 +171,14 @@ class EditCardDialog : DialogFragment() {
                 FragmentResultListener { key, result ->
                     val cardId = result.getLong(CURRENT_CARD_ID)
                     val status = result.getString(CHECKED_OPTION)
+//                    val isPersonInfoEnable = result.getBoolean(PERSON_INFO_ENABLE, false)
+//                    val isAdditionalInfoEnable = result.getBoolean(ADDITIONAL_INFO_ENABLE, false)
+//                    val isCardSettingsEnable = result.getBoolean(CARD_SETTING_INFO_ENABLE, false)
                     if (status != null) {
-                        listener.invoke(cardId, status)
+                        listener.invoke(
+                            cardId,
+                            status
+                        ) //, isPersonInfoEnable, isAdditionalInfoEnable, isCardSettingsEnable)
                     }
                 })
         }

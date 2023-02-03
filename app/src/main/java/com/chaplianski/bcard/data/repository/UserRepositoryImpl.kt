@@ -30,4 +30,12 @@ class UserRepositoryImpl @Inject constructor(
     override fun registrationUser(user: User): Long {
        return userStorageImpl.addUser(user.userMapDomainToData())
     }
+
+    override fun getSecretQuestion(login: String): User? {
+        return userStorageImpl.getSecretQuestion(login)?.userMapDataToDomain()
+    }
+
+    override fun updateUserData(user: User) {
+        return userStorageImpl.updateUser(user.userMapDomainToData())
+    }
 }

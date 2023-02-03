@@ -18,13 +18,13 @@ class RegistrationFragmentViewModel @Inject constructor(private val addUserUseCa
     val userId: LiveData<Long> get() = _userId
 
 
-    fun addUser(email: String, password: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val newUser = User(0, email, password)
-            val id = addUserUseCase.execute(newUser)
-            _userId.postValue(id)
-        }
-    }
+//    fun addUser(email: String, password: String) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val newUser = User(0, email, password)
+//            val id = addUserUseCase.execute(newUser)
+//            _userId.postValue(id)
+//        }
+//    }
 
     override fun onCleared() {
         viewModelScope.cancel()

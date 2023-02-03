@@ -1,28 +1,26 @@
 package com.chaplianski.bcard.core.ui
 
-import android.animation.Animator
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateInterpolator
-import android.widget.*
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -31,45 +29,52 @@ import com.bumptech.glide.Glide
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardsFragmentCardAdapter
 import com.chaplianski.bcard.core.dialogs.*
-import com.chaplianski.bcard.core.factories.CardsFragmentViewModelFactory
 import com.chaplianski.bcard.core.helpers.CardsPickerLayoutManager
-import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
-import com.chaplianski.bcard.core.utils.animateVisibility
-import com.chaplianski.bcard.core.utils.init
+import com.chaplianski.bcard.core.utils.CURRENT_BACKGROUND
+import com.chaplianski.bcard.core.utils.DEFAULT_BACKGROUND
+import com.chaplianski.bcard.core.utils.LOAD_FROM_FILE
+import com.chaplianski.bcard.core.utils.LOAD_FROM_GOOGLE_ACCOUNT
 import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel
 import com.chaplianski.bcard.databinding.FragmentCardsBinding
 import com.chaplianski.bcard.di.DaggerApp
+import com.chaplianski.bcard.domain.model.AdditionalInfo
 import com.chaplianski.bcard.domain.model.Card
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.AppBarLayout.Behavior.DragCallback
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.chaplianski.bcard.domain.model.CardSettings
+import com.chaplianski.bcard.domain.model.PersonInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 
 class CardsFragment : Fragment() {
 
     @Inject
-    lateinit var cardsFragmentViewModelFactory: CardsFragmentViewModelFactory
-    val cardsFragmentViewModel: CardsFragmentViewModel by viewModels { cardsFragmentViewModelFactory }
+    lateinit var vmFactory: ViewModelProvider.Factory
+    val cardsFragmentViewModel: CardsFragmentViewModel by viewModels { vmFactory }
 
     var _binding: FragmentCardsBinding? = null
     val binding: FragmentCardsBinding get() = _binding!!
-    var currentCardId = 1L
+
+    var currentCardId = 0L
+    var currentCard = Card()
     var imageUri = ""
+    var currentPersonInfo = PersonInfo()
+    var currentAdditionalInfo = AdditionalInfo()
+    var currentCardSettings = CardSettings()
+    var personInfoCheck = false
+    var additionalInfoCheck = false
+    var cardSettingsCheck = false
+    var currentPosition = 0
 
     override fun onAttach(context: Context) {
-        (context.applicationContext as DaggerApp)
-            .getAppComponent()
-            .cardsFragmentInject(this)
+        (context.applicationContext as DaggerApp).getAppComponent().cardsFragmentInject(this)
         super.onAttach(context)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentCardsBinding.inflate(inflater, container, false)
@@ -81,242 +86,102 @@ class CardsFragment : Fragment() {
 
 //        val additionalInfoText = binding.layoutUserInformation.clUserInfo
 //        val closeButton = binding.layoutUserInformation.btUserInfoClose
+        val backgroundLayout = binding.clCardsFragment
 
-        val fabSettings = binding.btCardsFragmentSettings
-        val buttonEdit = binding.btCardsFragmentEdit
-        val fabDelete = binding.fabCardsFragmentDelete
+        val settingsButton = binding.btCardsFragmentSettings
+        val editButton = binding.btCardsFragmentEdit
+        val deleteButton = binding.fabCardsFragmentDelete
         val shareButton = binding.btCardsFragmentShare
-        val fabExit = binding.fabCardsFragmentExit
-
+        val exitButton = binding.fabCardsFragmentExit
         val addCardButton = binding.btCardsFragmentAddCard
 
         val motionLayout = binding.motionLayoutFragmentCards
         val sortButton = binding.btCardsFragmentSort
         val searchButton = binding.btCardsFragmentSearch
+        val searchField = binding.tvCardsFragmentSearchField
         val leftPanelImage = binding.ivFragmentCardsLeftPanel
         val rightPanelImage = binding.ivFragmentCardsRightPanel
         val cardsRV: RecyclerView =
             view.findViewById(com.chaplianski.bcard.R.id.rv_cards_fragment_cards)
 
+        val sortSurnameButton = binding.btCardsFragmentSortName
+        val sortPhoneButton = binding.btCardsFragmentSortPhone
+        val sortMailButton = binding.btCardsFragmentSortMail
+        val sortOrganizationButton = binding.btCardsFragmentSortOrganisation
+        val sortLocationButton = binding.btCardsFragmentSortLocation
+
+
         val avatarUserInformation = binding.layoutUserInformation.ivUserInformationProfileAvatar
         val nameUserInformation = binding.layoutUserInformation.tvUserInformationProfileName
         val specialityUserInfo = binding.layoutUserInformation.tvUserInformationProfileSpeciality
-        val organizationUserInfo = binding.layoutUserInformation.tvUserInformationProfileOrganization
-        val profileInfo = binding.layoutUserInformation.userInformationProfileInfo
-        val profSkills = binding.layoutUserInformation.userInformationProfSkills
-        val education = binding.layoutUserInformation.userInformationEducation
-        val workExperience = binding.layoutUserInformation.userInformationWorkExperience
+        val organizationUserInfo =
+            binding.layoutUserInformation.tvUserInformationProfileOrganization
+        val additionalProfileInfo = binding.layoutUserInformation.userInformationProfileInfo
+        val professionalInfo = binding.layoutUserInformation.userInformationProfInfo
+        val privateInfo = binding.layoutUserInformation.userInformationPrivate
         val reference = binding.layoutUserInformation.userInformationReference
 
-//        motionLayout.setTransition(R.id.right_panel_click_back)
-//        motionLayout.transitionToEnd()
+        var listCards = emptyList<Card>()
+
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val currentBackground = sharedPref?.getString(CURRENT_BACKGROUND, DEFAULT_BACKGROUND)
+        val backgroundResource = this.resources.getIdentifier(
+            currentBackground,
+            "drawable",
+            activity?.packageName
+        )
+        backgroundLayout.background = resources.getDrawable(backgroundResource)
+
 
         motionLayout.setTransition(R.id.begin_position_start, R.id.begin_position_finish)
         motionLayout.transitionToEnd()
 
-//        motionLayout.setTransition(R.id.right_panel_click_forward)
-//        motionLayout.transitionToEnd()
-//        rightPanelImage.setMarginExtensionFunction(0, 0, -200, 20)
-//        motionLayout.getTransition(R.id.sort_button_click_forward).setEnable(false)
-
-        var sortButtonSwitch = true
-        var searchButtonSwitch = true
-        var leftPanelSwitch = true
-        var rightPanelSwitch = true
-
-        rightPanelImage.setOnClickListener {
-            if (!leftPanelSwitch){
-                motionLayout.setTransition(R.id.left_panel_click_back)
-                motionLayout.transitionToEnd()
-                leftPanelSwitch = true
-                Log.d("MyLog", "click right panel 1")
-            }
-            if (rightPanelSwitch && leftPanelSwitch) {
-                motionLayout.setTransition(R.id.right_panel_click_forward)
-                motionLayout.transitionToEnd()
-                rightPanelSwitch = false
-                Log.d("MyLog", "click right panel 2")
-
-//                motionLayout.setTransition(R.id.search_button_click)
-//                motionLayout.transitionToEnd()
-//                searchButtonSwitch = true
-            } else {
-                motionLayout.setTransition(R.id.right_panel_click_back)
-                motionLayout.transitionToEnd()
-                rightPanelSwitch = true
-                Log.d("MyLog", "click right panel 3")
-            }
-        }
-
-        leftPanelImage.setOnClickListener {
-            if (!rightPanelSwitch) {
-                motionLayout.setTransition(R.id.right_panel_click_back)
-                motionLayout.transitionToEnd()
-                rightPanelSwitch = true
-                Log.d("MyLog", "click left panel 1")
-            }
-            if (leftPanelSwitch && rightPanelSwitch) {
-                motionLayout.setTransition(R.id.left_panel_click_forward)
-                motionLayout.transitionToEnd()
-                leftPanelSwitch = false
-                Log.d("MyLog", "click left panel 2")
-//                motionLayout.setTransition(R.id.search_button_click)
-//                motionLayout.transitionToEnd()
-//                searchButtonSwitch = true
-            } else {
-                motionLayout.setTransition(R.id.left_panel_click_back)
-                motionLayout.transitionToEnd()
-                leftPanelSwitch = true
-                Log.d("MyLog", "click left panel 3")
-            }
-        }
-
-
-        sortButton.setOnClickListener {
-            if (!searchButtonSwitch){
-                motionLayout.setTransition(R.id.search_button_click_back)
-                motionLayout.transitionToEnd()
-                searchButtonSwitch = true
-            }
-            if (sortButtonSwitch) {
-                motionLayout.setTransition(R.id.sort_button_click_forward)
-                motionLayout.transitionToEnd()
-                sortButtonSwitch = false
-            }
-            else {
-                motionLayout.setTransition(R.id.sort_button_click_back)
-                motionLayout.transitionToEnd()
-                sortButtonSwitch = true
-            }
-        }
-
-        searchButton.setOnClickListener {
-            if (!sortButtonSwitch){
-                motionLayout.setTransition(R.id.sort_button_click_back)
-                motionLayout.transitionToEnd()
-                sortButtonSwitch = true
-            }
-            if (searchButtonSwitch) {
-                motionLayout.setTransition(R.id.search_button_click_forward)
-                motionLayout.transitionToEnd()
-                searchButtonSwitch = false
-
-            } else {
-                motionLayout.setTransition(R.id.search_button_click_back)
-                motionLayout.transitionToEnd()
-                searchButtonSwitch = true
-            }
-        }
-
-
+        addMotionPanelsAndButtons(
+            leftPanelImage,
+            motionLayout,
+            rightPanelImage,
+            sortButton,
+            searchButton
+        )
 
         addCardButton.setOnClickListener {
-            findNavController().navigate(com.chaplianski.bcard.R.id.action_cardsFragment_to_editCardFragment)
+            currentPersonInfo = PersonInfo()
+            currentAdditionalInfo = AdditionalInfo()
+            currentCardSettings = CardSettings()
+            personInfoCheck = false
+            additionalInfoCheck = false
+            cardSettingsCheck = false
+            showEditDialog(0L)
         }
 
-
-//        val fabSort = binding.btCardsFragmentSortButton
-//        val fabSortName = binding.btCardsFragmentSortName
-//        val fabSortPhone = binding.fabCardsFragmentSortPhone
-//        val fabSortOrganization = binding.fabCardsFragmentSortOrganisation
-//        val fabSortLocation = binding.fabCardsFragmentSortLocation
-
-//        val fabSearch = binding.fabSearchButton
-//        val searchView = binding.tvCardsFragmentSearchField
-//        val voiceSearchButton = binding.fabCardsFragmentSearchVoice
-//        val searchButton = binding.fabCardsFragmentSearchSearch
-//
-//        val appbar: AppBarLayout = binding.appbarCardsFragment
-//        val nameplate: FrameLayout = binding.flCardsFragmentTopInfo
-//        val instruction: TextView = binding.tvCardsFragmentInstruction
-
-//        val profileInfo: TextView = binding.layoutUserInformation.userInformationProfileInfo
-//        val profSkills: TextView = binding.layoutUserInformation.userInformationProfSkills
-//        val education: TextView = binding.layoutUserInformation.userInformationEducation
-//        val workExperience: TextView = binding.layoutUserInformation.userInformationWorkExperience
-//        val reference: TextView = binding.layoutUserInformation.userInformationReference
-
-//        val sortButton = binding.btCardsFragmentSort
-
-
-//        sortButton.setOnClickListener {
-//            if (sortGroup.isVisible) sortGroup.visibility = View.GONE
-//            else sortGroup.visibility = View.VISIBLE
-//        }
-//        val sortSearchRV = binding.rvCardsFragmentSortSearch
-//        sortSearchRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,  false)
-//        val sortSearchAdapter = SortSearchAdapter()
-//        sortSearchRV.adapter = sortSearchAdapter
-
-
-//        sortButton.setOnClickListener {
-//            Log.d("MyLog", " click sort button")
-//        }
-
-
-        val launcher: ActivityResultLauncher<IntentSenderRequest> =
-            registerForActivityResult(
-                ActivityResultContracts.StartIntentSenderForResult()
-            ) { result -> }
-
-        // **** Additional User Info
-//        infoButton.setOnClickListener {
-//            additionalInfoText.visibility = View.VISIBLE
-//            collapseAppbar(appbar, nameplate)
-//        }
-
-//        setupFABs(fabSettings, fabEdit, fabDelete, fabShare, fabExit)
-//        sortFABs(fabSort, fabSortName, fabSortPhone, fabSortOrganization, fabSortLocation)
-//        searchFABs(fabSearch, searchView, voiceSearchButton)
-
-//        closeButton.setOnClickListener {
-//            additionalInfoText.visibility = View.GONE
-//            expandAppbar(appbar, nameplate)
-//        }
-
-        buttonEdit.setOnClickListener {
-            showEditDialog(currentCardId)
-
-//            val bundle = Bundle()
-//            bundle.putLong(CURRENT_CARD_ID, currentCardId)
-//            findNavController().navigate(
-//                com.chaplianski.bcard.R.id.action_cardsFragment_to_editCardFragment,
-//                bundle
-//            )
+        settingsButton.setOnClickListener {
+            showSettingsDialog()
         }
+        setupSettingsDialog()
+        setupBackgroundSettingsDialog(backgroundLayout)
 
+        editButton.setOnClickListener {
+            if (currentCardId != 0L) showEditDialog(currentCardId)
+        }
         setupEditDialog()
-
 
         // **** Share card
         shareButton.setOnClickListener {
             showShareDialog(currentCardId)
         }
-
         setupShareDialog()
 
-        fabDelete.setOnClickListener {
-            showDialog(currentCardId)
+        deleteButton.setOnClickListener {
+            if (currentCardId != -1L) showDeleteDialog(currentCardId)
         }
 
-        fabExit.setOnClickListener {
+        setupDeleteDialog()
+
+        exitButton.setOnClickListener {
             activity?.finishAffinity()
         }
 
-//        appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-//            if (Math.abs(verticalOffset - 250) > (appbar.height)) {
-//                fabSettings.hide()
-//                additionalInfoText.visibility = View.VISIBLE
-//            }
-//            if (Math.abs(verticalOffset) == 0) {
-//                fabSettings.show()
-//                additionalInfoText.visibility = View.GONE
-//            }
-//        }
-
         // ******  Cards wheel  ********
-
-
         val cardsPickerLayoutManager =
             CardsPickerLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val cardFragmentCardAdapter = CardsFragmentCardAdapter(cardsRV) //(listCards, cardsRV)
@@ -327,36 +192,37 @@ class CardsFragment : Fragment() {
         cardsSnapHelper.attachToRecyclerView(cardsRV)
 
         lifecycleScope.launchWhenCreated {
-//            delay(500)
+            delay(100)
             cardsRV.scrollToPosition(0)
+        }
+
+        cardsRV.addScrollListener { position: Int ->
+            currentCard = listCards[position]
+            currentCardId = currentCard.id
+            cardsFragmentViewModel.getCard(currentCardId)
+            Log.d("MyLog", "Current Position 3: $position, currentCardId = $currentCardId")
         }
 
 
         cardsFragmentViewModel.getCards()
         cardsFragmentViewModel.cards.observe(this.viewLifecycleOwner) {
 
-            var listCards = emptyList<Card>()
-            if(!it.isNullOrEmpty()){
+
+            if (!it.isNullOrEmpty()) {
                 listCards = it.sortedBy { it.surname }
                 cardsFragmentViewModel.getCard(listCards.first().id)
             }
-
-
             cardFragmentCardAdapter.updateData(listCards)
-            Log.d("MyLog", "list card size = ${listCards.size}")
 
-            // Condition not empty list cards TODO Пересмотреть что это за проверка была. Сейчас отключена
-            if (listCards.size > 0){
-                val currentPosition = cardsSnapHelper.getSnapPosition(cardsRV)
-           //     listCards[currentPosition].id     // java.lang.ArrayIndexOutOfBoundsException: length=3; index=-1
-                Log.d("MyLog", "current position = $currentPosition" )
-//                cardsFragmentViewModel.getCard(listCards[currentPosition].id)
+            if (listCards.size > 0) {
+                currentPosition = cardsSnapHelper.getSnapPosition(cardsRV)
 
-                Log.d("MyLog", "position1 = ${listCards.first().id}, listSize1 = ${listCards.size} " )
+                if (currentPosition == -1) currentPosition = 0
+                currentCardId = listCards[currentPosition].id
+                Log.d(
+                    "MyLog", "Current Position 2: $currentPosition, currentCardId = $currentCardId"
+                )
             }
-
-            setupDialog(cardFragmentCardAdapter, launcher)
-//            Log.updateData(listCards)
 
             cardsPickerLayoutManager.setOnScrollStopListener(object :
                 CardsPickerLayoutManager.CardScrollStopListener {
@@ -368,135 +234,382 @@ class CardsFragment : Fragment() {
                     val userAvatar =
                         view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_uri)
 
-                    Log.d("MyLog", "userName - ${userName?.text}, cardId = ${cardId?.text}")
-
-
-                    val currentPos = cardsSnapHelper.getSnapPosition(cardsRV)
-//                    if (currentPos == listCards.size){
-//                        appbar.isLiftOnScroll = false
-//                        fabSettings.visibility = View.INVISIBLE
-//                        instruction.visibility = View.VISIBLE
-//                    setAppBarDragging(false, appbar)
-//
-//
-//                    } else {
-//                        fabSettings.visibility = View.VISIBLE
-//                        instruction.visibility = View.INVISIBLE
-//                        setAppBarDragging(true, appbar)
-//                    }
-
-//                    nestedScrollView.isNestedScrollingEnabled = currentPos != listCards.size
-
-
-                    if (userName?.text?.equals(null) != true && userAvatar?.text?.equals(null) != true && cardId?.text?.equals(null) != true) {
+                    if (userName?.text?.equals(null) != true && userAvatar?.text?.equals(null) != true && cardId?.text?.equals(
+                            null
+                        ) != true
+                    ) {
                         if (cardId != null) {
                             cardsFragmentViewModel.getCard(
                                 cardId.text.toString().toLong()
                             )
                         }
                     }
+                    currentPosition = cardsSnapHelper.getSnapPosition(cardsRV)
+                    Log.d("MyLog", "curd id wheel = ${cardId?.text}")
                 }
 
             })
 
-//            searchView.addTextChangedListener (object : TextWatcher{
-//                override fun beforeTextChanged(
-//                    s: CharSequence?,
-//                    start: Int,
-//                    count: Int,
-//                    after: Int
-//                ) {
-//
-//                }
-//
-//                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//
-//                }
-//
-//                override fun afterTextChanged(editText: Editable?) {
-//                    val searchFilter = listCards.filter { card ->
-//                        card.name.uppercase().contains(editText.toString().uppercase()) ||
-//                        card.surname.uppercase().contains(editText.toString().uppercase()) ||
-//                        card.organization.uppercase().contains(editText.toString().uppercase()) ||
-//                        card.town.uppercase().contains(editText.toString().uppercase()) ||
-//                        card.workPhone.uppercase().contains(editText.toString().uppercase())
-//                    } as MutableList<Card>
-//                    cardFragmentCardAdapter.updateData(searchFilter)
-//                    cardsPickerLayoutManager.scrollToPosition(0)
-//                }
-//
-//            })
-
-
-            cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
-//                val userName: TextView = view.findViewById(com.chaplianski.bcard.R.id.tv_cards_fragment_name)
-//                val userAvatar: ImageView = view.findViewById(com.chaplianski.bcard.R.id.iv_cards_fragment_avatar)
-                Log.d("MyLog", "card = $card")
-
-                currentCardId = card.id
-                imageUri = card.photo
-
-
-                Glide.with(this).load(card.photo)
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_portrait)
-                    .into(avatarUserInformation)
-
-                nameUserInformation.text = "${card.surname} ${card.name}"
-                specialityUserInfo.text = card.speciality
-                organizationUserInfo.text = card.organization
-                profileInfo.text = card.additionalContactInfo
-                profSkills.text = card.professionalInfo
-//                education.text = card.education
-                workExperience.text = card.privateInfo
-                reference.text = card.reference
-            }
-
-            cardFragmentCardAdapter.shortOnClickListener =
-                object : CardsFragmentCardAdapter.ShortOnClickListener {
-
-//                    override fun shortClick() {
-//                        findNavController().navigate(com.chaplianski.bcard.R.id.action_cardsFragment_to_editCardFragment)
-//                    }
-
-                    override fun shortPhoneClick(phone: String) {
-                        val i = Intent(Intent.ACTION_DIAL)
-                        i.data = Uri.parse("tel:$phone")
-                        activity?.startActivity(i)
-                    }
-
-                    override fun shortEmailClick(email: String) {
-                        val i = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null))
-                        activity?.startActivity(Intent.createChooser(i, "Send email"))
-                    }
-
-                    override fun shortHomePhoneClick(homePhone: String) {
-                        val i = Intent(Intent.ACTION_DIAL)
-                        i.data = Uri.parse("tel:$homePhone")
-                        activity?.startActivity(i)
-
-//                        val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/$homePhone"))
-//                        activity?.startActivity(i)
-                    }
+            searchField.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?, start: Int, count: Int, after: Int
+                ) {
                 }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(editText: Editable?) {
+                    val searchFilter = listCards.filter { card ->
+                        card.name.uppercase()
+                            .contains(editText.toString().uppercase()) || card.surname.uppercase()
+                            .contains(
+                                editText.toString().uppercase()
+                            ) || card.organization.uppercase()
+                            .contains(editText.toString().uppercase()) || card.town.uppercase()
+                            .contains(editText.toString().uppercase()) || card.workPhone.uppercase()
+                            .contains(editText.toString().uppercase())
+                    } as MutableList<Card>
+                    cardFragmentCardAdapter.updateData(searchFilter)
+                    cardsPickerLayoutManager.scrollToPosition(0)
+                }
+
+            })
         }
 
-//        fabSortName.setOnClickListener {
-//            cardsFragmentViewModel.sortCards(SORT_NAME)
-//        }
-//
-//        fabSortPhone.setOnClickListener {
-//            cardsFragmentViewModel.sortCards(SORT_PHONE)
-//        }
-//
-//        fabSortOrganization.setOnClickListener {
-//            cardsFragmentViewModel.sortCards(SORT_ORGANIZATION)
-//        }
-//
-//        fabSortLocation.setOnClickListener {
-//            cardsFragmentViewModel.sortCards(SORT_TOWN)
-//        }
+        cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
 
+            currentCard = card
+            currentCardId = card.id
+            imageUri = card.photo
+
+            //********** Fill current card additional information  **********************************
+
+            Glide.with(this).load(card.photo).centerCrop().placeholder(R.drawable.ic_portrait)
+                .into(avatarUserInformation)
+
+            nameUserInformation.text = "${card.surname} ${card.name}"
+//                nameUserInformation.setTextColor(Color.parseColor(card.cardTextColor))
+            specialityUserInfo.text = card.speciality
+            organizationUserInfo.text = card.organization
+            additionalProfileInfo.text = card.additionalContactInfo
+            professionalInfo.text = card.professionalInfo
+//                education.text = card.education
+            privateInfo.text = card.privateInfo
+            reference.text = card.reference
+
+            // ************* Fill dialog data ************************
+            currentPersonInfo = PersonInfo(
+                id = card.id,
+                userId = card.userId,
+                name = card.name,
+                surname = card.surname,
+                photo = card.photo,
+                workPhone = card.workPhone,
+                homePhone = card.homePhone,
+                email = card.email,
+                speciality = card.speciality,
+                organization = card.organization,
+                town = card.town,
+                country = card.country
+            )
+            currentAdditionalInfo = AdditionalInfo(
+                cardId = card.id,
+                address = card.additionalContactInfo,
+                workInfo = card.professionalInfo,
+                privateInfo = card.privateInfo,
+                reference = card.reference
+            )
+            currentCardSettings = CardSettings(
+                cardId = card.id,
+                cardTexture = card.cardTexture,
+                cardCorner = card.isCardCorner,
+                cardTextColor = card.cardTextColor,
+                cardAvatarForm = card.cardFormPhoto
+            )
+            additionalInfoCheck =
+                currentAdditionalInfo.address.isNotEmpty() || currentAdditionalInfo.workInfo.isNotEmpty() || currentAdditionalInfo.privateInfo.isNotEmpty() || currentAdditionalInfo.reference.isNotEmpty()
+            personInfoCheck = true
+            cardSettingsCheck = true
+        }
+
+        sortSurnameButton.setOnClickListener {
+            val sortedList = listCards.sortedBy { it.surname }
+            cardFragmentCardAdapter.updateData(sortedList)
+        }
+
+        sortPhoneButton.setOnClickListener {
+            val sortedList = listCards.sortedBy { it.workPhone }
+            cardFragmentCardAdapter.updateData(sortedList)
+        }
+
+        sortMailButton.setOnClickListener {
+            val sortedList = listCards.sortedBy { it.email }
+            cardFragmentCardAdapter.updateData(sortedList)
+        }
+
+        sortOrganizationButton.setOnClickListener {
+            val sortedList = listCards.sortedBy { it.organization }
+            cardFragmentCardAdapter.updateData(sortedList)
+        }
+
+        sortLocationButton.setOnClickListener {
+            val sortedList = listCards.sortedBy { it.town }
+            cardFragmentCardAdapter.updateData(sortedList)
+        }
+
+        cardFragmentCardAdapter.shortOnClickListener =
+            object : CardsFragmentCardAdapter.ShortOnClickListener {
+
+                override fun shortPhoneClick(phone: String) {
+                    val i = Intent(Intent.ACTION_DIAL)
+                    i.data = Uri.parse("tel:$phone")
+                    activity?.startActivity(i)
+                }
+
+                override fun shortEmailClick(email: String) {
+                    val i = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null))
+                    activity?.startActivity(Intent.createChooser(i, "Send email"))
+                }
+
+                override fun shortHomePhoneClick(homePhone: String) {
+                    val i = Intent(Intent.ACTION_DIAL)
+                    i.data = Uri.parse("tel:$homePhone")
+                    activity?.startActivity(i)
+                }
+            }
+    }
+
+    private fun addMotionPanelsAndButtons(
+        leftPanelImage: ImageView,
+        motionLayout: MotionLayout,
+        rightPanelImage: ImageView,
+        sortButton: ImageButton,
+        searchButton: ImageButton
+    ) {
+        var sortButtonSwitch = true
+        var searchButtonSwitch = true
+        var leftPanelSwitch = true
+        var rightPanelSwitch = true
+
+        leftPanelImage.setOnClickListener {
+            lifecycleScope.launchWhenResumed {
+                when {
+                    (!rightPanelSwitch && leftPanelSwitch && !sortButtonSwitch) -> {
+                        motionLayout.setTransition(R.id.sort_button_click_back)
+                        motionLayout.transitionToEnd()
+                        sortButtonSwitch = true
+                        delay(300)
+                        motionLayout.setTransition(R.id.right_panel_click_back)
+                        motionLayout.transitionToEnd()
+                        rightPanelSwitch = true
+                        delay(300)
+                        motionLayout.setTransition(R.id.left_panel_click_forward)
+                        motionLayout.transitionToEnd()
+                        leftPanelSwitch = false
+                    }
+                    (!rightPanelSwitch && leftPanelSwitch && !searchButtonSwitch) -> {
+                        motionLayout.setTransition(R.id.search_button_click_back)
+                        motionLayout.transitionToEnd()
+                        sortButtonSwitch = true
+                        delay(300)
+                        motionLayout.setTransition(R.id.right_panel_click_back)
+                        motionLayout.transitionToEnd()
+                        rightPanelSwitch = true
+                        delay(300)
+                        motionLayout.setTransition(R.id.left_panel_click_forward)
+                        motionLayout.transitionToEnd()
+                        leftPanelSwitch = false
+                    }
+                    (leftPanelSwitch && rightPanelSwitch) -> {
+                        motionLayout.setTransition(R.id.left_panel_click_forward)
+                        motionLayout.transitionToEnd()
+                        leftPanelSwitch = false
+                    }
+                    (!leftPanelSwitch && rightPanelSwitch) -> {
+                        motionLayout.setTransition(R.id.left_panel_click_back)
+                        motionLayout.transitionToEnd()
+                        leftPanelSwitch = true
+                    }
+                    (!rightPanelSwitch && leftPanelSwitch) -> {
+                        motionLayout.setTransition(R.id.right_panel_click_back)
+                        motionLayout.transitionToEnd()
+                        rightPanelSwitch = true
+                        delay(300)
+                        motionLayout.setTransition(R.id.left_panel_click_forward)
+                        motionLayout.transitionToEnd()
+                        leftPanelSwitch = false
+                    }
+
+                }
+            }
+        }
+
+        rightPanelImage.setOnClickListener {
+            lifecycleScope.launchWhenResumed {
+                when {
+                    (!rightPanelSwitch && !sortButtonSwitch && leftPanelSwitch) -> {
+                        motionLayout.setTransition(R.id.sort_button_click_back)
+                        motionLayout.transitionToEnd()
+                        sortButtonSwitch = true
+                        delay(300)
+                        motionLayout.setTransition(R.id.right_panel_click_back)
+                        motionLayout.transitionToEnd()
+                        rightPanelSwitch = true
+                    }
+                    (!rightPanelSwitch && !searchButtonSwitch && leftPanelSwitch) -> {
+                        motionLayout.setTransition(R.id.search_button_click_back)
+                        motionLayout.transitionToEnd()
+                        searchButtonSwitch = true
+                        delay(300)
+                        motionLayout.setTransition(R.id.right_panel_click_back)
+                        motionLayout.transitionToEnd()
+                        rightPanelSwitch = true
+                    }
+                    (rightPanelSwitch && leftPanelSwitch) -> {
+                        motionLayout.setTransition(R.id.right_panel_click_forward)
+                        motionLayout.transitionToEnd()
+                        rightPanelSwitch = false
+                    }
+                    (!rightPanelSwitch && leftPanelSwitch) -> {
+                        motionLayout.setTransition(R.id.right_panel_click_back)
+                        motionLayout.transitionToEnd()
+                        rightPanelSwitch = true
+                    }
+                    (!leftPanelSwitch && rightPanelSwitch) -> {
+                        motionLayout.setTransition(R.id.left_panel_click_back)
+                        motionLayout.transitionToEnd()
+                        leftPanelSwitch = true
+                        delay(300)
+                        motionLayout.setTransition(R.id.right_panel_click_forward)
+                        motionLayout.transitionToEnd()
+                        rightPanelSwitch = false
+                    }
+
+                }
+            }
+        }
+
+        sortButton.setOnClickListener {
+            lifecycleScope.launchWhenResumed {
+                when {
+                    (searchButtonSwitch && sortButtonSwitch) -> {
+                        motionLayout.setTransition(R.id.sort_button_click_forward)
+                        motionLayout.transitionToEnd()
+                        sortButtonSwitch = false
+                    }
+                    (searchButtonSwitch && !sortButtonSwitch) -> {
+                        motionLayout.setTransition(R.id.sort_button_click_back)
+                        motionLayout.transitionToEnd()
+                        sortButtonSwitch = true
+                    }
+                    (!searchButtonSwitch && sortButtonSwitch) -> {
+                        motionLayout.setTransition(R.id.search_button_click_back)
+                        motionLayout.transitionToEnd()
+                        searchButtonSwitch = true
+                        delay(300)
+                        motionLayout.setTransition(R.id.sort_button_click_forward)
+                        motionLayout.transitionToEnd()
+                        sortButtonSwitch = false
+                    }
+                }
+            }
+        }
+
+        searchButton.setOnClickListener {
+            lifecycleScope.launchWhenResumed {
+                when {
+                    (searchButtonSwitch && sortButtonSwitch) -> {
+                        motionLayout.setTransition(R.id.search_button_click_forward)
+                        motionLayout.transitionToEnd()
+                        searchButtonSwitch = false
+                    }
+                    (!searchButtonSwitch && sortButtonSwitch) -> {
+                        motionLayout.setTransition(R.id.search_button_click_back)
+                        motionLayout.transitionToEnd()
+                        searchButtonSwitch = true
+                    }
+                    (searchButtonSwitch && !sortButtonSwitch) -> {
+                        motionLayout.setTransition(R.id.sort_button_click_back)
+                        motionLayout.transitionToEnd()
+                        sortButtonSwitch = true
+                        delay(300)
+                        motionLayout.setTransition(R.id.search_button_click_forward)
+                        motionLayout.transitionToEnd()
+                        searchButtonSwitch = false
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupSettingsDialog() {
+        SettingsDialog.setupListener(parentFragmentManager, this.viewLifecycleOwner){status ->
+            Log.d("MyLog", "status settings = $status")
+            when(status){
+                SettingsDialog.BACKGROUND_STATUS -> {
+                    Log.d("MyLog", "background")
+                    showBackgroundSettingsDialog()
+                }
+                SettingsDialog.LANGUAGE_STATUS -> {
+                    showLanguageSettingsDialog()
+                }
+                SettingsDialog.ABOUT_STATUS -> {
+                    showAboutSettingsDialog()
+                }
+            }
+        }
+    }
+
+    private fun setupBackgroundSettingsDialog(backgroundLayout: CoordinatorLayout){
+        BackgroundSettingsDialog.setupListener(parentFragmentManager, this.viewLifecycleOwner) {status, background  ->
+            when(status){
+                BackgroundSettingsDialog.SETUP_STATUS -> {
+                    val backgroundResource = this.resources.getIdentifier(
+                        background,
+                        "drawable",
+                        activity?.packageName
+                    )
+                    backgroundLayout.background = resources.getDrawable(backgroundResource)
+                }
+                BackgroundSettingsDialog.CANCEL_STATUS -> {
+
+                }
+            }
+        }
+    }
+
+    private fun showAboutSettingsDialog() {
+        AboutSettingsDialog.show(parentFragmentManager)
+    }
+
+    private fun showLanguageSettingsDialog() {
+        LanguageSettingsDialog.show(parentFragmentManager)
+    }
+
+    private fun showBackgroundSettingsDialog() {
+        BackgroundSettingsDialog.show(parentFragmentManager)
+    }
+
+    private fun showSettingsDialog() {
+        SettingsDialog.show(parentFragmentManager)
+    }
+
+    fun RecyclerView.addScrollListener(onScroll: (position: Int) -> Unit) {
+        var lastPosition = 0
+        addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (layoutManager is LinearLayoutManager) {
+                    val currentVisibleItemPosition =
+                        (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                    if (lastPosition != currentVisibleItemPosition && currentVisibleItemPosition != RecyclerView.NO_POSITION) {
+                        onScroll.invoke(currentVisibleItemPosition)
+                        lastPosition = currentVisibleItemPosition
+                    }
+                }
+            }
+        })
     }
 
     private fun setupEditDialog() {
@@ -511,24 +624,89 @@ class CardsFragment : Fragment() {
                 EditCardDialog.SETTINGS_CARD_STATUS -> {
                     showSettingsCardDialog(cardId)
                 }
+                EditCardDialog.SAVE_STATUS -> {
+                    val newCard = Card(
+                        id = cardId,
+                        userId = currentPersonInfo.userId,
+                        name = currentPersonInfo.name,
+                        surname = currentPersonInfo.surname,
+                        photo = currentPersonInfo.photo,
+                        workPhone = currentPersonInfo.workPhone,
+                        homePhone = currentPersonInfo.homePhone,
+                        email = currentPersonInfo.email,
+                        speciality = currentPersonInfo.speciality,
+                        organization = currentPersonInfo.organization,
+                        town = currentPersonInfo.town,
+                        country = currentPersonInfo.country,
+                        additionalContactInfo = currentAdditionalInfo.address,
+                        professionalInfo = currentAdditionalInfo.workInfo,
+                        privateInfo = currentAdditionalInfo.privateInfo,
+                        reference = currentAdditionalInfo.reference,
+                        cardTexture = currentCardSettings.cardTexture,
+                        cardTextColor = currentCardSettings.cardTextColor,
+                        isCardCorner = currentCardSettings.cardCorner,
+                        cardFormPhoto = currentCardSettings.cardAvatarForm
+                    )
+                    if (cardId == 0L) {
+                        lifecycleScope.launch(Dispatchers.IO) {
+//                            Log.d("MyLog", "add card")
+
+                            cardsFragmentViewModel.addCard(newCard)
+                            cardsFragmentViewModel.getCards()
+
+
+                        }
+                    } else lifecycleScope.launch(Dispatchers.IO) {
+//                        Log.d("MyLog", "update card")
+                        cardsFragmentViewModel.updateCard(newCard)
+                        cardsFragmentViewModel.getCards()
+                    }
+                }
             }
             setupPersonInfoDialog()
             setupAdditionalDialog()
+            setupCardSettingsDialog()
         }
+    }
 
+    private fun setupCardSettingsDialog() {
+        CardSettingsDialog.setupListener(
+            parentFragmentManager, this
+        ) { cardId, status, cardSettingsInfo ->
+//            Log.d("MyLog", "cardInfo = $cardSettingsInfo")
+            if (status == CardSettingsDialog.SAVE_STATUS) {
+                currentCardSettings = cardSettingsInfo as CardSettings
+                cardSettingsCheck = true
+                showEditDialog(cardId)
+            } else showEditDialog(cardId)
+        }
     }
 
     private fun setupAdditionalDialog() {
-        AdditionalInformationDialog.setupListener(parentFragmentManager,this){cardId, additionalInfo ->
-            Log.d("MyLog", "addInfo = $additionalInfo")
-            showEditDialog(currentCardId)
+        AdditionalInformationDialog.setupListener(
+            parentFragmentManager, this
+        ) { cardId, status, additionalInfo ->
+//            Log.d("MyLog", "addInfo = $additionalInfo")
+            if (status == AdditionalInformationDialog.SAVE_STATUS) {
+                currentAdditionalInfo = additionalInfo as AdditionalInfo
+                additionalInfoCheck =
+                    currentAdditionalInfo.address.isNotEmpty() || currentAdditionalInfo.workInfo.isNotEmpty() || currentAdditionalInfo.privateInfo.isNotEmpty() || currentAdditionalInfo.reference.isNotEmpty()
+                showEditDialog(currentCardId)
+            } else showEditDialog(currentCardId)
         }
     }
 
     private fun setupPersonInfoDialog() {
-        PersonInformationDialog.setupListener(parentFragmentManager, this) { cardId, personInfo ->
-            Log.d("MyLog", "person info = $personInfo")
-            showEditDialog(cardId)
+        PersonInformationDialog.setupListener(
+            parentFragmentManager, this
+        ) { cardId, status, personInfo ->
+            if (status == PersonInformationDialog.SAVE_STATUS) {
+                currentPersonInfo = personInfo as PersonInfo
+                personInfoCheck = true
+//                Log.d("MyLog", "setup person info, cardId = $cardId")
+                showEditDialog(cardId)
+            } else showEditDialog(cardId)
+
         }
     }
 
@@ -545,117 +723,69 @@ class CardsFragment : Fragment() {
     }
 
     private fun showEditDialog(currentCardId: Long) {
-        EditCardDialog.show(parentFragmentManager, currentCardId)
+        EditCardDialog.show(
+            parentFragmentManager,
+            currentCardId,
+            personInfoCheck,
+            additionalInfoCheck,
+            cardSettingsCheck
+        )
     }
 
     private fun setupShareDialog() {
-        ShareContactsDialog.setupListener(parentFragmentManager, this){cardId, status ->
-            when(status){
-                ShareContactsDialog.SAVE_STATUS -> {
-                    val bundle = Bundle()
-                    bundle.putLong(CURRENT_CARD_ID, currentCardId)
-                    findNavController().navigate(R.id.action_cardsFragment_to_checkCardListSaveFragment, bundle)
+        ShareContactsDialog.setupListener(parentFragmentManager, this) { cardId, status ->
+            when (status) {
+                ShareContactsDialog.SAVE_OPTION -> {
+                    showSaveCardsDialog(cardId)
                 }
-                ShareContactsDialog.LOAD_STATUS -> {
-                    findNavController().navigate(R.id.action_cardsFragment_to_checkCardListLoadFragment)
+                ShareContactsDialog.LOAD_FROM_FILE_OPTION -> {
+                    showLoadCardsDialog(LOAD_FROM_FILE)
+                }
+                ShareContactsDialog.LOAD_FROM_GOOGLE_ACCOUNT_OPTION -> {
+                    showLoadCardsDialog(LOAD_FROM_GOOGLE_ACCOUNT)
+                }
+            }
+            setupLoadCardsDialog()
+        }
+    }
+
+    private fun setupLoadCardsDialog() {
+        LoadCardDialog.setupListener(
+            parentFragmentManager, this.viewLifecycleOwner
+        ) { status, cardId ->
+            when (status) {
+                LoadCardDialog.ADD_STATUS -> {
+                    lifecycleScope.launch {
+                        delay(500)
+                        cardsFragmentViewModel.getCards()
+                    }
+//                    Log.d("MyLog", "setup load dialog")
+                }
+                LoadCardDialog.CANCEL_STATUS -> {
+//                    Log.d("MyLog", "setup load dialog 2")
+                    showShareDialog(cardId)
+                }
+                LoadCardDialog.AFTER_CHECK_DOUBLE_STATUS -> {
+                    lifecycleScope.launch {
+                        delay(500)
+                        cardsFragmentViewModel.getCards()
+                    }
                 }
             }
         }
+    }
+
+    private fun showLoadCardsDialog(destination: String) {
+        LoadCardDialog.show(parentFragmentManager, currentCardId, destination)
+    }
+
+    private fun showSaveCardsDialog(cardId: Long) {
+        SaveCardDialog.show(parentFragmentManager, cardId)
     }
 
     private fun showShareDialog(currentCardId: Long) {
-
         ShareContactsDialog.show(parentFragmentManager, currentCardId)
     }
-
-    private fun searchFABs(
-        fabSearch: FloatingActionButton,
-        searchText: EditText,
-        fabVoice: FloatingActionButton
-    ) {
-        fabVoice.init(20f, -430f)
-
-        fabSearch.setOnClickListener {
-            if (fabVoice.isOrWillBeShown) {
-                fabVoice.hide()
-                searchText.isVisible = false
-            } else {
-                fabVoice.show()
-                searchText.animateVisibility(true)
-            }
-        }
-
-    }
-
-    private fun setAppBarDragging(newValue: Boolean, appBarLayout: AppBarLayout) {
-        val params = appBarLayout.layoutParams as CoordinatorLayout.LayoutParams
-        val behavior = AppBarLayout.Behavior()
-        behavior.setDragCallback(object : DragCallback() {
-            override fun canDrag(appBarLayout: AppBarLayout): Boolean {
-                return newValue
-            }
-        })
-        params.behavior = behavior
-    }
-
-
-    private fun setupFABs(
-        fabSettings: FloatingActionButton,
-        fabEdit: FloatingActionButton,
-        fabDelete: FloatingActionButton,
-        fabShare: FloatingActionButton,
-        fabExit: FloatingActionButton
-    ) {
-
-        fabEdit.init(-280f, -130f)
-        fabShare.init(-120f, -250f)
-        fabDelete.init(120f, -250f)
-        fabExit.init(280f, -130f)
-
-        fabSettings.setOnClickListener {
-            if (fabEdit.isOrWillBeShown) {
-                fabEdit.hide()
-                fabDelete.hide()
-                fabShare.hide()
-                fabExit.hide()
-            } else {
-                fabEdit.show()
-                fabDelete.show()
-                fabShare.show()
-                fabExit.show()
-            }
-        }
-    }
-
-    private fun sortFABs(
-        fabSort: FloatingActionButton,
-        fabSortName: FloatingActionButton,
-        fabSortPhone: FloatingActionButton,
-        fabSortOrganisation: FloatingActionButton,
-        fabSortLocation: FloatingActionButton
-    ) {
-
-        fabSortName.init(80f, -430f)
-        fabSortOrganisation.init(260f, -430f)
-        fabSortPhone.init(440f, -430f)
-        fabSortLocation.init(620f, -430f)
-
-        fabSort.setOnClickListener {
-            if (fabSortName.isOrWillBeShown) {
-                fabSortName.hide()
-                fabSortPhone.hide()
-                fabSortOrganisation.hide()
-                fabSortLocation.hide()
-            } else {
-                fabSortName.show()
-                fabSortPhone.show()
-                fabSortOrganisation.show()
-                fabSortLocation.show()
-            }
-        }
-    }
-
-
 
 
     fun SnapHelper.getSnapPosition(recyclerView: RecyclerView): Int {
@@ -664,74 +794,46 @@ class CardsFragment : Fragment() {
         return layoutManager.getPosition(snapView)
     }
 
-    private fun expandAppbar(
-        appbar: AppBarLayout,
-        nameplate: FrameLayout
-    ) {
-        appbar.setExpanded(true)
-        moveNameplateVertical(nameplate, 220f, 0f).start()
-    }
 
-    private fun collapseAppbar(
-        appbar: AppBarLayout,
-        nameplate: FrameLayout
-    ) {
-        appbar.setExpanded(false)
-        moveNameplateVertical(nameplate, 0f, 220f).start()
-    }
-
-    override fun onDestroy() {
+    override fun onDestroyView() {
         _binding = null
-        super.onDestroy()
+        super.onDestroyView()
     }
 
-    private fun moveNameplateVertical(nameplate: View, from: Float, to: Float): Animator {
-        val move = ObjectAnimator.ofFloat(nameplate, View.TRANSLATION_Y, from, to)
-        move.interpolator = AccelerateInterpolator()
-        move.duration = 700
-        return move
-    }
 
-    fun showDialog(cardId: Long) {
+    private fun showDeleteDialog(cardId: Long) {
         DeleteCardDialog.show(parentFragmentManager, cardId)
     }
 
-    fun setupDialog(
-        cardFragmentCardAdapter: CardsFragmentCardAdapter,
-        launcher: ActivityResultLauncher<IntentSenderRequest>
+    private fun setupDeleteDialog(
     ) {
-        DeleteCardDialog.setupListener(parentFragmentManager, this) {
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                    val contentResolver = context?.contentResolver
-
-                    cardsFragmentViewModel.deleteCard(currentCardId)
-//                    if (contentResolver != null) {
-//                        cardsFragmentViewModel.deleteImage(imageUri, contentResolver, launcher)
-//                    }
-                    delay(600)
-                    cardsFragmentViewModel.getCards()
+        DeleteCardDialog.setupListener(parentFragmentManager, this.viewLifecycleOwner) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                deleteImage(currentCard.photo)
+                Log.d("MyLog", "del currentCardId = $currentCardId, currentCard = $currentCard")
+                cardsFragmentViewModel.deleteCard(currentCardId)
+                delay(500)
+                cardsFragmentViewModel.getCards()
+            }
+        }
+    }
+    private fun deleteImage(path: String) {
+        val fDelete = File(path)
+        if (fDelete.exists()) {
+            if (fDelete.delete()) {
+                MediaScannerConnection.scanFile(
+                    requireContext(),
+                    arrayOf(Environment.getExternalStorageDirectory().toString()),
+                    null
+                ) { path, uri ->
+                    Log.d("MyLog", "DONE")
                 }
             }
         }
     }
-
-
-
-
 }
 
-
-private fun animationMove(button: View, from: Float, to: Float): Animator {
-    val logoBegin = ObjectAnimator.ofFloat(button, View.TRANSLATION_Y, from, to)
-    logoBegin.interpolator = AccelerateInterpolator()
-    logoBegin.duration = 700
-    return logoBegin
+fun RecyclerView?.getCurrentPosition(): Int {
+    return (this?.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
 }
 
-fun View.setMarginExtensionFunction(left: Int, top: Int, right: Int, bottom: Int) {
-    val params = layoutParams as ViewGroup.MarginLayoutParams
-    params.setMargins(left, top, right, bottom)
-    layoutParams = params
-}

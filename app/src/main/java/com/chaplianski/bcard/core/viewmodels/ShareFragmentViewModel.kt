@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chaplianski.bcard.core.ui.ShareFragment
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.usecases.AddCardUseCase
 import com.chaplianski.bcard.domain.usecases.GetCardUseCase
-import ezvcard.VCard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject

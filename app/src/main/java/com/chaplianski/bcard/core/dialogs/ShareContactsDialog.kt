@@ -3,18 +3,15 @@ package com.chaplianski.bcard.core.dialogs
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
-import com.chaplianski.bcard.R
+import com.chaplianski.bcard.core.helpers.AccountContactsPicker
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.databinding.DialogShareContactsBinding
-import com.google.android.material.textview.MaterialTextView
 
 
 class ShareContactsDialog : DialogFragment() {
@@ -46,29 +43,31 @@ class ShareContactsDialog : DialogFragment() {
         val saveButton = binding.tvShareDialogSave
         val loadButton = binding.tvShareDialogLoad
         val cancelButton = binding.tvShareDialogCancel
-        val currentCardId = arguments?.getLong(CURRENT_CARD_ID)
+        val loadFromAccountButton = binding.tvShareDialogLoadFromAccount
+        val currentCardId = arguments?.getLong(CURRENT_CARD_ID, -1L)
 
         saveButton.setOnClickListener {
-
             parentFragmentManager.setFragmentResult(
-                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to SAVE_STATUS)
+                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to SAVE_OPTION)
             )
             dismiss()
         }
-//
         loadButton.setOnClickListener {
-
             parentFragmentManager.setFragmentResult(
-                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to LOAD_STATUS)
+                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to LOAD_FROM_FILE_OPTION)
             )
             dialog?.dismiss()
         }
-
+        loadFromAccountButton.setOnClickListener {
+            parentFragmentManager.setFragmentResult(
+                    REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to LOAD_FROM_GOOGLE_ACCOUNT_OPTION)
+                )
+                dismiss()
+        }
 
         cancelButton.setOnClickListener {
             dismiss()
         }
-
     }
 
     override fun onDestroyView() {
@@ -78,10 +77,10 @@ class ShareContactsDialog : DialogFragment() {
 
     companion object {
 
-//        val KEY_RESPONSE = "key response"
-        val CHECKED_OPTION = "checked option"
-        val SAVE_STATUS = "save status"
-        val LOAD_STATUS = "load status"
+        val CHECKED_OPTION = "checked share option"
+        val SAVE_OPTION = "save share option"
+        val LOAD_FROM_FILE_OPTION = "load from file option"
+        val LOAD_FROM_GOOGLE_ACCOUNT_OPTION = "load from google account option"
 
 
 
@@ -90,13 +89,8 @@ class ShareContactsDialog : DialogFragment() {
         //
         fun show(manager: FragmentManager, currentCardId: Long) {
             val dialogFragment = ShareContactsDialog()
-//            val kids = ArrayList(kidList)
             dialogFragment.arguments = bundleOf(
-//                CURRENT_TASK to task.mapToEditTask(),
-//                "kids" to kids,
-//                CURRENT_CHORE_ID to task.choreId,
-//                TASK_STATUS to taskStatus
-                  CURRENT_CARD_ID to currentCardId
+                CURRENT_CARD_ID to currentCardId
             )
             dialogFragment.show(manager, TAG)
         }
@@ -108,16 +102,6 @@ class ShareContactsDialog : DialogFragment() {
                 if (status != null) {
                     listener.invoke(cardId, status)
                 }
-
-//                    .let { listener.invoke(it)
-//                result.getString(REJECTED_TASK_STATUS).let {
-//                    if (it != null) {
-//                        listener.invoke(it)
-//                    }
-//                }
-
-
-//                }
             })
         }
     }

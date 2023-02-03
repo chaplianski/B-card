@@ -197,22 +197,21 @@
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cardView_card_settings_dialog_texture"
-                            android:layout_width="wrap_content"
-                            android:layout_height="fill_parent"
-                            android:layout_weight="1"
+                            android:layout_width="160dp"
+                            android:layout_height="240dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginBottom="16dp"
                             android:layout_marginEnd="16dp"
                             >
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_width="160dp"
+                                android:layout_height="240dp">
 
                                 <ImageView
                                     android:id="@+id/iv_card_settings_dialog_texture"
-                                    android:layout_width="150dp"
-                                    android:layout_height="260dp"
+                                    android:layout_width="160dp"
+                                    android:layout_height="240dp"
 
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -225,7 +224,6 @@
                                     android:id="@+id/iv_card_settings_dialog_avatar"
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
-
                                     android:elevation="11dp"
                                     android:src="@drawable/ic_portrait"
                                     app:layout_constraintBottom_toBottomOf="parent"
@@ -240,15 +238,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="20dp"
-                                    android:layout_marginEnd="20dp"
                                     android:layout_marginTop="20dp"
-
+                                    android:layout_marginEnd="20dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.5"
+                                    app:layout_constraintHorizontal_bias="0.484"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintVertical_bias="0.5"
+                                    app:layout_constraintVertical_bias="0.683"
                                     app:srcCompat="@drawable/ic_list" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.cardview.widget.CardView>
@@ -406,12 +403,6 @@
                     android:layout_weight="1"
                     android:buttonTint="@color/purple_700"/>
 
-                <RadioButton
-                    android:id="@+id/rg_card_settings_dialog_text_color_green"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/green"/>
 
                 <RadioButton
                     android:id="@+id/rg_card_settings_dialog_text_color_violet"
@@ -440,6 +431,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:buttonTint="@color/light_yellow"/>
+
+                <RadioButton
+                    android:id="@+id/rg_card_settings_dialog_text_color_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/white"/>
             </RadioGroup>
 
             <LinearLayout

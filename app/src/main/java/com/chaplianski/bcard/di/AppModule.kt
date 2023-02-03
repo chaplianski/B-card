@@ -1,6 +1,7 @@
 package com.chaplianski.bcard.di
 
 import android.content.Context
+import androidx.lifecycle.ViewModel
 import androidx.room.Room
 import com.chaplianski.bcard.data.repository.UserRepositoryImpl
 import com.chaplianski.bcard.data.repository.CardRepositoryImpl
@@ -11,9 +12,11 @@ import com.chaplianski.bcard.data.storage.storage.CardStorage
 import com.chaplianski.bcard.data.storage.storage.UserStorage
 import com.chaplianski.bcard.domain.repository.UserRepository
 import com.chaplianski.bcard.domain.repository.CardRepository
+import dagger.MapKey
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
+import kotlin.reflect.KClass
 
 @Module
 class AppModule() {
@@ -43,5 +46,9 @@ class AppModule() {
     fun provideBCardStorage(impl: CardStorageImpl): CardStorage = impl
     @Provides
     fun provideUserStorage(impl: UserStorageImpl): UserStorage = impl
+
+
+
+
 
 }

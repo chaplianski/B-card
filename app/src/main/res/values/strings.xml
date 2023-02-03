@@ -18,7 +18,12 @@
     <string name="please_enter_login">Please, enter login</string>
     <string name="please_enter_password">Please, enter password</string>
     <string name="please_enter_secret_question">Please, enter secret question</string>
-    <string name="please_enter_secret_answer">Please, enter answer for secret question</string>
+    <string name="please_enter_secret_answer">Please, enter answer to the secret question</string>
     <string name="password_does_not_match">Password doesn\'t match</string>
+    <string name="answer_please">Answer, please</string>
+    <string name="answer">Answer</string>
+    <string name="such_login_not_exist">Such login not exist</string>
+    <string name="answer_is_wrong">The answer is wrong</string>
+    <string name="add">Add</string>
 
 </resources>
