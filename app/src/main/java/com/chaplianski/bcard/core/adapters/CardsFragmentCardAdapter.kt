@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -71,7 +70,7 @@ class CardsFragmentCardAdapter(
 
             }
         }
-        holder.itemView.setOnClickListener { recyclerView.smoothScrollToPosition(position) }
+//        holder.itemView.setOnClickListener { recyclerView.smoothScrollToPosition(position) }
 
         if (getItemViewType(position) == ADBLOCK) {
             (holder as AddCardViewHolder).itemView.setOnClickListener {
@@ -112,12 +111,12 @@ class CardsFragmentCardAdapter(
 
     class CardViewHolder(binding: FragmentCardsCardItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        val phone = binding.tvCardFragmentItemAdditionPhone
+        val phone = binding.tvCardFragmentItemHomePhone
         val name = binding.tvCardFragmentItemName
         val specialization = binding.tvCardFragmentItemSpecialization
         val organization = binding.tvCardFragmentItemOrganization
-        val workPhone = binding.tvCardFragmentItemPhone
-        val homePhone = binding.tvCardFragmentItemAdditionPhone
+        val workPhone = binding.tvCardFragmentItemWorkPhone
+        val homePhone = binding.tvCardFragmentItemHomePhone
         val imageHomePhone = binding.ivCardFragmentHomePhone
         val imageWorkPhone = binding.ivCardFragmentWorkPhone
         val email = binding.tvCardFragmentItemEmail

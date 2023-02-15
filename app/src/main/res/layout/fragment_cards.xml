@@ -39,7 +39,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_cards_fragment_cards"
                     android:layout_width="409dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:background="@color/transparent"
                     android:clipToPadding="false"
@@ -49,7 +49,7 @@
                     app:layout_constraintHorizontal_bias="0.533"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0"
+                    app:layout_constraintVertical_bias="0.0"
                     tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/fragment_cards_card_item"
                     tools:orientation="horizontal" />
@@ -59,7 +59,6 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/button"
-                    android:clickable="true"
                     android:src="@drawable/ic_phone_call"
                     app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_sort"
                     app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_sort"

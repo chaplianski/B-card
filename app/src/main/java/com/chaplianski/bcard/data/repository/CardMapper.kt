@@ -1,9 +1,9 @@
 package com.chaplianski.bcard.data.repository
 
 import com.chaplianski.bcard.data.storage.modeldto.CardDTO
-import com.chaplianski.bcard.data.storage.modeldto.UserDTO
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.model.User
+import com.chaplianski.bcard.data.storage.modeldto.UserDTO
 
 
 fun Card.cardMapDomainToData(): CardDTO {

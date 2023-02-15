@@ -6,24 +6,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.chaplianski.bcard.R
-import com.chaplianski.bcard.core.dialogs.PersonInformationDialog
-import com.chaplianski.bcard.databinding.FragmentLoginBinding
-import com.chaplianski.bcard.di.DaggerAppComponent
-import com.chaplianski.bcard.domain.model.User
 import com.chaplianski.bcard.core.factories.LoginFragmentViewModelFactory
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.LoginFragmentViewModel
-import com.chaplianski.bcard.domain.model.PersonInfo
+import com.chaplianski.bcard.databinding.FragmentLoginBinding
+import com.chaplianski.bcard.di.DaggerAppComponent
+import com.chaplianski.bcard.domain.model.User
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
 

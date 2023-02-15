@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
@@ -15,12 +16,17 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.R
+import com.chaplianski.bcard.core.adapters.CardTextureAdapter
+import com.chaplianski.bcard.core.helpers.CardDecorResources
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.CardSettingsDialogViewModel
 import com.chaplianski.bcard.databinding.DialogCardSettingsBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.CardSettings
+import com.chaplianski.bcard.domain.model.CardTexture
 import javax.inject.Inject
 
 
@@ -58,18 +64,6 @@ class CardSettingsDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val texture1 = binding.radioButtonCardTexture1
-        val texture2 = binding.radioButtonCardTexture2
-        val texture3 = binding.radioButtonCardTexture3
-        val texture4 = binding.radioButtonCardTexture4
-        val texture5 = binding.radioButtonCardTexture5
-        val texture6 = binding.radioButtonCardTexture6
-        val texture7 = binding.radioButtonCardTexture7
-        val texture8 = binding.radioButtonCardTexture8
-        val texture9 = binding.radioButtonCardTexture9
-        val texture10 = binding.radioButtonCardTexture10
-        val texture11 = binding.radioButtonCardTexture11
-        val texture12 = binding.radioButtonCardTexture12
         val textColor1 = binding.rgCardSettingsDialogTextColorBlack
         val textColor2 = binding.rgCardSettingsDialogTextColorPurple
         val textColor3 = binding.rgCardSettingsDialogTextColorViolet
@@ -78,8 +72,8 @@ class CardSettingsDialog : DialogFragment() {
         val textColor6 = binding.rgCardSettingsDialogTextColorLightYellow
         val textColor7 = binding.rgCardSettingsDialogTextColorWhite
 
-        val cardTexture1 = binding.radiogroupCardSettingsDialogTexture1
-        val cardTexture2 = binding.radiogroupCardSettingsDialogTexture2
+//        val cardTexture1 = binding.radiogroupCardSettingsDialogTexture1
+//        val cardTexture2 = binding.radiogroupCardSettingsDialogTexture2
         val cardTextureImage = binding.ivCardSettingsDialogTexture
         val cardViewTextureImage = binding.cardViewCardSettingsDialogTexture
         val cardAvatar = binding.ivCardSettingsDialogAvatar
@@ -101,26 +95,19 @@ class CardSettingsDialog : DialogFragment() {
         var checkedFormAvatarVariant = DEFAULT_CARD_FORM_PHOTO
         var checkedColorTextVariant = DEFAULT_CARD_TEXT_COLOR
 
+        val cardTextureRV = binding.rvCardSettingsDialogTexture
+
+        val cardTextureAdapter = CardTextureAdapter()
+        cardTextureRV.layoutManager =
+            GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
+        cardTextureRV.adapter = cardTextureAdapter
 
         if (currentCardId != null && currentCardId != 0L) {
             cardSettingsDialogViewModel.getCardData(currentCardId)
         } else {
-            if (checkedCardTextureVariant != "") {
-                when (checkedCardTextureVariant) {
-                    "paper_01" -> texture1.isChecked = true
-                    "paper_43" -> texture2.isChecked = true
-                    "paper_08" -> texture3.isChecked = true
-                    "paper_015" -> texture4.isChecked = true
-                    "paper_10" -> texture5.isChecked = true
-                    "paper_019" -> texture6.isChecked = true
-                    "paper_02" -> texture7.isChecked = true
-                    "paper_033" -> texture8.isChecked = true
-                    "paper_025" -> texture9.isChecked = true
-                    "paper_03" -> texture10.isChecked = true
-                    "paper_06" -> texture11.isChecked = true
-                    "paper_09" -> texture12.isChecked = true
-                }
-            }
+            val listCardTexture = checkItemCardTexture(checkedCardTextureVariant)
+            cardTextureAdapter.differ.submitList(listCardTexture)
+            fillTextureToImage(checkedCardTextureVariant, cardTextureImage)
 
             when (checkedColorTextVariant) {
                 resources.getString(R.color.black) -> {
@@ -159,28 +146,16 @@ class CardSettingsDialog : DialogFragment() {
         }
 
         cardSettingsDialogViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
-            Log.d("MyLog", "currentCard = $card")
+
             checkedCardTextureVariant = card.cardTexture
             checkedColorTextVariant = card.cardTextColor
             checkedCornerSizeVariant = card.isCardCorner
             checkedFormAvatarVariant = card.cardFormPhoto
 
-            if (checkedCardTextureVariant != "") {
-                when (checkedCardTextureVariant) {
-                    "paper_01" -> texture1.isChecked = true
-                    "paper_43" -> texture2.isChecked = true
-                    "paper_08" -> texture3.isChecked = true
-                    "paper_015" -> texture4.isChecked = true
-                    "paper_10" -> texture5.isChecked = true
-                    "paper_019" -> texture6.isChecked = true
-                    "paper_02" -> texture7.isChecked = true
-                    "paper_033" -> texture8.isChecked = true
-                    "paper_025" -> texture9.isChecked = true
-                    "paper_03" -> texture10.isChecked = true
-                    "paper_06" -> texture11.isChecked = true
-                    "paper_09" -> texture12.isChecked = true
-                }
-            }
+            val listCardTexture = checkItemCardTexture(checkedCardTextureVariant)
+            Log.d("MyLog", "listTexture = $listCardTexture")
+            cardTextureAdapter.differ.submitList(listCardTexture)
+//            fillCardTexureVariants(checkedCardTextureVariant)
 
             when (checkedColorTextVariant) {
                 resources.getString(R.color.black) -> {
@@ -216,15 +191,12 @@ class CardSettingsDialog : DialogFragment() {
                 cardAvatar.setImageResource(R.drawable.ic_user_square)
                 squareButton.isChecked = true
             }
-
+            fillTextureToImage(checkedCardTextureVariant, cardTextureImage)
         }
 
-        val textureResource = this.resources.getIdentifier(
-            checkedCardTextureVariant,
-            "drawable",
-            activity?.packageName
-        )
-        cardTextureImage.setImageResource(textureResource)
+
+
+
 //        cardTextureImage.background = AppCompatResources.getDrawable(requireContext(), checkedCardTextureVariant)
         val currentColor = Color.parseColor(checkedColorTextVariant)
         textSchemaImage.setColorFilter(currentColor)
@@ -234,93 +206,24 @@ class CardSettingsDialog : DialogFragment() {
 
         var isChecking = true
         var currentTexture = 0
-        cardTexture1.setOnCheckedChangeListener { group, checkedId ->
 
-            val checkedItem = group.checkedRadioButtonId
+        cardTextureAdapter.cardTextureListener = object : CardTextureAdapter.CardTextureListener{
+            override fun onClickItem(cardTexture: CardTexture) {
 
-            if (checkedId != -1 && isChecking) {
-                isChecking = false
-//                Log.d("MyLog", "clear Text 2")
-                cardTexture2.clearCheck()
-            }
-            isChecking = true
-            currentTexture = when (checkedId) {
-//            checkedCardTextureVariant = when (checkedId) {
-                R.id.radioButton_card_texture_1 -> R.drawable.paper_01
-                R.id.radioButton_card_texture_2 -> R.drawable.paper_43
-                R.id.radioButton_card_texture_3 -> R.drawable.paper_08
-                R.id.radioButton_card_texture_4 -> R.drawable.paper_015
-                R.id.radioButton_card_texture_5 -> R.drawable.paper_10
-                R.id.radioButton_card_texture_6 -> R.drawable.paper_019
-                else -> {
-                    R.drawable.paper_015
-                }
-            }
-//            cardTextureImage.setImageResource(textureResource)
-            checkedCardTextureVariant =
-                context?.resources?.getResourceEntryName(currentTexture).toString()
-            val textureResource = this.resources.getIdentifier(
-                checkedCardTextureVariant,
-                "drawable",
-                activity?.packageName
-            )
-            cardTextureImage.setImageResource(textureResource)
-
-//            cardTextureImage.background = AppCompatResources.getDrawable(requireContext(), currentTexture)
-//            cardTextureImage.background = AppCompatResources.getDrawable(requireContext(), checkedCardTextureVariant)
-//            Log.d("MyLog",
-//                context?.resources?.getResourceEntryName(checkedCardTextureVariant).toString()
-//            )
+                fillTextureToImage(cardTexture.cardTextureName, cardTextureImage)
+                checkedCardTextureVariant = cardTexture.cardTextureName
+//            val textureResource1 = this.resources.getIdentifier(
+//                    checkedCardTextureVariant,
+//                    "drawable",
+//                    activity?.packageName
+//                )
+//                cardTextureImage.setImageResource(textureResource)
         }
 
-        cardTexture2.setOnCheckedChangeListener { group, checkedId ->
-
-            val checkedItem = group.checkedRadioButtonId
-//            Log.d("MyLog", "checkedId = $checkedId")
-            if (checkedId != -1 && isChecking) {
-                isChecking = false
-                Log.d("MyLog", "clear Text 1")
-                cardTexture1.clearCheck()
-            }
-            isChecking = true
-            currentTexture = when (checkedId) {
-//            checkedCardTextureVariant = when (checkedId) {
-                R.id.radioButton_card_texture_7 -> R.drawable.paper_02
-                R.id.radioButton_card_texture_8 -> R.drawable.paper_033
-                R.id.radioButton_card_texture_9 -> R.drawable.paper_025
-                R.id.radioButton_card_texture_10 -> R.drawable.paper_03
-                R.id.radioButton_card_texture_11 -> R.drawable.paper_06
-                R.id.radioButton_card_texture_12 -> R.drawable.paper_09
-                else -> {
-                    R.drawable.paper_034
-                }
-            }
-//            val textureResource = this.resources.getIdentifier(checkedCardTextureVariant, "drawable", activity?.packageName)
-//            cardTextureImage.setImageResource(textureResource)
-//                        cardTextureImage.background = AppCompatResources.getDrawable(requireContext(), currentTexture)
-
-            checkedCardTextureVariant =
-                context?.resources?.getResourceEntryName(currentTexture).toString()
-            val textureResource = this.resources.getIdentifier(
-                checkedCardTextureVariant,
-                "drawable",
-                activity?.packageName
-            )
-            cardTextureImage.setImageResource(textureResource)
-//            cardTextureImage.background = AppCompatResources.getDrawable(requireContext(), checkedCardTextureVariant)
-//            Log.d("MyLog",
-//                context?.resources?.getResourceEntryName(checkedCardTextureVariant).toString()
-//            )
         }
+
 
         Log.d("MyLog", "checkedCardTextureVariant = $checkedCardTextureVariant")
-
-//        if (currentTexture != 0) {
-
-//        }
-
-
-
 
         cardTextSchema.setOnCheckedChangeListener { group, checkedId ->
             val nameCheckedColorTextVariant = when (checkedId) {
@@ -353,12 +256,7 @@ class CardSettingsDialog : DialogFragment() {
                     false
                 }
             }
-
         }
-
-//        if (checkedFormAvatarVariant != "") {
-
-//        }
 
         formAvatar.setOnCheckedChangeListener { group, checkedId ->
             checkedFormAvatarVariant = when (checkedId) {
@@ -402,6 +300,31 @@ class CardSettingsDialog : DialogFragment() {
             )
             dismiss()
         }
+    }
+
+    private fun fillTextureToImage(
+        checkedCardTextureVariant: String,
+        cardTextureImage: ImageView
+    ): Int {
+        val textureResource = this.resources.getIdentifier(
+            checkedCardTextureVariant,
+            RESOURCE_TYPE_DRAWABLE,
+            activity?.packageName
+        )
+        cardTextureImage.setImageResource(textureResource)
+        return textureResource
+    }
+    private fun checkItemCardTexture(checkedCardTextureVariant: String): List<CardTexture> {
+        val cardDecorResource = CardDecorResources()
+        val listCardTexture = cardDecorResource.getCardTextureResource()
+        if (checkedCardTextureVariant != "") {
+            listCardTexture.forEach {
+                if (checkedCardTextureVariant == it.cardTextureName) {
+                    it.isChecked = true
+                }
+            }
+        }
+        return listCardTexture
     }
 
     override fun onStart() {

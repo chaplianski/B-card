@@ -1,8 +1,6 @@
 package com.chaplianski.bcard.data.repository
 
-import androidx.lifecycle.MutableLiveData
 import com.chaplianski.bcard.data.storage.database.UserStorageImpl
-import com.chaplianski.bcard.data.storage.net.FirebaseAuthorization
 import com.chaplianski.bcard.domain.model.User
 import com.chaplianski.bcard.domain.repository.UserRepository
 import javax.inject.Inject

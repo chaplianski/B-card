@@ -24,6 +24,7 @@ interface AppComponent {
     fun saveCardDialogInject(saveCardDialog: SaveCardDialog)
     fun loadCardsDialogInject(loadCardDialog: LoadCardDialog)
     fun checkDoubleCardListDialogInject(checkDoubleCardListDialog: CheckDoubleCardListDialog)
+    fun loadContactListDialogInject(loadContactListDialog: LoadContactListDialog)
 
     @Component.Builder
     interface Builder{

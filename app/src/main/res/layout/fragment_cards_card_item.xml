@@ -5,7 +5,7 @@
     xmlns:autofit="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardview_card_fragment_card"
     app:cardUseCompatPadding="true"
-    app:cardCornerRadius="10dp"
+
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -113,7 +113,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/tv_card_fragment_item_phone"
+            android:id="@+id/tv_card_fragment_item_work_phone"
             style="@style/Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -129,20 +129,19 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/tv_card_fragment_item_addition_phone"
+            android:id="@+id/tv_card_fragment_item_home_phone"
             style="@style/Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
             android:text="+375447445638"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_card_fragment_home_phone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/iv_card_fragment_home_phone"
-            app:layout_constraintTop_toBottomOf="@+id/tv_card_fragment_item_phone"
+            app:layout_constraintTop_toTopOf="@+id/iv_card_fragment_home_phone"
             app:layout_constraintVertical_bias="0.0" />
 
 
@@ -167,7 +166,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_card_fragment_email"
             app:layout_constraintVertical_bias="0.093" />
 
-        <me.grantland.widget.AutofitTextView
+        <TextView
             android:id="@+id/tv_card_fragment_item_location"
             style="@style/Regular"
             android:layout_width="wrap_content"

@@ -12,10 +12,12 @@ import android.provider.DocumentsContract
 import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.fragment.app.*
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
@@ -28,6 +30,7 @@ import com.chaplianski.bcard.databinding.DialogSaveCardBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.model.ContactContent
+import com.chaplianski.bcard.domain.model.GetCardListState
 import ezvcard.Ezvcard
 import ezvcard.VCard
 import ezvcard.parameter.AddressType
@@ -36,6 +39,8 @@ import ezvcard.parameter.ImageType
 import ezvcard.parameter.TelephoneType
 import ezvcard.property.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -101,115 +106,136 @@ class SaveCardDialog : DialogFragment() {
             Log.d("MyLog", "save OK")
         }
 
-        saveCardDialogViewModel.getCards()
+        lifecycleScope.launch {
+            saveCardDialogViewModel.getCards(SURNAME)
+        }
 
-        saveCardDialogViewModel.cards.observe(this.viewLifecycleOwner) { cardList ->
 
-            var positionCurrentCheckedCard = 0
-            val fullContactList = mutableListOf<ContactContent>()
-            val letterList =
-                cardList.sortedBy { it.surname }.map { it.surname.first().uppercaseChar() }.toSet()
-            letterList.forEach { letter ->
-                cardList.sortedBy { it.surname }.forEachIndexed { index, card ->
-                    if (letter == card.surname.first().uppercaseChar()) {
-                        if (!fullContactList.contains(ContactContent.Letter(letter))) {
-                            fullContactList.add(ContactContent.Letter(letter))
-                        }
-                        if (card.id == currentCardId) {
-                            card.isChecked = true
-                            positionCurrentCheckedCard = index
-                        }
-                        fullContactList.add(ContactContent.Contact(card))
-                    }
-                }
-                checkedCardCount = 1
-                saveButton.text = "Save [$checkedCardCount]"
-            }
-
-            cardListAdapter.updateList(fullContactList)
-
-            cardListAdapter.checkBoxListener =
-                object : CardListShareFragmentAdapter.CheckBoxListener {
-                    override fun onCheck(card: ContactContent.Contact) {
-                        Log.d("MyLog", "check $checkedCardCount")
-                        cardList.forEach { cardItem ->
-                            if (cardItem.id == card.card.id) {
-                                cardItem.isChecked = !cardItem.isChecked
-                                if (cardItem.isChecked) checkedCardCount++ else checkedCardCount--
+        saveCardDialogViewModel.getCardListState
+            .flowWithLifecycle(lifecycle)
+            .onEach {
+                when(it){
+                    is SaveCardDialogViewModel.GetCardsState.Loading -> {}
+                    is SaveCardDialogViewModel.GetCardsState.Success -> {
+                        val cardList = it.cardList
+                        var positionCurrentCheckedCard = 0
+                        val fullContactList = mutableListOf<ContactContent>()
+                        val letterList =
+                            cardList.sortedBy { it.surname }
+                                .map { it.surname.first().uppercaseChar() }.toSet()
+                        letterList.forEach { letter ->
+                            cardList.sortedBy { it.surname }.forEachIndexed { index, card ->
+                                if (letter == card.surname.first().uppercaseChar()) {
+                                    if (!fullContactList.contains(ContactContent.Letter(letter))) {
+                                        fullContactList.add(ContactContent.Letter(letter))
+                                    }
+                                    if (card.id == currentCardId) {
+                                        card.isChecked = true
+                                        positionCurrentCheckedCard = index
+                                    }
+                                    fullContactList.add(ContactContent.Contact(card))
+                                }
                             }
-
-//                        quantityCheckedCards.text = "$checkedCardCount cards"
+                            checkedCardCount = 1
                             saveButton.text = "Save [$checkedCardCount]"
                         }
-                    }
-                }
 
-            val listCard = mutableListOf<Card>()
-            saveButton.setOnClickListener {
-                vcardList.clear()
-                listCard.clear()
-                cardList.forEach { cardItem ->
-                    if (cardItem.isChecked) {
-                        listCard.add(cardItem)
-                        vcardList.add(createVCard(cardItem))
-                    }
+                        cardListAdapter.updateList(fullContactList)
 
-                }
+                        cardListAdapter.checkBoxListener =
+                            object : CardListShareFragmentAdapter.CheckBoxListener {
+                                override fun onCheck(card: ContactContent.Contact) {
+                                    Log.d("MyLog", "check $checkedCardCount")
+                                    cardList.forEach { cardItem ->
+                                        if (cardItem.id == card.card.id) {
+                                            cardItem.isChecked = !cardItem.isChecked
+                                            if (cardItem.isChecked) checkedCardCount++ else checkedCardCount--
+                                        }
 
-                Log.d("MyLog", "${vcardList.size}")
-//                cardSaver.launch(vcardList)
-                if (!listCard.isNullOrEmpty()) {
-                    when (listCard.size) {
-                        1 -> {
-                            val card = listCard[0]
-                            val file = File("${card.surname}.vcf")
-                            saveVCardToPhone(file, card.surname)
-//                            cardSaver.launch(vcardList)
-                        }
-                        else -> {
-                            val file = File("contacts.vcf")
-                            saveVCardToPhone(file, "contacts")
-                        }
-
-                    }
-                }
-            }
-
-            var allCardCheckFlag = false
-            checkboxAllCards.setOnClickListener {
-                if (!allCardCheckFlag){
-                    cardList.forEach {
-                        it.isChecked = true
-                    }
-                    checkedCardCount = cardList.size
-                } else {
-                    cardList.forEach {
-                        it.isChecked = false
-                    }
-                    checkedCardCount = 0
-                }
-
-                val newContactList = mutableListOf<ContactContent>()
-                val newLetterList =
-                    cardList.sortedBy { it.surname }.map { it.surname.first().uppercaseChar() }.toSet()
-                newLetterList.forEach { letter ->
-                    cardList.sortedBy { it.surname }.forEachIndexed { index, card ->
-                        if (letter == card.surname.first().uppercaseChar()) {
-                            if (!newContactList.contains(ContactContent.Letter(letter))) {
-                                newContactList.add(ContactContent.Letter(letter))
+//                        quantityCheckedCards.text = "$checkedCardCount cards"
+                                        saveButton.text = "Save [$checkedCardCount]"
+                                    }
+                                }
                             }
 
-                            newContactList.add(ContactContent.Contact(card))
+                        val listCard = mutableListOf<Card>()
+                        saveButton.setOnClickListener {
+                            vcardList.clear()
+                            listCard.clear()
+                            cardList.forEach { cardItem ->
+                                if (cardItem.isChecked) {
+                                    listCard.add(cardItem)
+                                    vcardList.add(createVCard(cardItem))
+                                }
+
+                            }
+
+                            Log.d("MyLog", "${vcardList.size}")
+//                cardSaver.launch(vcardList)
+                            if (!listCard.isNullOrEmpty()) {
+                                when (listCard.size) {
+                                    1 -> {
+                                        val card = listCard[0]
+                                        val file = File("${card.surname}.vcf")
+                                        saveVCardToPhone(file, card.surname)
+//                            cardSaver.launch(vcardList)
+                                    }
+                                    else -> {
+                                        val file = File("contacts.vcf")
+                                        saveVCardToPhone(file, "contacts")
+                                    }
+
+                                }
+                            }
+
+                            var allCardCheckFlag = false
+                            checkboxAllCards.setOnClickListener {
+                                if (!allCardCheckFlag) {
+                                    cardList.forEach {
+                                        it.isChecked = true
+                                    }
+                                    checkedCardCount = cardList.size
+                                } else {
+                                    cardList.forEach {
+                                        it.isChecked = false
+                                    }
+                                    checkedCardCount = 0
+                                }
+
+                                val newContactList = mutableListOf<ContactContent>()
+                                val newLetterList =
+                                    cardList.sortedBy { it.surname }
+                                        .map { it.surname.first().uppercaseChar() }.toSet()
+                                newLetterList.forEach { letter ->
+                                    cardList.sortedBy { it.surname }.forEachIndexed { index, card ->
+                                        if (letter == card.surname.first().uppercaseChar()) {
+                                            if (!newContactList.contains(
+                                                    ContactContent.Letter(
+                                                        letter
+                                                    )
+                                                )
+                                            ) {
+                                                newContactList.add(ContactContent.Letter(letter))
+                                            }
+
+                                            newContactList.add(ContactContent.Contact(card))
+                                        }
+                                    }
+
+                                    saveButton.text = "Save [$checkedCardCount]"
+                                }
+
+                                cardListAdapter.updateList(fullContactList)
+                                allCardCheckFlag = !allCardCheckFlag
+                            }
                         }
+
                     }
-
-                    saveButton.text = "Save [$checkedCardCount]"
+                    is SaveCardDialogViewModel.GetCardsState.Failure -> {}
                 }
-
-                cardListAdapter.updateList(fullContactList)
-                allCardCheckFlag = !allCardCheckFlag
             }
-        }
+            .launchIn(lifecycleScope)
+
 
         saveButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
@@ -341,7 +367,7 @@ class SaveCardDialog : DialogFragment() {
         val CHECKED_OPTION = "checked option"
         val SAVE_STATUS = "save status"
         val CANCEL_STATUS = "cancel status"
-
+        val SURNAME = "surname"
 
         const val CREATE_FILE = 111
         const val PICK_FILE = 222

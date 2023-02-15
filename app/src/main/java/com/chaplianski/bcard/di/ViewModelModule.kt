@@ -41,5 +41,10 @@ abstract class ViewModelModule {
     abstract fun bindPersonInfoDialogViewModel(mainViewModel: PersonInfoDialogViewModel): ViewModel
 
     @Binds
+    @IntoMap
+    @ViewModelKey(LoadContactListDialogViewModel::class)
+    abstract fun bindLoadContactListDialogViewModel(mainViewModel: LoadContactListDialogViewModel): ViewModel
+
+    @Binds
     abstract fun bindViewModelFactory(factory: InjectingViewModelFactory): ViewModelProvider.Factory
 }

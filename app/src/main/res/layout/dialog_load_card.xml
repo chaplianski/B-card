@@ -9,13 +9,17 @@
     android:background="@drawable/border"
     tools:context=".core.dialogs.LoadCardDialog">
 
-
-
-    <com.google.android.material.progressindicator.CircularProgressIndicator
+    <TextView
+        android:id="@+id/tv_load_card_dialog_wait"
         android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:elevation="20dp"
-        android:visibility="visible"
+        android:visibility="invisible"
+        android:text="Please wait ..."
+        android:textSize="24sp"
+        style="@style/Bold"
+        android:gravity="center_horizontal"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -54,29 +58,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/pb_load_card_dialog_loading"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:elevation="30dp"
-                android:scaleType="fitCenter"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.5"
-                app:lottie_colorFilter="@color/transparent"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_progress="0.5"
-                app:lottie_rawRes="@raw/loading"
-                app:lottie_renderMode="automatic"
-                app:lottie_repeatCount="5"
-                app:lottie_repeatMode="restart"
-                app:lottie_speed="1.0" />
+<!--            <com.airbnb.lottie.LottieAnimationView-->
+<!--                android:id="@+id/pb_load_card_dialog_loading"-->
+<!--                android:layout_width="200dp"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:elevation="30dp"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:visibility="invisible"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.5"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintVertical_bias="0.5"-->
+<!--                app:lottie_colorFilter="@color/transparent"-->
+<!--                app:lottie_autoPlay="false"-->
+<!--                app:lottie_loop="true"-->
+<!--                app:lottie_progress="0.5"-->
+<!--                app:lottie_rawRes="@raw/loading"-->
+<!--                app:lottie_renderMode="automatic"-->
+<!--                app:lottie_repeatCount="5"-->
+<!--                app:lottie_repeatMode="restart"-->
+<!--                app:lottie_speed="1.0" />-->
 
             <CheckBox
                 android:id="@+id/checkBox_load_card_dialog_check_all"

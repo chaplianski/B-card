@@ -1,24 +1,14 @@
 package com.chaplianski.bcard.core.helpers
 
 import android.content.Context
-import android.graphics.Outline
-import android.graphics.Rect
+import android.content.res.Resources
 import android.view.View
-import android.view.ViewOutlineProvider
-import android.widget.ImageView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chaplianski.bcard.R
+
 
 class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayout: Boolean) :
     LinearLayoutManager(context, orientation, reverseLayout) {
-
-
-    var scaleDownBy = 0.9f
-    var scaleDownDistance = 1.8f
-    var isChangeAlpha = true
-
     interface CardScrollStopListener {
         fun selectedView(view: View?)
     }
@@ -40,8 +30,6 @@ class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayou
         return if (orientation == HORIZONTAL) {
             val scrolled = super.scrollHorizontallyBy(dx, recycler, state)
             scaleCentralView()
-//            scaleDownView(dx)
-//            Log.d("MyLog", " dx: ${dx}")
             scrolled
         } else 0
     }
@@ -50,49 +38,51 @@ class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayou
 
         for (i in 0 until childCount) {
             val child = getChildAt(i)
-
-            val originalPos = IntArray(2)
-            val location = getChildAt(i)!!.getLocationOnScreen(originalPos)
-            val xLocation = originalPos[0]
-            val yLocation = originalPos[1]
+            var minGapValue = 0
+            var rightBoardCentralView = 0
             var scale = 0f
-            if (xLocation in 51..899) {
-                scale = 1f
-                child?.alpha = 1f
-                val avatar = child?.findViewById<ImageView>(R.id.iv_card_fragment_item_avatar)
-
-//                child?.translationZ = 25f
-//                child?.outlineProvider = OutlineProvider()
-
-
-            } else {
-
-                scale = scaleDownBy
-                child?.alpha = 0.8f
+            val childWidth = child?.width
+            val screenWidth = getScreenWidth()
+            if (childWidth != null) {
+                minGapValue = (screenWidth - childWidth) / 2
+                rightBoardCentralView = minGapValue + childWidth
             }
-
-
+            if (childCount == 1) {
+                scale = NORMAL_SCALE
+                child?.alpha = NORMAL_SCALE
+            } else {
+                when (i) {
+                    0 -> {
+                        if (getChildAt(1)?.left in rightBoardCentralView..screenWidth) {
+                            scale = NORMAL_SCALE
+                            child?.alpha = NORMAL_SCALE
+                        } else {
+                            scale = DECREASED_SCALE
+                            child?.alpha = DECREASED_ALPHA
+                        }
+                    }
+                    1 -> {
+                        if (getChildAt(1)?.left in rightBoardCentralView..screenWidth) {
+                            scale = DECREASED_SCALE
+                            child?.alpha = DECREASED_ALPHA
+                        } else {
+                            scale = NORMAL_SCALE
+                            child?.alpha = NORMAL_SCALE
+                        }
+                    }
+                    2 -> {
+                        scale = DECREASED_SCALE
+                        child?.alpha = DECREASED_ALPHA
+                    }
+                }
+            }
             child?.scaleX = scale
             child?.scaleY = scale
         }
     }
-
-//    inner class OutlineProvider(
-//        private val rect: Rect = Rect(),
-//        var scaleX: Float,
-//        var scaleY: Float,
-//        var yShift: Int
-//    ): ViewOutlineProvider(){
-//        override fun getOutline(view: View?, outline: Outline?) {
-//            view?.background?.copyBounds(rect)
-//            rect.scale(scaleX, scaleY)
-//            rect.offset(0, yShift)
-//
-//            val coronerRadius = resourses.g
-//        }
-//
-//    }
-
+    fun getScreenWidth(): Int {
+        return Resources.getSystem().getDisplayMetrics().widthPixels
+    }
 
     override fun onScrollStateChanged(state: Int) {
         super.onScrollStateChanged(state)
@@ -110,13 +100,14 @@ class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayou
             }
         }
     }
-
-
-    fun setOnScrollStopListener(onScrollStopListener: CardScrollStopListener?) {
+    fun setOnScrollStopListener(onScrollStopListener: CardsPickerLayoutManager.CardScrollStopListener?) {
         this.onScrollStopListener = onScrollStopListener
     }
 
-
-
+    companion object{
+        val NORMAL_SCALE = 1f
+        val DECREASED_SCALE = 0.9f
+        val DECREASED_ALPHA = 0.5f
+    }
 }
 

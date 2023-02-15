@@ -8,6 +8,9 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.RadioGroup;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_cardsFragment_to_checkCardListLoadFragment"
             app:destination="@id/checkCardListLoadFragment" />
+        <action
+            android:id="@+id/action_cardsFragment_to_goodFragment"
+            app:destination="@id/goodFragment" />
     </fragment>
     <fragment
         android:id="@+id/editCardFragment"
@@ -81,4 +84,9 @@
         android:name="com.chaplianski.bcard.core.ui.NewCardFragment"
         android:label="fragment_new_card"
         tools:layout="@layout/fragment_new_card" />
+    <fragment
+        android:id="@+id/goodFragment"
+        android:name="com.chaplianski.bcard.core.dialogs.LoadContactListDialog"
+        android:label="fragment_good"
+        tools:layout="@layout/fragment_good" />
 </navigation>

@@ -95,8 +95,7 @@ class PersonInformationDialog : DialogFragment() {
         Log.d("MyLog", "onViewCreated person info, cardId = $cardID")
 
         avatar.setOnClickListener {
-//            addAvatarDialog()
-            showChooseVariantAddingPhoto()
+            photoPicker.getAndCropPhoto()
         }
 
         setupChooseVariantAddingPhoto()
@@ -151,7 +150,7 @@ class PersonInformationDialog : DialogFragment() {
         saveButton.setOnClickListener {
             if (nameText.text?.isEmpty() == true) nameField.error = "Please, enter name"
             if (surnameText.text?.isEmpty() == true) surnameField.error = "Please, enter surname"
-            if (workPhoneText.text?.isEmpty() == true) workPhoneField.error = "Please, enter phone"
+            if (workPhoneText.text?.isEmpty() == true && homePhoneText.text?.isEmpty() == false) workPhoneField.error = "Please, enter phone"
             if (nameText.text?.isNotEmpty() == true && surnameText.text?.isNotEmpty() == true && workPhoneText.text?.isNotEmpty() == true ){
 //                Log.d("MyLog", "save person info")
                 val personInfo = cardID?.let {

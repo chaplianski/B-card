@@ -5,24 +5,17 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.net.Uri
-import android.provider.MediaStore
-import android.util.Base64
-import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.FileProvider
 import androidx.lifecycle.*
-import com.chaplianski.bcard.BuildConfig
-import com.chaplianski.bcard.core.dialogs.LoadCardDialog
-import com.chaplianski.bcard.core.helpers.AccountContactsPicker
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.domain.model.Card
+import com.chaplianski.bcard.domain.model.GetCardListState
 import com.chaplianski.bcard.domain.usecases.AddCardUseCase
-import com.chaplianski.bcard.domain.usecases.GetCardsUseCase
+import com.chaplianski.bcard.domain.usecases.GetCardListUseCase
 import ezvcard.VCard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -31,7 +24,7 @@ import javax.inject.Inject
 
 class LoadCardsDialogViewModel @Inject constructor(
     private val addCardUseCase: AddCardUseCase,
-    private val getCardsUseCase: GetCardsUseCase,
+    private val getCardListUseCase: GetCardListUseCase,
 ) : ViewModel() {
 
 
@@ -40,6 +33,8 @@ class LoadCardsDialogViewModel @Inject constructor(
 
     private var _allCards = MutableLiveData<List<Card>>()
     val allCards: LiveData<List<Card>> get() = _allCards
+    private var _getCardListState = MutableStateFlow<GetCardsState>(GetCardsState.Loading)
+    val getCardListState get() = _getCardListState.asStateFlow()
 
 //    private var _cardListFromAccount =
 //        MutableStateFlow<CardListFromAccountState>(CardListFromAccountState.Loading)
@@ -65,12 +60,10 @@ class LoadCardsDialogViewModel @Inject constructor(
 //    }
 
 
-    fun getCards() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val cardList = getCardsUseCase.execute()
-            _allCards.postValue(cardList)
-//            Log.d("MyLog", "Get cards: ${list.size}")
-        }
+    suspend fun getCards(fieldBySorting: String) {
+        getCardListUseCase.execute(fieldBySorting)
+            .onSuccess { _getCardListState.emit(GetCardsState.Success(it)) }
+            .onFailure {  }
     }
 
 //    private fun observeAuthors() {
@@ -331,5 +324,12 @@ class LoadCardsDialogViewModel @Inject constructor(
         class Success(val cardList: List<Card>) : CardListFromAccountState()
         class Error(val exception: String) : CardListFromAccountState()
         object NoSuccess : CardListFromAccountState()
+    }
+
+    sealed class GetCardsState{
+        object Loading: GetCardsState()
+        class Success(val cardList: List<Card>): GetCardsState()
+        class Failure(val exception: String): GetCardsState()
+
     }
 }

@@ -1,5 +1,10 @@
 package com.chaplianski.bcard.core.utils
 
+// Common constants
+const val RESOURCE_TYPE_DRAWABLE = "drawable"
+const val AD_POSITION = 5
+const val AD_FREQUENCY = AD_POSITION + 1
+
 
 const val CURRENT_CARD_ID = "current card Id"
 const val CURRENT_USER_ID = "current user id"
@@ -8,9 +13,9 @@ const val LAST_USER_LOGIN = "last user login"
 const val LAST_USER_PASSWORD = "last user password"
 
 const val CARD_CORNER_SIZE = 25f
-
 const val AVATAR_FORM_OVAL = "oval"
 const val AVATAR_FORM_SQUARE = "square"
+
 
 //***** Property Vcard *****
 const val ADD_INFO = "add info"

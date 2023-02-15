@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class UpdateCardUseCase @Inject constructor(private val cardRepository: CardRepository){
 
-    fun execute(card: Card){
+    fun execute(card: Card) = kotlin.runCatching{
         cardRepository.updateCard(card)
     }
 }

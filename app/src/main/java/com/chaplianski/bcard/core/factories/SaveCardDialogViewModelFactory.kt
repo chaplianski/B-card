@@ -9,13 +9,13 @@ import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
 class SaveCardDialogViewModelFactory @Inject constructor(
-    private val getCardsUseCase: GetCardsUseCase,
+    private val getCardListUseCase: GetCardListUseCase,
 
-) : ViewModelProvider.Factory {
+    ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return SaveCardDialogViewModel(
-            getCardsUseCase,
+            getCardListUseCase,
 
         ) as T
     }

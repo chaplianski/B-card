@@ -15,16 +15,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chaplianski.bcard.domain.model.Card
+import com.chaplianski.bcard.domain.model.DeleteCardState
+import com.chaplianski.bcard.domain.model.GetCardListState
+import com.chaplianski.bcard.domain.model.UpdateCardState
 import com.chaplianski.bcard.domain.usecases.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
 
 class CardsFragmentViewModel @Inject constructor(
-    private val getCardsUseCase: GetCardsUseCase,
+    private val getCardListUseCase: GetCardListUseCase,
     private val addCardUseCase: AddCardUseCase,
     private val deleteCardUseCase: DeleteCardUseCase,
     private val getCardUseCase: GetCardUseCase,
@@ -35,18 +40,32 @@ class CardsFragmentViewModel @Inject constructor(
     val cards: LiveData<List<Card>> get() = _cards
     private var _currentCard = MutableLiveData<Card>()
     val currentCard: LiveData<Card> get() = _currentCard
-    var cardList = emptyList<Card>()
 
-    fun getCards() {
-        viewModelScope.launch(Dispatchers.IO) {
-            cardList = getCardsUseCase.execute()
-            _cards.postValue(cardList)
-//            Log.d("MyLog", "Get cards: ${list.size}")
-        }
+//    private var _addCardState = MutableStateFlow<AddCardState>(AddCardState.Loading)
+//    val addCardsState get() = _addCardState.asStateFlow()
+//    private var _deleteCardState = MutableStateFlow<DeleteCardState>(DeleteCardState.Loading)
+//    val deleteCardsState get() = _deleteCardState.asStateFlow()
+//    private var _updateCardState = MutableStateFlow<UpdateCardState>(UpdateCardState.Loading)
+//    val updateCardsState get() = _updateCardState.asStateFlow()
+    private var _getCardListState = MutableStateFlow<GetCardListState>(GetCardListState.Loading)
+    val getCardListState get() = _getCardListState.asStateFlow()
+
+//    var cardList = emptyList<Card>()
+
+    suspend fun getCards(fieldForSorting: String) {
+        Log.d("MyLog", "cardList 2")
+        getCardListUseCase.execute(fieldForSorting)
+               .onSuccess {
+                   Log.d("MyLog", "cardList 5 = $it")
+                   _getCardListState.emit(GetCardListState.GetCardList(it)) }
+               .onFailure {  }
     }
 
-    fun getCard(cardId: Long) {
-        Log.d("MyLog", "card id = $cardId")
+    suspend fun switchToLoadingStateGetCards(){
+        _getCardListState.emit(GetCardListState.Loading)
+    }
+     fun getCard(cardId: Long) {
+        Log.d("MyLog", "card id in vm = $cardId")
         viewModelScope.launch(Dispatchers.IO) {
             val card = getCardUseCase.execute(cardId)
             _currentCard.postValue(card)
@@ -64,10 +83,14 @@ class CardsFragmentViewModel @Inject constructor(
         viewModelScope.cancel()
     }
 
-    fun deleteCard(cardId: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
-            deleteCardUseCase.execute(cardId)
-        }
+    suspend fun deleteCard(cardId: Long) {
+        deleteCardUseCase.execute(cardId)
+            .onSuccess { _getCardListState.emit(GetCardListState.DeleteCard(it)) }
+            .onFailure {  }
+//        deleteCardUseCase.execute(cardId)
+//                .onSuccess { _deleteCardState.emit(DeleteCardState.Success(it)) }
+//                .onFailure {  }
+
     }
 
     fun deleteImage(
@@ -106,33 +129,54 @@ class CardsFragmentViewModel @Inject constructor(
     }
 
 
-    suspend fun addCard(card: Card) {
-        viewModelScope.launch(Dispatchers.IO) {
-            addCardUseCase.execute(card)
-        }
+//    suspend fun addCard(card: Card) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            addCardUseCase.execute(card)
+//        }
+//    }
+
+    suspend fun addCard(card: Card){
+        addCardUseCase.execute(card)
+            .onSuccess {_getCardListState.emit(GetCardListState.AddCard(it))}
+            .onFailure {  }
+//        addCardUseCase.execute(card)
+//            .onSuccess {_addCardState.emit(AddCardState.Success(it))}
+//            .onFailure {  }
+
     }
 
-    fun updateCard(card: Card){
-        viewModelScope.launch(Dispatchers.IO) {
-            updateCardUseCase.execute(card)
-            getCards()
-        }
+    suspend fun updateCard(card: Card){
+        updateCardUseCase.execute(card)
+            .onSuccess { _getCardListState.emit(GetCardListState.UpdateCard(it)) }
+            .onFailure {  }
+//        updateCardUseCase.execute(card)
+//            .onSuccess { _updateCardState.emit(UpdateCardState.Success(it)) }
+//            .onFailure {  }
     }
 
-    fun sortCards(sortCategory: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val sortedList: List<Card> = when (sortCategory) {
-                SORT_NAME -> cardList.sortedBy { it.surname }
-                SORT_PHONE -> cardList.sortedBy { it.workPhone }
-                SORT_ORGANIZATION -> cardList.sortedBy { it.organization }
-                SORT_TOWN -> cardList.sortedBy { it.town }
-                else -> {
-                    cardList.sortedBy { it.town }
-                }
-            }
-            _cards.postValue(sortedList)
-        }
+//    fun sortCards(sortCategory: String) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val sortedList: List<Card> = when (sortCategory) {
+//                SORT_NAME -> cardList.sortedBy { it.surname }
+//                SORT_PHONE -> cardList.sortedBy { it.workPhone }
+//                SORT_ORGANIZATION -> cardList.sortedBy { it.organization }
+//                SORT_TOWN -> cardList.sortedBy { it.town }
+//                else -> {
+//                    cardList.sortedBy { it.town }
+//                }
+//            }
+//            _cards.postValue(sortedList)
+//        }
+//    }
+
+    sealed class AddCardState{
+       object Loading: AddCardState()
+        class Success(val cardId: Long): AddCardState()
+        class Failure(val exception: String): AddCardState()
+
     }
+
+
 
     companion object {
 
