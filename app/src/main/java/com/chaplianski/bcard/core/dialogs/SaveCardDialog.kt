@@ -12,17 +12,15 @@ import android.provider.DocumentsContract
 import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.fragment.app.*
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
-import com.chaplianski.bcard.core.factories.SaveCardDialogViewModelFactory
-import com.chaplianski.bcard.core.helpers.ContactSaver
 import com.chaplianski.bcard.core.helpers.SimpleContract
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.SaveCardDialogViewModel
@@ -30,7 +28,6 @@ import com.chaplianski.bcard.databinding.DialogSaveCardBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.model.ContactContent
-import com.chaplianski.bcard.domain.model.GetCardListState
 import ezvcard.Ezvcard
 import ezvcard.VCard
 import ezvcard.parameter.AddressType
@@ -55,8 +52,8 @@ class SaveCardDialog : DialogFragment() {
     val vcardList = mutableListOf<VCard>()
 
     @Inject
-    lateinit var saveCardDialogViewModelFactory: SaveCardDialogViewModelFactory
-    val saveCardDialogViewModel: SaveCardDialogViewModel by viewModels { saveCardDialogViewModelFactory }
+    lateinit var vmFactory: ViewModelProvider.Factory
+    val saveCardDialogViewModel: SaveCardDialogViewModel by viewModels { vmFactory }
 
     override fun onAttach(context: Context) {
         (context.applicationContext as DaggerApp)

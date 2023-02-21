@@ -12,10 +12,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.ViewTreeObserver
+import android.widget.*
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -35,14 +33,16 @@ import com.bumptech.glide.Glide
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardListAdapter
 import com.chaplianski.bcard.core.dialogs.*
-import com.chaplianski.bcard.core.helpers.AccountContactsPicker
-import com.chaplianski.bcard.core.helpers.CardsPickerLayoutManager
-import com.chaplianski.bcard.core.helpers.ContactPicker
+import com.chaplianski.bcard.core.helpers.*
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel
 import com.chaplianski.bcard.databinding.FragmentCardsBinding
+import com.chaplianski.bcard.databinding.LayoutAdToCardBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.*
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.formats.NativeAdOptions
+import com.google.android.material.internal.ViewUtils.addOnGlobalLayoutListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -89,10 +89,11 @@ class CardsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
 //        val additionalInfoText = binding.layoutUserInformation.clUserInfo
 //        val closeButton = binding.layoutUserInformation.btUserInfoClose
         val backgroundLayout = binding.clCardsFragment
-
+        val adContainerView = binding.layoutCardFragmentAd
         val settingsButton = binding.btCardsFragmentSettings
         val editButton = binding.btCardsFragmentEdit
         val deleteButton = binding.fabCardsFragmentDelete
@@ -133,6 +134,8 @@ class CardsFragment : Fragment() {
         val absentInfoText = binding.layoutUserInformation.tvUserInformationAbsentInfo
 
         var listCards = mutableListOf<Card>()
+        val adsPicker = AdsPicker()
+        adsPicker.setAdNative(requireContext(), adContainerView)
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val currentBackground = sharedPref?.getString(CURRENT_BACKGROUND, DEFAULT_BACKGROUND)
@@ -168,6 +171,7 @@ class CardsFragment : Fragment() {
         }
         setupSettingsDialog()
         setupBackgroundSettingsDialog(backgroundLayout)
+        setupLanguageDialog()
 
         editButton.setOnClickListener {
             if (currentCardId != 0L) showEditDialog(currentCardId)
@@ -195,26 +199,28 @@ class CardsFragment : Fragment() {
 //        val cardsPickerLayoutManager =
 //            CardsPickerLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 //        val cardFragmentCardAdapter = CardsFragmentCardAdapter(cardsRV) //(listCards, cardsRV)
-        val cardFragmentCardAdapter = CardListAdapter()
+        val cardFragmentCardAdapter = CardListAdapter(requireContext())
 //        val cardsSnapHelper: SnapHelper = LinearSnapHelper()
 //        cardsRV.layoutManager = cardsPickerLayoutManager
 //        cardsRV.adapter = cardFragmentCardAdapter
 //        cardsRV.onFlingListener = null
 //        cardsSnapHelper.attachToRecyclerView(cardsRV)
 
-        setupRecyclerView(cardsRV, cardFragmentCardAdapter, userInfoLayout)
+        setupRecyclerView(cardsRV, cardFragmentCardAdapter, userInfoLayout, adContainerView)
 
 
-        cardsRV.addScrollListener { position: Int ->
-            var correction = 0
-            if (position != 0){
-                correction = position/ AD_POSITION
-            }
+//        cardsRV.addScrollListener { position: Int ->
+//            var correction = 0
+//            if (position != 0){
+//                correction = position/ AD_POSITION
+//            }
 
+        cardsRV.addGlobalLayoutListener(){position ->
 
+//        }
 //            currentCard = listCards[position - correction]
 //            currentCardId = currentCard.id
-//            currentPosition = position
+            currentPosition = position
 //            Log.d("MyLog", "pos2 = $currentPosition")
 //            cardsFragmentViewModel.getCard(currentCardId)
             Log.d("MyLog", "Current Position 3: ${position}, currentCardId = $currentCardId")
@@ -374,6 +380,28 @@ class CardsFragment : Fragment() {
                 }
             }
     }
+
+//    private fun loadAD(context: Context, adContainerView: FrameLayout) {
+//        val binding = LayoutAdToCardBinding.inflate(LayoutInflater.from(context))
+//        val adLoader = AdLoader.Builder(context, AD_UNIT_ID)
+//            .forNativeAd { nativeAd ->
+//                Log.d("MyLog", "is success")
+//                val adView = populateNativeAdView(nativeAd, binding)
+//                adContainerView.addView(adView)
+//            }
+//            .withAdListener(object : AdListener() {
+//                override fun onAdFailedToLoad(adError: LoadAdError) {
+//                    Log.d("MyLog", "is failure")
+//                }
+//            })
+//            .withNativeAdOptions(
+//                NativeAdOptions.Builder()
+//
+//                .build())
+//
+//            .build()
+//        adLoader.loadAds(AdRequest.Builder().build(), 5)
+//    }
 
     private fun addSearchFieldListener(
         searchField: EditText,
@@ -657,7 +685,7 @@ class CardsFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView(cardsRV: RecyclerView, cardAdapter: CardListAdapter, userInfoLayout: ConstraintLayout) {
+    private fun setupRecyclerView(cardsRV: RecyclerView, cardAdapter: CardListAdapter, userInfoLayout: ConstraintLayout, adContainerView: FrameLayout) {
 //        cardAdapter = CardsFragmentCardAdapter(cardsRV)
         cardAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
             override fun onChanged() {
@@ -699,10 +727,12 @@ class CardsFragment : Fragment() {
                 if (cardId != null){
 //                    Log.d("MyLog", "get card wheel ")
                     userInfoLayout.isVisible = true
+                    adContainerView.isVisible = false
 //                    currentCardId = cardId.text.toString().toLong()
                     cardsFragmentViewModel.getCard(cardId.text.toString().toLong())
                 } else {
                     userInfoLayout.isVisible = false
+                    adContainerView.isVisible = true
                 }
 //                if (userName?.text?.equals(null) != true && userAvatar?.text?.equals(null) != true && cardId?.text?.equals(
 //                        null
@@ -774,6 +804,18 @@ class CardsFragment : Fragment() {
         SettingsDialog.show(parentFragmentManager)
     }
 
+    private fun setupLanguageDialog(){
+        LanguageSettingsDialog.setupListener(parentFragmentManager, this.viewLifecycleOwner){status, language ->
+            if (status == LanguageSettingsDialog.SETUP_LANGUAGE_STATUS){
+                Log.d("MyLog", "setup dialog lang = $language")
+                val defaultLocaleHelper = DefaultLocaleHelper
+                defaultLocaleHelper.getInstance(requireContext()).setCurrentLocale(language)
+                startActivity(Intent(activity, MainActivity::class.java))
+                activity?.finish()
+            }
+        }
+    }
+
     fun RecyclerView.addScrollListener(onScroll: (position: Int) -> Unit) {
         var lastPosition = 0
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -785,12 +827,66 @@ class CardsFragment : Fragment() {
 
                     if (lastPosition != currentVisibleItemPosition && currentVisibleItemPosition != RecyclerView.NO_POSITION) {
                         onScroll.invoke(currentVisibleItemPosition)
-                        lastPosition = currentVisibleItemPosition-1
+                        lastPosition = currentVisibleItemPosition
                     }
                 }
             }
         })
     }
+
+    fun RecyclerView.addGlobalLayoutListener(onScroll: (position: Int) -> Unit){
+        var lastPosition = 0
+        viewTreeObserver.addOnGlobalLayoutListener (object : ViewTreeObserver.OnGlobalLayoutListener{
+            override fun onGlobalLayout() {
+                if (layoutManager is LinearLayoutManager) {
+                    val currentVisibleItemPosition =
+                        (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                    if (lastPosition != currentVisibleItemPosition && currentVisibleItemPosition != RecyclerView.NO_POSITION) {
+                        onScroll.invoke(currentVisibleItemPosition)
+                        lastPosition = currentVisibleItemPosition
+                    }
+                }
+            }
+
+        })
+    }
+
+
+//    fun RecyclerView.addScrollListener(onScroll: (position: Int) -> Unit) {
+//        var lastPosition = 0
+//
+//        addOnGlobalLayoutListener(view: View, object : ViewTreeObserver.OnGlobalLayoutListener() {
+//
+//            override fun onGlobalLayout() {
+//                if (layoutManager is LinearLayoutManager) {
+//                    val currentVisibleItemPosition =
+//                        (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+//
+//                    if (lastPosition != currentVisibleItemPosition && currentVisibleItemPosition != RecyclerView.NO_POSITION) {
+//                        onScroll.invoke(currentVisibleItemPosition)
+//                        lastPosition = currentVisibleItemPosition
+//                    }
+//                }
+//            }
+//        })
+//    }
+
+
+
+//    fun findRealFirstVisibleItemPosition(pos: Int): Int {
+//        var pos = pos
+//        var view: View
+//        val linearLayoutManager = cardRV.getLayoutManager() as LinearLayoutManager
+//        while (pos > 0) {
+//            view = linearLayoutManager.findViewByPosition(pos - 1)!!
+//            if (view == null) {
+//                break
+//            }
+//            pos = pos - 1
+//        }
+//        return pos
+//    }
 
     private fun setupEditDialog() {
         EditCardDialog.setupListener(parentFragmentManager, this) { cardId, status ->
@@ -970,8 +1066,6 @@ class CardsFragment : Fragment() {
             }
         }
     }
-
-
 
     private fun showLoadContactsDialog(){
         LoadContactListDialog.show(parentFragmentManager)

@@ -36,7 +36,7 @@
                 android:layout_gravity="top|center_horizontal"
 
                 android:gravity="center"
-                android:text="Save contacts"
+                android:text="@string/save_contacts"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -51,7 +51,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center|center_horizontal"
                 android:gravity="center"
-                android:text="Load from file"
+                android:text="@string/load_from_file"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
             <View
@@ -65,7 +65,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center|center_horizontal"
                 android:gravity="center"
-                android:text="Load from account"
+                android:text="@string/load_from_account"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -123,7 +123,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"

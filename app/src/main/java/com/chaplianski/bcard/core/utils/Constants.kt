@@ -40,3 +40,7 @@ const val DEFAULT_BACKGROUND = "background_32"
 const val DESTINATION = "destination"
 const val LOAD_FROM_GOOGLE_ACCOUNT = "load from google account"
 const val LOAD_FROM_FILE = "load from file"
+
+//***** Ad
+//const val AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
+const val AD_UNIT_ID = "ca-app-pub-3940256099942544/2247696110"

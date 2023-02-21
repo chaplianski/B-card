@@ -35,7 +35,7 @@
                 android:layout_gravity="top|center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Background"
+                android:text="@string/background"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -52,7 +52,7 @@
                 android:layout_gravity="center|center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Language"
+                android:text="@string/language"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -71,7 +71,7 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="About"
+                android:text="@string/about"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -101,7 +101,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"

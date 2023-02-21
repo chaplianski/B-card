@@ -10,9 +10,9 @@ import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.chaplianski.bcard.R
-import com.chaplianski.bcard.core.factories.LoginFragmentViewModelFactory
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.LoginFragmentViewModel
 import com.chaplianski.bcard.databinding.FragmentLoginBinding
@@ -26,8 +26,8 @@ import javax.inject.Inject
 class LoginFragment : Fragment() {
 
     @Inject
-    lateinit var loginFragmentViewModelFactory: LoginFragmentViewModelFactory
-    val loginFragmentViewModel: LoginFragmentViewModel by viewModels { loginFragmentViewModelFactory }
+    lateinit var vmFactory: ViewModelProvider.Factory
+    val loginFragmentViewModel: LoginFragmentViewModel by viewModels { vmFactory }
 
 //    lateinit var auth: FirebaseAuth
     var _binding: FragmentLoginBinding? = null

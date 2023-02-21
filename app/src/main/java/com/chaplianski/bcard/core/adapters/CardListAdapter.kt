@@ -1,38 +1,59 @@
 package com.chaplianski.bcard.core.adapters
 
+import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.RatingBar
+import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.chaplianski.bcard.R
-import com.chaplianski.bcard.core.utils.AD_FREQUENCY
-import com.chaplianski.bcard.core.utils.AD_POSITION
-import com.chaplianski.bcard.core.utils.AVATAR_FORM_OVAL
-import com.chaplianski.bcard.core.utils.RESOURCE_TYPE_DRAWABLE
+import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.databinding.FragmentCardsAdItemBinding
 import com.chaplianski.bcard.databinding.FragmentCardsCardItemBinding
+import com.chaplianski.bcard.databinding.LayoutAdToCardBinding
 import com.chaplianski.bcard.domain.model.Card
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.formats.NativeAdOptions
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdOptions.*
+import com.google.android.gms.ads.nativead.NativeAdView
 
 
-class CardListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-//    private val adItems: MutableList<NativeAd>
-//
-//    init {
-//        adItems = ArrayList()
-//    }
-//
-//    private var myResult: MyResult? = null
-//        set(value) {
-//            field = value
-//            notifyDataSetChanged()
-//        }
+    val view = View.inflate(context, R.layout.layout_ad_to_card, null)
+    var adView = view.findViewById<NativeAdView>(R.id.adView_ad_to_card)
+    init{
+        val binding = LayoutAdToCardBinding.inflate(LayoutInflater.from(context))
+        val adLoader = AdLoader.Builder(context, AD_UNIT_ID)
+            .forNativeAd { nativeAd ->
+                Log.d("MyLog", "is success")
+                adView = populateNativeAdView(nativeAd, binding)
+
+            }
+            .withAdListener(object : AdListener() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Log.d("MyLog", "is failure")
+                }
+            })
+            .withNativeAdOptions(NativeAdOptions.Builder()
+
+                .build())
+
+            .build()
+        adLoader.loadAds(AdRequest.Builder().build(), 5)
+    }
 
     interface ShortOnClickListener {
         //        fun shortClick()
@@ -80,51 +101,10 @@ class CardListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val card = getCardForPosition(position)
         when (card) {
             null -> {
-//                val adHolder = holder as AdViewHolder
-//                var ad: NativeAd? = null
-//                if (adItems.size > position / AD_DISPLAY_FREQUENCY) {
-//                    ad = adItems[position / AD_DISPLAY_FREQUENCY]
-//                } else {
-//                    val nativeAdOptions =
-//                        NativeAdOptions.Builder().setMediaAspectRatio(MediaAspectRatio.LANDSCAPE)
-//                            .build()
-//                    val builder = AdLoader.Builder(
-//                        adHolder.binding.root.context,
-//                        "ca-app-pub-3940256099942544/2247696110"
-//                    )
-//                    val adLoader: AdLoader = builder.forNativeAd { nativeAd ->
-//                        ad = nativeAd
-//                        adItems.add(nativeAd)
-//                    }.withNativeAdOptions(nativeAdOptions)
-//                        .withAdListener(object : AdListener() {
-//                            override fun onAdFailedToLoad(p0: LoadAdError) {
-//                                Log.d(TAG, "onAdFailedToLoad: Failed : ${p0.message}")
-//                            }
-//                        })
-//                        .build()
-//                    adLoader.loadAd(AdRequest.Builder().build())
-//                }
-//                ad?.let { nativeAd ->
-//                    adHolder.binding.run {
-//                        adHeadline.text = nativeAd.headline
-//                        adPrice.text = nativeAd.price
-//                        adStore.text = nativeAd.store
-//                        adAdvertiser.text = nativeAd.advertiser
-//                        adAppIcon.setImageDrawable(nativeAd.icon?.drawable)
-//                        nativeAdView.setNativeAd(nativeAd)
-//                    }
-//                }
+                (holder as AdViewHolder).onBind()
             }
-//            else {
-//                val index = position - position / AD_DISPLAY_FREQUENCY - 1
-//                val item = itemList[index]
-//                val itemHolder = holder as ItemHolder
-//
-//            }
-
             else -> {
                 (holder as CardViewHolder).onBind(card)
-//                Log.d("MyCard", "card = $card")
                 holder.binding.tvCardFragmentItemWorkPhone.setOnClickListener {
                     shortOnClickListener?.shortPhoneClick(card.workPhone)
                 }
@@ -138,16 +118,6 @@ class CardListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
     }
-
-//    fun clearResult() {
-//        myResult = null
-//        notifyDataSetChanged()
-//    }
-//
-//    fun setResult(myResult : MyResult) {
-//        this.myResult = myResult
-//        notifyDataSetChanged()
-//    }
 
     override fun getItemCount(): Int {
         return differ.currentList.size + (differ.currentList.size / AD_POSITION)
@@ -163,19 +133,17 @@ class CardListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun onBind(card: Card) {
 //            Log.d("MyLog", "card in holder = $card")
             binding.apply {
-
-
                 tvCardFragmentId.text = card.id.toString()
                 tvCardFragmentItemWorkPhone.text = card.workPhone
                 tvCardFragmentItemHomePhone.text = card.homePhone
                 tvCardFragmentItemSpecialization.text = card.speciality
                 tvCardFragmentItemOrganization.text = card.organization
                 tvCardFragmentItemEmail.text = card.email
-                tvCardFragmentItemName.text = itemView.context.getString(R.string.two_value_without_comma,
+                tvCardFragmentItemName.text = itemView.context.getString(
+                    R.string.two_value_without_comma,
                     card.surname,
-                    card.name)
-
-
+                    card.name
+                )
 
                 //** Location
                 when {
@@ -252,18 +220,98 @@ class CardListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    inner class AdViewHolder(binding: FragmentCardsAdItemBinding) :
+    inner class AdViewHolder(val binding: FragmentCardsAdItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        val adContainerView = binding.layoutCardFragmentAdContainer
+        fun onBind() {
+            if (adView.parent != null) {
+                (adView.parent as ViewGroup).removeView(adView)
+            }
+//            adContainerView.removeView(adView)
+            adContainerView.addView(adView)
+        }
     }
 
 
+    private fun populateNativeAdView(nativeAd: NativeAd, adViews: LayoutAdToCardBinding): NativeAdView {
+
+        val adView = adViews.root
+        adView.mediaView = adView.findViewById(R.id.ad_media)
+        adView.headlineView = adView.findViewById<View>(R.id.ad_headline)
+        adView.bodyView = adView.findViewById<View>(R.id.ad_body)
+        adView.callToActionView = adView.findViewById<View>(R.id.ad_call_to_action)
+        adView.iconView = adView.findViewById<View>(R.id.ad_app_icon)
+        adView.priceView = adView.findViewById<View>(R.id.ad_price)
+        adView.starRatingView = adView.findViewById<View>(R.id.ad_stars)
+        adView.storeView = adView.findViewById<View>(R.id.ad_store)
+        adView.advertiserView = adView.findViewById<View>(R.id.ad_advertiser)
+
+        (adView.headlineView as TextView).text = nativeAd.headline
+        adView.mediaView?.mediaContent = nativeAd.mediaContent
+
+        if (nativeAd.body == null) {
+            adView.bodyView?.visibility = View.INVISIBLE
+        } else {
+            adView.bodyView?.visibility = View.VISIBLE
+            (adView.bodyView as? TextView)?.text = nativeAd.body
+        }
+
+        if (nativeAd.callToAction == null) {
+            adView.callToActionView?.visibility = View.INVISIBLE
+        } else {
+            adView.callToActionView?.visibility = View.VISIBLE
+            (adView.callToActionView as? Button)?.text = nativeAd.callToAction
+        }
+
+        if (nativeAd.icon == null) {
+            adView.iconView?.visibility = View.GONE
+        } else {
+            (adView.iconView as? ImageView)?.setImageDrawable(
+                nativeAd.icon?.drawable
+            )
+            adView.iconView?.visibility = View.VISIBLE
+        }
+
+        if (nativeAd.price == null) {
+            adView.priceView?.visibility = View.INVISIBLE
+        } else {
+            adView.priceView?.visibility = View.VISIBLE
+            (adView.priceView as? TextView)?.text = nativeAd.price
+        }
+
+        if (nativeAd.store == null) {
+            adView.storeView?.visibility = View.INVISIBLE
+        } else {
+            adView.storeView?.visibility = View.VISIBLE
+            (adView.storeView as? TextView)?.text = nativeAd.store
+        }
+
+        if (nativeAd.starRating == null) {
+            adView.starRatingView?.visibility = View.INVISIBLE
+        } else {
+            (adView.starRatingView as? RatingBar)?.rating =
+                nativeAd.starRating!!.toFloat()//.floatValue()
+            adView.starRatingView?.visibility = View.VISIBLE
+        }
+
+        if (nativeAd.advertiser == null) {
+            adView.advertiserView?.visibility = View.INVISIBLE
+        } else {
+            (adView.advertiserView as? TextView)?.text = nativeAd.advertiser
+            adView.advertiserView?.visibility = View.VISIBLE
+        }
+
+        adView.setNativeAd(nativeAd)
+        return adView
+    }
+
     private val differCallback = object : DiffUtil.ItemCallback<Card>() {
 
-        override fun areItemsTheSame(oldItem: Card, newItem: Card): Boolean  = oldItem == newItem
+        override fun areItemsTheSame(oldItem: Card, newItem: Card): Boolean = oldItem == newItem
 
         override fun areContentsTheSame(oldItem: Card, newItem: Card): Boolean {
-                     return oldItem.hashCode() == newItem.hashCode()
+            return oldItem.hashCode() == newItem.hashCode()
         }
 
     }
@@ -274,3 +322,4 @@ class CardListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val AD_VIEWTYPE = 2
     }
 }
+

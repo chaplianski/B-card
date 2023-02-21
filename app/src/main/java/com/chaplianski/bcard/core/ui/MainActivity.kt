@@ -1,18 +1,17 @@
 package com.chaplianski.bcard.core.ui
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Rect
-import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import com.chaplianski.bcard.R
+import com.chaplianski.bcard.core.helpers.DefaultLocaleHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +27,11 @@ class MainActivity : AppCompatActivity() {
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             //   statusBarColor = Color.TRANSPARENT
         }
+    }
 
+    override fun attachBaseContext(newBase: Context?) {
+        Log.d("MyLog", "main activity def lang")
+        super.attachBaseContext(newBase?.let { DefaultLocaleHelper.getInstance(it).onAttach() })
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {

@@ -36,7 +36,7 @@ tools:context=".core.dialogs.ChooseVariantAddingPhotoDialog">
             android:layout_gravity="top|center_horizontal"
 
             android:gravity="center"
-            android:text="Select photo from gallery"
+            android:text="@string/select_photo_from_gallery"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -53,7 +53,7 @@ tools:context=".core.dialogs.ChooseVariantAddingPhotoDialog">
 
 
             android:gravity="center"
-            android:text="Capture photo from camera"
+            android:text="@string/capture_photo_from_camera"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -86,7 +86,7 @@ tools:context=".core.dialogs.ChooseVariantAddingPhotoDialog">
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"

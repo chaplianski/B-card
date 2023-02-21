@@ -12,11 +12,14 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.R
+import com.chaplianski.bcard.core.adapters.LanguageSettingsAdapter
 import com.chaplianski.bcard.core.dialogs.EditCardDialog.Companion.ADDITIONAL_INFO_ENABLE
 import com.chaplianski.bcard.core.dialogs.EditCardDialog.Companion.CARD_SETTING_INFO_ENABLE
 import com.chaplianski.bcard.core.dialogs.EditCardDialog.Companion.PERSON_INFO_ENABLE
 import com.chaplianski.bcard.core.dialogs.EditCardDialog.Companion.PERSON_INFO_STATUS
+import com.chaplianski.bcard.core.helpers.DefaultLocaleHelper
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.databinding.DialogEditCardBinding
 import com.chaplianski.bcard.databinding.DialogLanguageSettingsBinding
@@ -25,8 +28,6 @@ import com.chaplianski.bcard.databinding.DialogLanguageSettingsBinding
 class LanguageSettingsDialog : DialogFragment() {
     private var _binding: DialogLanguageSettingsBinding? = null
     val binding get() = _binding!!
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,12 +50,29 @@ class LanguageSettingsDialog : DialogFragment() {
 
         val saveButton = binding.btLanguageSettingsDialogAdd
         val cancelButton = binding.btLanguageSettingsDialogCancel
+        val languageRV = binding.rvLanguageSettingsDialog
+        val defaultLocaleHelper = DefaultLocaleHelper
+        var currentLanguage = "en"
+        val languageList = listOf<String>("en", "ru")
+        val languageAdapter = LanguageSettingsAdapter(languageList)
+        languageRV.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = languageAdapter
+        }
+
+        languageAdapter.languageCheckListener = object : LanguageSettingsAdapter.LanguageCheckListener{
+            override fun onClickLanguage(language: String) {
+                currentLanguage = language
+            }
+
+        }
+
 
        saveButton.setOnClickListener {
-            parentFragmentManager.setFragmentResult(
+           parentFragmentManager.setFragmentResult(
                 REQUEST_KEY,
                 bundleOf(
-                    CHECKED_OPTION to SAVE_BUTTTON_STATUS,
+                    CHECKED_OPTION to SETUP_LANGUAGE_STATUS, CHECKED_LANGUAGE to currentLanguage
                 )
             )
             dismiss()
@@ -73,7 +91,8 @@ class LanguageSettingsDialog : DialogFragment() {
     companion object {
 
         val CHECKED_OPTION = "checked option"
-        val SAVE_BUTTTON_STATUS = "save button status"
+        val SETUP_LANGUAGE_STATUS = "setup language status"
+        val CHECKED_LANGUAGE = "checked language"
 
         val TAG = LanguageSettingsDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
@@ -101,21 +120,20 @@ class LanguageSettingsDialog : DialogFragment() {
         fun setupListener(
             manager: FragmentManager,
             lifecycleOwner: LifecycleOwner,
-            listener: (String) -> Unit
+            listener: (String, String) -> Unit
         ) {
             manager.setFragmentResultListener(
                 REQUEST_KEY,
                 lifecycleOwner,
                 FragmentResultListener { key, result ->
-//                    val cardId = result.getLong(CURRENT_CARD_ID)
+                    val checkedLanguage = result.getString(CHECKED_LANGUAGE)
                     val status = result.getString(CHECKED_OPTION)
 //                    val isPersonInfoEnable = result.getBoolean(PERSON_INFO_ENABLE, false)
 //                    val isAdditionalInfoEnable = result.getBoolean(ADDITIONAL_INFO_ENABLE, false)
 //                    val isCardSettingsEnable = result.getBoolean(CARD_SETTING_INFO_ENABLE, false)
-                    if (status != null) {
+                    if (status != null && checkedLanguage != null) {
                         listener.invoke(
-
-                            status
+                            status, checkedLanguage
                         ) //, isPersonInfoEnable, isAdditionalInfoEnable, isCardSettingsEnable)
                     }
                 })

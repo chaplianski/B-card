@@ -12,7 +12,7 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun loginFragmentInject(loginFragment: LoginFragment)
-    fun registrationFragmentInject(registrationFragment: RegistrationFragment)
+//    fun registrationFragmentInject(registrationFragment: RegistrationFragment)
     fun cardsFragmentInject(cardsFragment: CardsFragment)
 //    fun editCardFragmentInject(editCardFragment: EditCardFragment)
     fun deleteCardFragmentInject(deleteCardDialog: DeleteCardDialog)

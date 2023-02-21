@@ -98,7 +98,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:hint="Name"
+                        android:hint="@string/name"
                         app:boxStrokeWidth="2dp"
                         app:hintTextColor="@color/light_brown"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -123,7 +123,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:hint="Surname"
+                        android:hint="@string/surname"
                         app:boxStrokeWidth="2dp"
                         app:hintTextColor="@color/light_brown"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -167,7 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextColor="@color/light_brown"
-                    android:hint="Work phone"
+                    android:hint="@string/work_phone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -190,7 +190,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextColor="@color/light_brown"
-                    android:hint="Home phone"
+                    android:hint="@string/home_phone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -213,7 +213,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextColor="@color/light_brown"
-                    android:hint="Position / Specialty"
+                    android:hint="@string/position_specialty"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -236,7 +236,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextColor="@color/light_brown"
-                    android:hint="Organization"
+                    android:hint="@string/organization"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -259,7 +259,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextColor="@color/light_brown"
-                    android:hint="Email"
+                    android:hint="@string/email"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -283,7 +283,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextColor="@color/light_brown"
-                    android:hint="Town"
+                    android:hint="@string/town"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -306,7 +306,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     app:hintTextColor="@color/light_brown"
-                    android:hint="Country"
+                    android:hint="@string/country"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -344,7 +344,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:background="@drawable/square_button"
-                    android:text="Save" />
+                    android:text="@string/save" />
 
                 <View
                     android:layout_width="10dp"
@@ -357,7 +357,7 @@
                     android:layout_weight="1"
                     style="@style/Bold"
                     android:background="@drawable/square_button"
-                    android:text="Cancel" />
+                    android:text="@string/cancel" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:text="Additional Information"
+                android:text="@string/additional_information"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -59,14 +59,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Personal additional information"
+                android:text="@string/personal_additional_information"
                 android:textColor="@color/black"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:id="@+id/et_user_additional_info_address"
-                android:hint="Nickname, full postal address, timezone, links and ets."
+                android:hint="@string/nickname_full_postal_address_timezone_links_and_ets"
                 style="@style/EditTextAdditionalInformation" />
 
             <TextView
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Education and Professional Skills"
+                android:text="@string/education_and_professional_skills"
                 android:textColor="@color/black"
                  />
 
@@ -84,7 +84,7 @@
                 android:id="@+id/et_user_additional_info_prof_skills"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:hint="Educational institution, courses, technology stack"
+                android:hint="@string/educational_institution_courses_technology_stack"
                 style="@style/EditTextAdditionalInformation"
                  />
 
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Private Information"
+                android:text="@string/private_information"
                 android:textColor="@color/black"
                  />
 
@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Reference"
+                android:text="@string/reference"
                 android:textColor="@color/black"
                  />
 
@@ -142,7 +142,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:background="@drawable/square_button"
-                    android:text="Save" />
+                    android:text="@string/save" />
 
                 <View
                     android:layout_width="10dp"
@@ -155,7 +155,7 @@
                     android:layout_weight="1"
                     style="@style/Bold"
                     android:background="@drawable/square_button"
-                    android:text="Cancel" />
+                    android:text="@string/cancel" />
 
             </LinearLayout>
         </LinearLayout>

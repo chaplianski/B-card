@@ -365,7 +365,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5" />
 
+            <FrameLayout
+                android:id="@+id/layout_card_fragment_ad"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     </androidx.core.widget.NestedScrollView>
 

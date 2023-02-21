@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -12,29 +11,22 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.core.adapters.DoubleCardListAdapter
-import com.chaplianski.bcard.core.factories.CheckCardListFragmentViewModelFactory
-import com.chaplianski.bcard.core.factories.LoadCardsDialogViewModelFactory
-import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
-import com.chaplianski.bcard.core.viewmodels.CheckDoubleCardListDialogViewModel
-import com.chaplianski.bcard.core.viewmodels.LoadCardsDialogViewModel
 import com.chaplianski.bcard.databinding.DialogCheckDoubleCardListBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.model.Contact
-import javax.inject.Inject
 
 
 class CheckDoubleCardListDialog : DialogFragment() {
     private var _binding: DialogCheckDoubleCardListBinding? = null
     val binding get() = _binding!!
 
-    @Inject
-    lateinit var checkCardListFragmentViewModelFactory: CheckCardListFragmentViewModelFactory
-    private val checkDoubleCardListDialogViewModel: CheckDoubleCardListDialogViewModel by viewModels { checkCardListFragmentViewModelFactory }
+//    @Inject
+//    lateinit var vmFactory: ViewModelProvider.Factory
+//    private val checkDoubleCardListDialogViewModel: CheckDoubleCardListDialogViewModel by viewModels { vmFactory }
 
     override fun onAttach(context: Context) {
         (context.applicationContext as DaggerApp)

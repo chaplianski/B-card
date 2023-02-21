@@ -1,7 +1,9 @@
 package com.chaplianski.bcard.core.dialogs
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -26,19 +28,6 @@ class AboutSettingsDialog : DialogFragment() {
     private var _binding: DialogAboutSettingsBinding? = null
     val binding get() = _binding!!
 
-    private val isPersonInfoEnable: Boolean
-        get() = requireArguments().getBoolean(PERSON_INFO_ENABLE)
-
-    private val isAdditionalInfoEnable: Boolean
-        get() = requireArguments().getBoolean(
-            ADDITIONAL_INFO_ENABLE
-        )
-    private val isCardSettingsEnable: Boolean
-        get() = requireArguments().getBoolean(
-            CARD_SETTING_INFO_ENABLE
-        )
-//    val isPersonInfoEnable = arguments?.getBoolean(PERSON_INFO_ENABLE)
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,11 +48,23 @@ class AboutSettingsDialog : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-//        val cancelButton = binding.tvEditCardDialogCancel
+        val cancelButton = binding.btSaveCardDialogCancel
+        val policyButton = binding.tvAboutDialogPolicy
+        val termsButton = binding.tvAboutDialogTerms
 
 //        cancelButton.setOnClickListener {
 //            dismiss()
 //        }
+
+        policyButton.setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://levelty.app/levelty_privacy_policy"))
+            activity?.startActivity(i)
+        }
+
+        termsButton.setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://levelty.app/levelty_website_and_mobile_app_terms"))
+            activity?.startActivity(i)
+        }
     }
 
     override fun onDestroyView() {

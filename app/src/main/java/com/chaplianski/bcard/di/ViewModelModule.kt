@@ -12,6 +12,11 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(SaveCardDialogViewModel::class)
+    abstract fun bindSaveCardDialogViewModel(mainViewModel: SaveCardDialogViewModel): ViewModel
+
+    @Binds
+    @IntoMap
     @ViewModelKey(LoadCardsDialogViewModel::class)
     abstract fun bindLoadCardsDialogViewModel(mainViewModel: LoadCardsDialogViewModel): ViewModel
 
