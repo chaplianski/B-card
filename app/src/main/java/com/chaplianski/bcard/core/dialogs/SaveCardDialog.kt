@@ -1,15 +1,11 @@
 package com.chaplianski.bcard.core.dialogs
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.provider.DocumentsContract
 import android.util.Log
 import android.view.*
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.*
@@ -20,7 +16,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
-import com.chaplianski.bcard.core.helpers.CardSaver
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.SaveCardDialogViewModel
 import com.chaplianski.bcard.databinding.DialogSaveCardBinding
