@@ -26,6 +26,7 @@ import androidx.loader.content.Loader
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
+import com.chaplianski.bcard.core.helpers.CardDecorResources
 import com.chaplianski.bcard.core.helpers.ProcessCard
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.core.viewmodels.LoadContactListDialogViewModel
@@ -106,10 +107,6 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE + "'"// AND " +
     val SELECTION_NOTE =
         Data.MIMETYPE + " IN ('" + ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE + "')"
-
-//    var SELECTION =
-//         Data.MIMETYPE + " IN ('" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "', '" + ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE + "')"
-
     var SELECTION =
         Data.MIMETYPE + " IN ('" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "', '" + ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE + "')"
 
@@ -140,7 +137,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
-            loadContactListDialogViewModel.getCards(LoadCardDialog.SURNAME)
+            loadContactListDialogViewModel.getCards(LoadCardListFromVCFDialog.SURNAME)
         }
 
         loadContactListDialogViewModel.getCardListState
@@ -150,6 +147,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                     is LoadContactListDialogViewModel.GetCardsState.Loading -> {}
                     is LoadContactListDialogViewModel.GetCardsState.Success -> {
                         allCardList = it.cardList
+                        Log.d("MyLog","all card in flow result")
                     }
                     is LoadContactListDialogViewModel.GetCardsState.Failure -> {}
                 }
@@ -175,7 +173,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
 
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        Log.d("MyLog", "onCreate Loader, id = $id")
+//        Log.d("MyLog", "onCreate Loader, id = $id")
         return when (id) {
             0 -> CursorLoader(
                 requireContext(),
@@ -269,10 +267,26 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                         if (data.getString(1) != null) photoUri = data.getString(1)
                         val name: String = data.getString(2)
 
-                        val nameList = name.split(",")
+                        val nameList = name.split(" ")
+                        Log.d("MyLog", "nameList = $nameList")
+                        var nameValue = ""
                         var surnameValue = ""
-                        val nameValue = nameList[0].trimStart()
-                        if (nameList.size > 1) surnameValue = name.split(",")[1].trimStart()
+                        when(nameList.size){
+                            1 -> {surnameValue = nameList[0]}
+                            2 -> {nameValue = nameList[0]
+                            surnameValue = nameList[1].trimStart()
+                            }
+                            else -> {
+                                val nameListSize = nameList.size
+                                nameValue = nameList.joinToString(separator = " ", limit = nameListSize-1, truncated = "")
+                                surnameValue = nameList[nameListSize-1].trimStart()
+                            }
+                        }
+
+
+//                        val nameValue = nameList[0].trimStart()
+                        Log.d("MyLog", "nameValue = $nameValue")
+//                        if (nameList.size > 1) surnameValue = name.split(",")[1].trimStart()
                         cardList.add(
                             Card(
                                 name = nameValue, surname = surnameValue, photo = photoUri,
@@ -472,6 +486,8 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                                 }.toString()
                                 card.privateInfo = privateInfoStringBuilder
                             }
+                            val cardDecorResource = CardDecorResources()
+                            card.cardTexture = cardDecorResource.getCardTextureResource().random().cardTextureName
                         }
                     }
                     data.close()
@@ -479,7 +495,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
             }
         }
 
-        val processCardList = ProcessCard()
+        val processCardList = ProcessCard(requireContext())
         val addButton = binding.btLoadCardDialogAdd
         val cardListRV = binding.rvLoadCardDialog
 
@@ -488,13 +504,14 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         cardListRV.adapter = cardListAdapter
         val checkboxAllCards = binding.checkBoxLoadCardDialogCheckAll
         processCardList.fillCardAdapter(cardList, addButton, cardListAdapter, checkboxAllCards)
-        Log.d("MyLog", "cardListContact = $cardList")
+//        Log.d("MyLog", "cardListContact = $cardList")
 
         addButton.setOnClickListener {
             val listCard = mutableListOf<Card>()
 
             cardList.forEach { cardItem ->
                 if (cardItem.isChecked) {
+                    cardItem.id = 0
                     listCard.add(cardItem)
                 }
             }
@@ -502,17 +519,15 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
             when {
                 allCardList.isEmpty() && listCard.isNotEmpty() -> {
                     listCard.forEach {
-                        Log.d("MyLog", "add card when empty list card")
                         loadContactListDialogViewModel.addCard(it)
                     }
                 }
                 allCardList.isNotEmpty() && listCard.isNotEmpty() -> {
-
                     listCard.forEach { checkedCard ->
                         val doubleCheckedCard =
                             allCardList.filter { checkedCard.name == it.name && checkedCard.surname == it.surname }
                         if (doubleCheckedCard.isNotEmpty()){
-                            doubleCardList.add(checkedCard)
+                             doubleCardList.add(checkedCard)
                         } else loadContactListDialogViewModel.addCard(checkedCard)
                     }
                 }
@@ -536,8 +551,8 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                 setupCheckDoubleCardListDialog()
             } else {
                 parentFragmentManager.setFragmentResult(
-                    LoadCardDialog.REQUEST_KEY,
-                    bundleOf(LoadCardDialog.CHECKED_OPTION to LoadCardDialog.ADD_STATUS)
+                    LoadCardListFromVCFDialog.REQUEST_KEY,
+                    bundleOf(LoadCardListFromVCFDialog.CHECKED_OPTION to LoadCardListFromVCFDialog.ADD_STATUS)
                 )
                 dismiss()
             }
@@ -560,15 +575,15 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                         loadContactListDialogViewModel.addCard(it)
                     }
                     parentFragmentManager.setFragmentResult(
-                        LoadCardDialog.REQUEST_KEY,
-                        bundleOf(LoadCardDialog.CHECKED_OPTION to LoadCardDialog.AFTER_CHECK_DOUBLE_STATUS, CURRENT_CARD_ID to LoadCardDialog.FAKE_CURRENT_CARD_ID)
+                        LoadCardListFromVCFDialog.REQUEST_KEY,
+                        bundleOf(LoadCardListFromVCFDialog.CHECKED_OPTION to LoadCardListFromVCFDialog.AFTER_CHECK_DOUBLE_STATUS, CURRENT_CARD_ID to LoadCardListFromVCFDialog.FAKE_CURRENT_CARD_ID)
                     )
                     dismiss()
                 }
                 CheckDoubleCardListDialog.CANCEL_STATUS -> {
                     parentFragmentManager.setFragmentResult(
-                        LoadCardDialog.REQUEST_KEY,
-                        bundleOf(LoadCardDialog.CHECKED_OPTION to LoadCardDialog.AFTER_CHECK_DOUBLE_STATUS, CURRENT_CARD_ID to LoadCardDialog.FAKE_CURRENT_CARD_ID)
+                        LoadCardListFromVCFDialog.REQUEST_KEY,
+                        bundleOf(LoadCardListFromVCFDialog.CHECKED_OPTION to LoadCardListFromVCFDialog.AFTER_CHECK_DOUBLE_STATUS, CURRENT_CARD_ID to LoadCardListFromVCFDialog.FAKE_CURRENT_CARD_ID)
                     )
                     dismiss()
                 }
@@ -590,24 +605,11 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         val CHECKED_OPTION = "checked option"
         val ADD_STATUS = "add contacts status"
         val CANCEL_STATUS = "cancel load contacts status"
-        val AFTER_CHECK_DOUBLE_STATUS = "after check double status"
-        val FAKE_CURRENT_CARD_ID = -1L
-        val REGISTRY_KEY_LOAD_FILE = "registry key load photo"
-        val SURNAME = "surname"
-
-
-        val CARD_SETTINGS = "card settings"
-        val PROFIL_INFO = "profile info"
-
         val TAG = LoadContactListDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
 
         fun show(manager: FragmentManager) {
             val dialogFragment = LoadContactListDialog()
-//            dialogFragment.arguments = bundleOf(
-//                CURRENT_CARD_ID to currentCardId,
-//                DESTINATION to destination
-//            )
             dialogFragment.show(manager, TAG)
         }
 

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+    <resources>
+
+    <string name="password">Hasło</string>
+
+    <string name="email_address">Adres mailowy</string>
+
+    <string name="welcome_to_b_card">Witamy</string>
+
+    <string name="remember">Zapamiętaj</string>
+
+    <string name="sign_in">Zaloguj się</string>
+
+    <string name="registration_account">Załóż konto</string>
+
+    <string name="check_all">Sprawdź wszystko</string>
+
+    <string name="save">Zapisz</string>
+
+    <string name="cancel">Anuluj</string>
+
+    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+
+    <string name="logo">logo</string>
+
+    <string name="registration_panel">Panel rejestracyjny</string>
+
+    <string name="please_enter_login">Proszę wprowadzić login</string>
+
+    <string name="please_enter_password">Proszę wprowadzić hasło</string>
+
+    <string name="please_enter_secret_question">Proszę wprowadzić sekretne pytanie</string>
+
+    <string name="please_enter_secret_answer">Proszę wprowadzić odpowiedź na sekretne pytanie</string>
+
+    <string name="password_does_not_match">Hasło nie pasuje</string>
+
+    <string name="answer_please">Proszę odpowiedzieć</string>
+
+    <string name="answer">Odpowiedź</string>
+
+    <string name="such_login_not_exist">Podany login nie istnieje</string>
+
+    <string name="answer_is_wrong">Niepoprawna odpowiedź</string>
+
+    <string name="add">Dodaj</string>
+
+    <string name="two_value_with_comma">%1s, %2s</string>
+
+    <string name="two_value_without_comma">%1s %2s</string>
+
+    <string name="postal_address">Adres pocztowy:\n</string>
+
+    <string name="note">Notatki: </string>
+
+    <string name="nickname">Nazwa użytkownika: </string>
+
+    <string name="ad_attribution">Reklama</string>
+
+    <string name="setup">Zainstaluj</string>
+
+    <string name="additional_information">Dodatkowe informacje</string>
+
+    <string name="personal_additional_information">Dodatkowe dane osobowe</string>
+
+    <string name="nickname_full_postal_address_timezone_links_and_ets">Nazwa użytkownika, pełny adres pocztowy, strefa czasowa, linki i inne</string>
+
+    <string name="education_and_professional_skills">Wykształcenie i kompetencje zawodowe</string>
+
+    <string name="educational_institution_courses_technology_stack">Instytucje edukacyjne, kursy, wiedza technologiczna</string>
+
+    <string name="private_information">Prywatne informacje</string>
+
+    <string name="reference">Referencje</string>
+
+    <string name="card_settings">Ustawienia wizytówki</string>
+
+    <string name="card_color">Kolor wizytówki</string>
+
+    <string name="corners_round">Kąty wizytówki</string>
+
+    <string name="form_of_photo">Kształt zdjęcia</string>
+
+    <string name="text_color">Kolor tekstu</string>
+
+    <string name="this_contact_is_being_in_you_collection_mark_the_contacts_you_want_to_load">Podane kontakty już istnieją w kolekcji. Zaznacz, które z nich nadal chcesz dodać</string>
+
+    <string name="select_photo_from_gallery">Wybierz zdjęcie z galerii</string>
+
+    <string name="capture_photo_from_camera">Zrób zdjęcie</string>
+
+    <string name="person_information">Dane osobowe</string>
+
+    <string name="name">Imię</string>
+
+    <string name="surname">Nazwisko</string>
+
+    <string name="work_phone">Numer telefonu służbowego</string>
+
+    <string name="home_phone">Numer telefonu domowego</string>
+
+    <string name="organization">Organizacja</string>
+
+    <string name="position_specialty">Stanowisko / specjalność</string>
+
+    <string name="email">Adres mailowy</string>
+
+    <string name="town">Miasto</string>
+
+    <string name="country">Kraj</string>
+
+    <string name="background">Tło aplikacji</string>
+
+    <string name="language">Język</string>
+
+    <string name="about">O nas</string>
+
+    <string name="save_vcf">Zapisz plik w (.vcf)</string>
+
+    <string name="save_csv">Zapisz plik w (.csv)</string>
+
+    <string name="load_from_file_vcf">Załaduj z pliku (.vcf)</string>
+
+    <string name="load_from_file_csv">Załaduj z pliku (.csv)</string>
+
+    <string name="load_from_account">Załaduj z konta</string>
+
+    <string name="let_s_start">Zacznijmy</string>
+
+    <string name="login">Login</string>
+
+    <string name="repeat_password">Powtórz hasło</string>
+
+    <string name="secret_question">Sekretne pytanie</string>
+
+    <string name="ok">ОК</string>
+
+    <string name="change_password">Zmiana hasła</string>
+
+    <string name="new_password">Nowe hasło</string>
+
+    <string name="i_forget_password">Nie pamiętam hasła</string>
+
+    <string name="sign_up">Zarejestruj się</string>
+
+    <string name="delete">Usuń</string>
+    <string name="app_name">B-card</string>
+
+</resources>

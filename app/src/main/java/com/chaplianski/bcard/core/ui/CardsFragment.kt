@@ -6,19 +6,15 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
+import android.view.*
 import android.widget.*
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -37,12 +33,8 @@ import com.chaplianski.bcard.core.helpers.*
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel
 import com.chaplianski.bcard.databinding.FragmentCardsBinding
-import com.chaplianski.bcard.databinding.LayoutAdToCardBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.*
-import com.google.android.gms.ads.*
-import com.google.android.gms.ads.formats.NativeAdOptions
-import com.google.android.material.internal.ViewUtils.addOnGlobalLayoutListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -71,8 +63,13 @@ class CardsFragment : Fragment() {
     var personInfoCheck = false
     var additionalInfoCheck = false
     var cardSettingsCheck = false
-    var currentPosition = 0
-
+    var currentPosition = -1
+    var currentAddItemId = 0L
+    var currentCardEditId = 0L
+    var currentCardDeleteId = -2L
+    var currentCardDeletePosition = 0
+    var scrolledPosition = 0
+    var listCards = mutableListOf<Card>()
     override fun onAttach(context: Context) {
         (context.applicationContext as DaggerApp).getAppComponent().cardsFragmentInject(this)
         super.onAttach(context)
@@ -89,14 +86,11 @@ class CardsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-//        val additionalInfoText = binding.layoutUserInformation.clUserInfo
-//        val closeButton = binding.layoutUserInformation.btUserInfoClose
         val backgroundLayout = binding.clCardsFragment
         val adContainerView = binding.layoutCardFragmentAd
         val settingsButton = binding.btCardsFragmentSettings
         val editButton = binding.btCardsFragmentEdit
-        val deleteButton = binding.fabCardsFragmentDelete
+        val deleteButton = binding.btCardsFragmentDelete
         val shareButton = binding.btCardsFragmentShare
         val exitButton = binding.fabCardsFragmentExit
         val addCardButton = binding.btCardsFragmentAddCard
@@ -105,6 +99,7 @@ class CardsFragment : Fragment() {
         val sortButton = binding.btCardsFragmentSort
         val searchButton = binding.btCardsFragmentSearch
         val searchField = binding.tvCardsFragmentSearchField
+        val resetSearchField = binding.btCardsFragmentSearchReset
         val leftPanelImage = binding.ivFragmentCardsLeftPanel
         val rightPanelImage = binding.ivFragmentCardsRightPanel
         val cardsRV = binding.rvCardsFragmentCards
@@ -116,7 +111,6 @@ class CardsFragment : Fragment() {
         val sortLocationButton = binding.btCardsFragmentSortLocation
 
         val userInfoLayout = binding.layoutUserInformation.clUserInfo
-
 
         val avatarUserInformation = binding.layoutUserInformation.ivUserInformationProfileAvatar
         val nameUserInformation = binding.layoutUserInformation.tvUserInformationProfileName
@@ -133,7 +127,6 @@ class CardsFragment : Fragment() {
         val reference = binding.layoutUserInformation.userInformationReference
         val absentInfoText = binding.layoutUserInformation.tvUserInformationAbsentInfo
 
-        var listCards = mutableListOf<Card>()
         val adsPicker = AdsPicker()
         adsPicker.setAdNative(requireContext(), adContainerView)
 
@@ -146,8 +139,7 @@ class CardsFragment : Fragment() {
             ContextCompat.getDrawable(
                 it, backgroundResource
             )
-        }//resources.getDrawable(backgroundResource)
-
+        }
 
         motionLayout.setTransition(R.id.begin_position_start, R.id.begin_position_finish)
         motionLayout.transitionToEnd()
@@ -196,96 +188,87 @@ class CardsFragment : Fragment() {
 
 
         // ******  Cards wheel  ********
-//        val cardsPickerLayoutManager =
-//            CardsPickerLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//        val cardFragmentCardAdapter = CardsFragmentCardAdapter(cardsRV) //(listCards, cardsRV)
         val cardFragmentCardAdapter = CardListAdapter(requireContext())
-//        val cardsSnapHelper: SnapHelper = LinearSnapHelper()
-//        cardsRV.layoutManager = cardsPickerLayoutManager
-//        cardsRV.adapter = cardFragmentCardAdapter
-//        cardsRV.onFlingListener = null
-//        cardsSnapHelper.attachToRecyclerView(cardsRV)
-
         setupRecyclerView(cardsRV, cardFragmentCardAdapter, userInfoLayout, adContainerView)
 
-
-//        cardsRV.addScrollListener { position: Int ->
-//            var correction = 0
-//            if (position != 0){
-//                correction = position/ AD_POSITION
-//            }
-
-        cardsRV.addGlobalLayoutListener(){position ->
-
+//        cardsRV.addGlobalLayoutListener(){position ->
+////            currentPosition = position
+//            Log.d("MyLog", "listener1: ${position}, currentCardId = $currentCardId")
 //        }
-//            currentCard = listCards[position - correction]
-//            currentCardId = currentCard.id
-            currentPosition = position
-//            Log.d("MyLog", "pos2 = $currentPosition")
-//            cardsFragmentViewModel.getCard(currentCardId)
-            Log.d("MyLog", "Current Position 3: ${position}, currentCardId = $currentCardId")
-        }
-
-
+//        cardsRV.addScrollListener(){position ->
+//            Log.d("MyLog", "listener2: ${position}, currectposition = ${position+(position/ AD_POSITION)}")
+//        }
 
         cardsFragmentViewModel.getCardListState
             .flowWithLifecycle(lifecycle)
             .onEach {
-                when(it){
+                when (it) {
                     is GetCardListState.Loading -> {}
                     is GetCardListState.GetCardList -> {
-                        Log.d("MyLog", "current position 1 = $currentCardId")
-                         it.cardList.forEachIndexed { index, card ->
-                               if (card.id == currentCardId) currentPosition = index
-                            }
-                        Log.d("MyLog", "current position 2 = $currentPosition")
-
                         listCards.clear()
-                        if (!it.cardList.isNullOrEmpty()) {
-                            listCards = it.cardList.map { it.copy() } as MutableList<Card>
-                        } else listCards = it.cardList as MutableList<Card>
-//                        cardsRV.scrollToPosition(currentPosition)
-
-//                        cardsRV.smoothScrollToPosition(currentPosition)
-                        when (currentPosition){
-                            it.cardList.size -> cardsRV.scrollToPosition(currentPosition)
-
-                        }
-                        if (currentPosition != it.cardList.size) cardsRV.scrollToPosition(currentPosition)
-                        else {
-                            if (listCards.isNotEmpty()) {
-                                currentPosition--
-                                cardsRV.scrollToPosition(currentPosition)
-                            }
-                        }
-
-
+                        listCards = if (!it.cardList.isEmpty()) {
+                            it.cardList.map { it.copy() } as MutableList<Card>
+                        } else it.cardList as MutableList<Card>
                         cardFragmentCardAdapter.differ.submitList(listCards)
 
-                        if (listCards.isNotEmpty()) {
-                            if (currentPosition == -1) currentPosition = 0
-                            else {
-                                cardsFragmentViewModel.getCard(listCards[currentPosition].id)
+                        if (it.cardList.isNotEmpty()) {
+                            if (currentPosition == -1) {
+                                cardsFragmentViewModel.getCard(listCards[0].id)
+                                currentPosition = 0
                             }
-
                         }
-                        addSearchFieldListener(searchField, listCards, cardFragmentCardAdapter)
-                        cardsFragmentViewModel.switchToLoadingStateGetCards()
+                        if (currentAddItemId > 0) {
+                            it.cardList.forEachIndexed { index, card ->
+                                if (card.id == currentAddItemId) {
+                                    scrolledPosition = (index + (index / AD_POSITION))
+                                }
+                            }
+                            currentAddItemId = 0
+                        }
+                        if (currentCardEditId > 0) {
+                            it.cardList.forEachIndexed { index, card ->
+                                if (card.id == currentCardEditId) {
+                                    scrolledPosition = (index + (index / AD_POSITION))
+                                }
+                            }
+                            currentCardEditId = 0
+                        }
+                        if (currentCardDeleteId != -2L) {
+                            Log.d("MyLog", "Current del it = $currentCardDeleteId")
+                            if (currentCardDeleteId == -1L) cardsRV.scrollToPosition(0)
+                            val cardListSize = listCards.size.toLong()
+                            if (currentCardDeleteId == cardListSize) {
+                                scrolledPosition =
+                                    ((cardListSize + cardListSize % AD_POSITION) - 1).toInt()
+                            }
+                            if (currentCardDeleteId == 0L && listCards.size > 0) scrolledPosition =
+                                0
+                            if (currentPosition > 0) {
+                                currentPosition--
+                                scrolledPosition = currentPosition
+                            }
+                            currentCardDeleteId = -2
+                        }
+                        cardsRV.scrollToPosition(scrolledPosition)
+                        addSearchFieldListener(searchField, resetSearchField)
                     }
                     is GetCardListState.AddCard -> {
-                        currentCardId = it.cardId
-                        lifecycleScope.launch (Dispatchers.IO){
+                        currentAddItemId = it.cardId
+                        lifecycleScope.launch(Dispatchers.IO) {
                             cardsFragmentViewModel.getCards(SURNAME)
                         }
                     }
                     is GetCardListState.UpdateCard -> {
-                        lifecycleScope.launch (Dispatchers.IO){
-                            if(it.result == 1) cardsFragmentViewModel.getCards(SURNAME)
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            if (it.result == 1) {
+
+                                cardsFragmentViewModel.getCards(SURNAME)
+                            }
                         }
                     }
                     is GetCardListState.DeleteCard -> {
-                        lifecycleScope.launch (Dispatchers.IO){
-                            if(it.result == 1) cardsFragmentViewModel.getCards(SURNAME)
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            if (it.result == 1) cardsFragmentViewModel.getCards(SURNAME)
                         }
                     }
                     is GetCardListState.Failure -> {}
@@ -330,32 +313,36 @@ class CardsFragment : Fragment() {
         }
 
         sortSurnameButton.setOnClickListener {
-            lifecycleScope.launch (Dispatchers.IO){
+            lifecycleScope.launch(Dispatchers.IO) {
                 cardsFragmentViewModel.getCards(SURNAME)
             }
         }
 
         sortPhoneButton.setOnClickListener {
-            lifecycleScope.launch (Dispatchers.IO){
+            lifecycleScope.launch(Dispatchers.IO) {
                 cardsFragmentViewModel.getCards(PHONE)
+                currentPosition = -1
             }
         }
 
         sortMailButton.setOnClickListener {
-            lifecycleScope.launch (Dispatchers.IO){
+            lifecycleScope.launch(Dispatchers.IO) {
                 cardsFragmentViewModel.getCards(EMAIL)
+                currentPosition = -1
             }
         }
 
         sortOrganizationButton.setOnClickListener {
-            lifecycleScope.launch (Dispatchers.IO){
+            lifecycleScope.launch(Dispatchers.IO) {
                 cardsFragmentViewModel.getCards(ORGANIZATION)
+                currentPosition = -1
             }
         }
 
         sortLocationButton.setOnClickListener {
-            lifecycleScope.launch (Dispatchers.IO){
+            lifecycleScope.launch(Dispatchers.IO) {
                 cardsFragmentViewModel.getCards(LOCATION)
+                currentPosition = -1
             }
         }
 
@@ -405,31 +392,23 @@ class CardsFragment : Fragment() {
 
     private fun addSearchFieldListener(
         searchField: EditText,
-        listCards: MutableList<Card>,
-        cardFragmentCardAdapter: CardListAdapter
+        resetSearchButton: ImageButton
     ) {
-        searchField.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence?, start: Int, count: Int, after: Int
-            ) {
-            }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(editText: Editable?) {
-                val searchFilter = listCards.filter { card ->
-                    card.name.uppercase()
-                        .contains(editText.toString().uppercase()) || card.surname.uppercase()
-                        .contains(
-                            editText.toString().uppercase()
-                        ) || card.organization.uppercase()
-                        .contains(editText.toString().uppercase()) || card.town.uppercase()
-                        .contains(editText.toString().uppercase()) || card.workPhone.uppercase()
-                        .contains(editText.toString().uppercase())
-                } as MutableList<Card>
-                cardFragmentCardAdapter.differ.submitList(searchFilter)
+        searchField.doAfterTextChanged {
+            lifecycleScope.launch(Dispatchers.IO) {
+                cardsFragmentViewModel.getCardListBySearchValue(
+                    searchField.text.toString().uppercase()
+                )
+                currentPosition = 0
             }
-
-        })
+        }
+        resetSearchButton.setOnClickListener {
+            searchField.text.clear()
+            lifecycleScope.launch(Dispatchers.IO) {
+                cardsFragmentViewModel.getCards(SURNAME)
+            }
+        }
     }
 
     private fun saveToCurrentCardEditDialogInformation(card: Card) {
@@ -481,7 +460,9 @@ class CardsFragment : Fragment() {
     ) {
         Glide.with(this).load(card.photo).centerCrop().placeholder(R.drawable.ic_portrait)
             .into(avatarUserInformation)
-        nameUserInformation.text = "${card.surname} ${card.name}"
+        nameUserInformation.text =
+            UiText.StringResource(R.string.two_value_without_comma, card.surname, card.name)
+                .asString(requireContext())// "${card.surname} ${card.name}"
         absentInfoText.isVisible = false
         specialityUserInfo.text = card.speciality
         organizationUserInfo.text = card.organization
@@ -685,25 +666,24 @@ class CardsFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView(cardsRV: RecyclerView, cardAdapter: CardListAdapter, userInfoLayout: ConstraintLayout, adContainerView: FrameLayout) {
-//        cardAdapter = CardsFragmentCardAdapter(cardsRV)
+    private fun setupRecyclerView(
+        cardsRV: RecyclerView,
+        cardAdapter: CardListAdapter,
+        userInfoLayout: ConstraintLayout,
+        adContainerView: FrameLayout
+    ) {
+
         cardAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-//                    checkAdapterIsEmpty()
-//                Log.d("MyLog", "adapter change")
             }
 
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-//                Log.d("MyLog", "start = $positionStart, item count = $itemCount")
-//                super.onItemRangeInserted(positionStart, itemCount)
-                cardsRV.scrollToPosition(currentPosition)
+                cardsRV.scrollToPosition(scrolledPosition)
             }
 
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
                 cardsRV.smoothScrollToPosition(itemCount)
-//                Log.d("MyLog", "start 2 = $positionStart, item count = $itemCount")
-//                super.onItemRangeRemoved(positionStart, itemCount)
             }
         })
         val cardsPickerLayoutManager =
@@ -718,36 +698,28 @@ class CardsFragment : Fragment() {
             CardsPickerLayoutManager.CardScrollStopListener {
             override fun selectedView(view: View?) {
                 val cardId =
-                    view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_id)
+                    view?.findViewById<TextView>(R.id.tv_card_fragment_id)
                 val userName =
-                    view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_item_name)
+                    view?.findViewById<TextView>(R.id.tv_card_fragment_item_name)
                 val userAvatar =
-                    view?.findViewById<TextView>(com.chaplianski.bcard.R.id.tv_card_fragment_uri)
-                Log.d("MyLog", "curd id wheel = ${cardId?.text}")
-                if (cardId != null){
+                    view?.findViewById<TextView>(R.id.tv_card_fragment_uri)
+//                Log.d("MyLog", "curd id wheel = ${cardId?.text}")
+
+                if (cardId != null) {
 //                    Log.d("MyLog", "get card wheel ")
                     userInfoLayout.isVisible = true
                     adContainerView.isVisible = false
+                    listCards.forEachIndexed { index, card ->
+                        if (card.id == cardId.text.toString().toLong()) currentPosition =
+                            index + (index / AD_POSITION)
+                    }
 //                    currentCardId = cardId.text.toString().toLong()
                     cardsFragmentViewModel.getCard(cardId.text.toString().toLong())
                 } else {
                     userInfoLayout.isVisible = false
                     adContainerView.isVisible = true
                 }
-//                if (userName?.text?.equals(null) != true && userAvatar?.text?.equals(null) != true && cardId?.text?.equals(
-//                        null
-//                    ) != true
-//                ) {
-//                    if (cardId != null) {
-//                        cardsFragmentViewModel.getCard(
-//                            cardId.text.toString().toLong()
-//                        )
-//                    }
-//                }
-//                    currentPosition = cardsSnapHelper.getSnapPosition(cardsRV)
-
             }
-
         })
     }
 
@@ -804,10 +776,13 @@ class CardsFragment : Fragment() {
         SettingsDialog.show(parentFragmentManager)
     }
 
-    private fun setupLanguageDialog(){
-        LanguageSettingsDialog.setupListener(parentFragmentManager, this.viewLifecycleOwner){status, language ->
-            if (status == LanguageSettingsDialog.SETUP_LANGUAGE_STATUS){
-                Log.d("MyLog", "setup dialog lang = $language")
+    private fun setupLanguageDialog() {
+        LanguageSettingsDialog.setupListener(
+            parentFragmentManager,
+            this.viewLifecycleOwner
+        ) { status, language ->
+            if (status == LanguageSettingsDialog.SETUP_LANGUAGE_STATUS) {
+//                Log.d("MyLog", "setup dialog lang = $language")
                 val defaultLocaleHelper = DefaultLocaleHelper
                 defaultLocaleHelper.getInstance(requireContext()).setCurrentLocale(language)
                 startActivity(Intent(activity, MainActivity::class.java))
@@ -834,9 +809,10 @@ class CardsFragment : Fragment() {
         })
     }
 
-    fun RecyclerView.addGlobalLayoutListener(onScroll: (position: Int) -> Unit){
+    fun RecyclerView.addGlobalLayoutListener(onScroll: (position: Int) -> Unit) {
         var lastPosition = 0
-        viewTreeObserver.addOnGlobalLayoutListener (object : ViewTreeObserver.OnGlobalLayoutListener{
+        viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 if (layoutManager is LinearLayoutManager) {
                     val currentVisibleItemPosition =
@@ -852,41 +828,6 @@ class CardsFragment : Fragment() {
         })
     }
 
-
-//    fun RecyclerView.addScrollListener(onScroll: (position: Int) -> Unit) {
-//        var lastPosition = 0
-//
-//        addOnGlobalLayoutListener(view: View, object : ViewTreeObserver.OnGlobalLayoutListener() {
-//
-//            override fun onGlobalLayout() {
-//                if (layoutManager is LinearLayoutManager) {
-//                    val currentVisibleItemPosition =
-//                        (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-//
-//                    if (lastPosition != currentVisibleItemPosition && currentVisibleItemPosition != RecyclerView.NO_POSITION) {
-//                        onScroll.invoke(currentVisibleItemPosition)
-//                        lastPosition = currentVisibleItemPosition
-//                    }
-//                }
-//            }
-//        })
-//    }
-
-
-
-//    fun findRealFirstVisibleItemPosition(pos: Int): Int {
-//        var pos = pos
-//        var view: View
-//        val linearLayoutManager = cardRV.getLayoutManager() as LinearLayoutManager
-//        while (pos > 0) {
-//            view = linearLayoutManager.findViewByPosition(pos - 1)!!
-//            if (view == null) {
-//                break
-//            }
-//            pos = pos - 1
-//        }
-//        return pos
-//    }
 
     private fun setupEditDialog() {
         EditCardDialog.setupListener(parentFragmentManager, this) { cardId, status ->
@@ -929,6 +870,8 @@ class CardsFragment : Fragment() {
                         }
                     } else lifecycleScope.launch(Dispatchers.IO) {
                         cardsFragmentViewModel.updateCard(newCard)
+                        currentCardEditId = cardId
+
                     }
                 }
             }
@@ -975,7 +918,6 @@ class CardsFragment : Fragment() {
 //                Log.d("MyLog", "setup person info, cardId = $cardId")
                 showEditDialog(cardId)
             } else showEditDialog(cardId)
-
         }
     }
 
@@ -1004,15 +946,27 @@ class CardsFragment : Fragment() {
     private fun setupShareDialog() {
         ShareContactsDialog.setupListener(parentFragmentManager, this) { cardId, status ->
             when (status) {
-                ShareContactsDialog.SAVE_OPTION -> {
-                    showSaveCardsDialog(cardId)
+                ShareContactsDialog.SAVE_VCF_OPTION -> {
+                    showSaveVcfCardsDialog(cardId)
                 }
-                ShareContactsDialog.LOAD_FROM_FILE_OPTION -> {
+                ShareContactsDialog.SAVE_CSV_OPTION -> {
+                    showSaveCsvCardsDialog(cardId)
+                }
+                ShareContactsDialog.LOAD_FROM_VCF_FILE_OPTION -> {
                     val filePicker = ContactPicker(
-                            requireContext(),
-                            requireActivity().activityResultRegistry
-                        ) { uri ->
-                        showLoadCardsDialog(uri)
+                        requireContext(),
+                        requireActivity().activityResultRegistry
+                    ) { uri ->
+                        showLoadVcfCardsDialog(uri)
+                    }
+                    filePicker.checkReadFilesPermission()
+                }
+                ShareContactsDialog.LOAD_FROM_CSV_FILE_OPTION -> {
+                    val filePicker = ContactPicker(
+                        requireContext(),
+                        requireActivity().activityResultRegistry
+                    ) { uri ->
+                        showLoadCsvCardsDialog(uri)
                     }
                     filePicker.checkReadFilesPermission()
                 }
@@ -1020,7 +974,7 @@ class CardsFragment : Fragment() {
                     val accountContactPicker = AccountContactsPicker(
                         requireContext(),
                         requireActivity().activityResultRegistry
-                    ) {permission ->
+                    ) { permission ->
                         if (permission) showLoadContactsDialog()
                     }
                     accountContactPicker.checkPermission()
@@ -1032,8 +986,11 @@ class CardsFragment : Fragment() {
     }
 
     private fun setupLoadContactsDialog() {
-        LoadContactListDialog.setupListener(parentFragmentManager, this.viewLifecycleOwner){status ->
-            when(status){
+        LoadContactListDialog.setupListener(
+            parentFragmentManager,
+            this.viewLifecycleOwner
+        ) { status ->
+            when (status) {
                 LoadContactListDialog.ADD_STATUS -> {
                     lifecycleScope.launch(Dispatchers.IO) {
                         cardsFragmentViewModel.getCards(SURNAME)
@@ -1046,35 +1003,44 @@ class CardsFragment : Fragment() {
     }
 
     private fun setupLoadCardsDialog() {
-        LoadCardDialog.setupListener(
+        LoadCardListFromVCFDialog.setupListener(
             parentFragmentManager, this.viewLifecycleOwner
         ) { status, cardId ->
             when (status) {
-                LoadCardDialog.ADD_STATUS -> {
+                LoadCardListFromVCFDialog.ADD_STATUS -> {
                     lifecycleScope.launch(Dispatchers.IO) {
                         cardsFragmentViewModel.getCards(SURNAME)
                     }
                 }
-                LoadCardDialog.CANCEL_STATUS -> {
+                LoadCardListFromVCFDialog.CANCEL_STATUS -> {
                     showShareDialog(cardId)
                 }
-                LoadCardDialog.AFTER_CHECK_DOUBLE_STATUS -> {
+                LoadCardListFromVCFDialog.AFTER_CHECK_DOUBLE_STATUS -> {
                     lifecycleScope.launch(Dispatchers.IO) {
-                       cardsFragmentViewModel.getCards(SURNAME)
+                        cardsFragmentViewModel.getCards(SURNAME)
                     }
                 }
             }
         }
     }
 
-    private fun showLoadContactsDialog(){
+    private fun showLoadContactsDialog() {
         LoadContactListDialog.show(parentFragmentManager)
     }
-    private fun showLoadCardsDialog(uri: Uri) {
-        LoadCardDialog.show(parentFragmentManager, uri)
+
+    private fun showLoadVcfCardsDialog(uri: Uri) {
+        LoadCardListFromVCFDialog.show(parentFragmentManager, uri)
     }
 
-    private fun showSaveCardsDialog(cardId: Long) {
+    private fun showLoadCsvCardsDialog(uri: Uri) {
+
+    }
+
+    private fun showSaveCsvCardsDialog(cardId: Long) {
+
+    }
+
+    private fun showSaveVcfCardsDialog(cardId: Long) {
         SaveCardDialog.show(parentFragmentManager, cardId)
     }
 
@@ -1104,10 +1070,11 @@ class CardsFragment : Fragment() {
     ) {
         DeleteCardDialog.setupListener(parentFragmentManager, this.viewLifecycleOwner) {
             lifecycleScope.launch(Dispatchers.IO) {
-                if (currentCardId != null){
+                if (currentCardId != null) {
                     deleteImage(currentCard.photo)
 //                Log.d("MyLog", "del current position = ${currentPosition}, cardId = $currentCardId")
                     cardsFragmentViewModel.deleteCard(currentCardId)
+                    currentCardDeleteId = currentCardId
                 }
 
 
@@ -1130,7 +1097,7 @@ class CardsFragment : Fragment() {
         }
     }
 
-    companion object{
+    companion object {
         val SURNAME = "surname"
         val PHONE = "phone"
         val EMAIL = "email"
@@ -1139,7 +1106,4 @@ class CardsFragment : Fragment() {
     }
 }
 
-fun RecyclerView?.getCurrentPosition(): Int {
-    return (this?.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-}
 

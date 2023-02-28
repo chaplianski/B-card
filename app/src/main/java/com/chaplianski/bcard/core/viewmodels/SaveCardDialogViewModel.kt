@@ -1,5 +1,6 @@
 package com.chaplianski.bcard.core.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,8 +26,10 @@ class SaveCardDialogViewModel @Inject constructor(
 
     suspend fun getCards(fieldBySorting: String) {
         getCardListUseCase.execute(fieldBySorting)
-            .onSuccess { _getCardListState.emit(GetCardsState.Success(it)) }
-            .onFailure {  }
+            .onSuccess {
+                Log.d("MyLog", "list size = ${it.size}")
+                _getCardListState.emit(GetCardsState.Success(it)) }
+            .onFailure {  Log.d("MyLog", "list size failure") }
     }
 
     sealed class GetCardsState{

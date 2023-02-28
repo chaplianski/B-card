@@ -2,6 +2,7 @@ package com.chaplianski.bcard.core.helpers
 
 import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +17,14 @@ class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayou
     private var onScrollStopListener: CardScrollStopListener? = null
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
-        super.onLayoutChildren(recycler, state)
-        //      scaleDownView(0)
-        scaleCentralView()
+        try {
+            super.onLayoutChildren(recycler, state)
+            //      scaleDownView(0)
+            scaleCentralView()
+        } catch (e: IndexOutOfBoundsException) {
+            Log.e("TAG", "meet a IOOBE in RecyclerView")
+        }
+
     }
 
     override fun scrollHorizontallyBy(

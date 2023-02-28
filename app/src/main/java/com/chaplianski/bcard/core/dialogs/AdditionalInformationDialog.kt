@@ -17,15 +17,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.core.viewmodels.AdditionalInfoDialogViewModel
 import com.chaplianski.bcard.databinding.DialogAdditionalInformationBinding
+import com.chaplianski.bcard.databinding.DialogBackgroundSettingsBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.AdditionalInfo
 import javax.inject.Inject
 
 
-class AdditionalInformationDialog : DialogFragment() {
-
-    private var _binding: DialogAdditionalInformationBinding? = null
-    val binding get() = _binding!!
+class AdditionalInformationDialog : //DialogFragment() {
+    BasisDialogFragment<DialogAdditionalInformationBinding>(DialogAdditionalInformationBinding::inflate){
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -36,22 +35,6 @@ class AdditionalInformationDialog : DialogFragment() {
             .getAppComponent()
             .additionalInfoDialogInject(this)
         super.onAttach(context)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val window: Window? = dialog!!.window
-        window?.setGravity(Gravity.BOTTOM or Gravity.NO_GRAVITY)
-        val params: WindowManager.LayoutParams? = window?.attributes
-        params?.y = 230
-        window?.attributes = params
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        _binding = DialogAdditionalInformationBinding.inflate(layoutInflater, container, false)
-        return binding.root
-//        return inflater.inflate(R.layout.dialog_person_information, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,16 +83,6 @@ class AdditionalInformationDialog : DialogFragment() {
         }
     }
 
-    override fun onStart() {
-        dialog?.window?.setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT)
-        super.onStart()
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
-
     companion object {
 
         val CHECKED_OPTION = "checked option"
@@ -147,5 +120,4 @@ class AdditionalInformationDialog : DialogFragment() {
                 })
         }
     }
-
 }

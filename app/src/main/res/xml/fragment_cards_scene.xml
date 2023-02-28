@@ -120,7 +120,7 @@
             android:layout_marginEnd="16dp"
             android:alpha="0"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/bt_cards_fragment_search_voice"
+            app:layout_constraintEnd_toStartOf="@+id/bt_cards_fragment_search_reset"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -137,7 +137,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
         <Constraint
-            android:id="@+id/bt_cards_fragment_search_voice"
+            android:id="@+id/bt_cards_fragment_search_reset"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="-80dp"
@@ -175,7 +175,7 @@
             android:layout_marginEnd="16dp"
             android:alpha="1"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/bt_cards_fragment_search_voice"
+            app:layout_constraintEnd_toStartOf="@+id/bt_cards_fragment_search_reset"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -193,7 +193,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
         <Constraint
-            android:id="@+id/bt_cards_fragment_search_voice"
+            android:id="@+id/bt_cards_fragment_search_reset"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -27,7 +28,7 @@ class LoginFragment : Fragment() {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
-    val loginFragmentViewModel: LoginFragmentViewModel by viewModels { vmFactory }
+    private val loginFragmentViewModel: LoginFragmentViewModel by viewModels { vmFactory }
 
 //    lateinit var auth: FirebaseAuth
     var _binding: FragmentLoginBinding? = null
@@ -105,13 +106,19 @@ class LoginFragment : Fragment() {
 
 //        val rememberCheck = binding.cbLoginFragmentRemember
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val sharePrefExternal = context?.getSharedPreferences("data", Context.MODE_PRIVATE)
         val currentBackground = sharedPref?.getString(CURRENT_BACKGROUND, DEFAULT_BACKGROUND)
         val backgroundResource = this.resources.getIdentifier(
             currentBackground,
-            "drawable",
+            RESOURCE_TYPE_DRAWABLE,
             activity?.packageName
         )
-        backgroundLayout.background = resources.getDrawable(backgroundResource)
+        backgroundLayout.background = context?.let {
+            ContextCompat.getDrawable(
+                it, backgroundResource
+            )
+        }
+//        backgroundLayout.background = resources.getDrawable(backgroundResource)
 
         var registrationPanelCount = true
 
@@ -219,7 +226,6 @@ class LoginFragment : Fragment() {
         listenNoEmptyCondition(secretAnswerSignUpText, secretAnswerSignUpField)
 
         saveSignUpButton.setOnClickListener {
-            Log.d("MyLog", "save person info 1, login = ${loginSignUpText.text}")
             when {
                 loginSignUpText.text?.isEmpty() == true -> loginSignUpField.error =
                     resources.getString(R.string.please_enter_login)
@@ -248,63 +254,12 @@ class LoginFragment : Fragment() {
                     loginFragmentViewModel.addUser(newUser)
                         }
                 else -> {
-                    Log.d("MyLog", "save person info 2, login = ${loginSignUpText.text}, password = ${passwordSignInText.text?.toString()}repassword = ${repeatPasswordSignUpText.text?.toString()}" +
-                            " secQ = ${secretQuestionSignUpText.text?.toString()} ans = ${secretAnswerSignUpText.text?.toString()}")
                 }
             }
-
-
-//            if (loginSignUpText.text?.isEmpty() == true) {
-//                Log.d("MyLog", "save person info 2")
-//                loginSignUpField.error =
-//                    resources.getString(R.string.please_enter_login)
-//            }
-//            else if (passwordSignUpText.text?.isEmpty() == true) {
-//                Log.d("MyLog", "save person info 3")
-//                passwordSignUpField.error =
-//                    resources.getString(R.string.please_enter_password)
-//            }
-//            else if (repeatPasswordSignUpText.text?.isEmpty() == true) {
-//                Log.d("MyLog", "save person info 4")
-//                repeatPasswordSignUpField.error =
-//                    resources.getString(R.string.please_enter_password)
-//            }
-//            else if (secretQuestionSignUpText.text?.isEmpty() == true) {
-//                Log.d("MyLog", "save person info 5")
-//                secretQuestionSignUpField.error =
-//                    resources.getString(R.string.please_enter_secret_question)
-//            }
-//            else if (secretAnswerSignUpText.text?.isEmpty() == true) {
-//                Log.d("MyLog", "save person info 6")
-//                secretAnswerSignUpField.error =
-//                    resources.getString(R.string.please_enter_secret_answer)
-//            }
-//            else if (passwordSignUpText.text.toString() != repeatPasswordSignUpText.text.toString()) {
-//                Log.d("MyLog", "save person info 7")
-//                repeatPasswordSignUpField.error =
-//                    resources.getString(R.string.password_does_not_match)
-//
-//            }
-//
-//            else if (loginSignUpText.text?.toString()?.isNotEmpty() == true
-//                && passwordSignInText.text?.toString()?.isNotEmpty() == true
-//                && repeatPasswordSignUpText.text?.toString()?.isNotEmpty() == true
-//                && secretQuestionSignUpText.text?.toString()?.isNotEmpty() == true
-//                && secretAnswerSignUpText.text?.toString()?.isNotEmpty() == true) {
-//                Log.d("MyLog", "login = ${loginSignUpText.text}, ${loginSignUpText.text?.toString()} ")
-//                val newUser = User(
-//                    id = 0L,
-//                    login = loginSignInText.text.toString(),
-//                    password = passwordSignUpText.text.toString(),
-//                    secretQuestion = secretQuestionSignUpText.text.toString(),
-//                    secretAnswer = secretAnswerSignUpText.text.toString()
-//                )
-//                loginFragmentViewModel.addUser(newUser)
-//            }
         }
 
             loginFragmentViewModel.userId.observe(this.viewLifecycleOwner) {
-                sharedPref?.edit()?.putLong(CURRENT_USER_ID, it)?.apply()
+                sharePrefExternal?.edit()?.putLong(CURRENT_USER_ID, it)?.apply()
             findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
             }
 
@@ -344,31 +299,8 @@ class LoginFragment : Fragment() {
                 }
             }
 
-
-
-
-
-//        emailText.setText(sharedPref?.getString(LAST_USER_LOGIN, "").toString())
-//        passwordText.setText(sharedPref?.getString(LAST_USER_PASSWORD, "").toString())
-
-
-//        if (loginSignInText.text.isNullOrEmpty()){
-//
-//        }
-
-
-//        if (!emailField.editText?.text.toString().isEmpty()) rememberCheck.isChecked = true
-
-//        Log.d("MyLog", "enter email = ${sharedPref?.getString(LAST_USER_LOGIN, "")}")
-//        Log.d("MyLog", "enter password = ${sharedPref?.getString(LAST_USER_PASSWORD, "")}")
-//
-//        if (loginSignInText.text.toString().isNullOrEmpty() && passwordSignInText.text.toString().isNullOrEmpty()){
-//            startButton.isActivated = false
-//        }
-
-
             startButton.setOnClickListener {
-                Log.d("MyLog", "startButtonstate2 = ${startButton.isActivated}")
+//                Log.d("MyLog", "startButtonstate2 = ${startButton.isActivated}")
                 if (startButton.isActivated) {
                     val login = loginSignInText.text.toString()
                     val password = passwordSignInText.text.toString()
@@ -378,21 +310,16 @@ class LoginFragment : Fragment() {
             }
 
             loginFragmentViewModel.loginResponse.observe(this.viewLifecycleOwner) {
-                Log.d("MyLog", "id user = $it")
                 if (it == -1L) {
-                    Log.d("MyLog", "id user = $it")
                     errorMessage.visibility = View.VISIBLE
                 } else {
                     if (rememberPasswordSignInButton.isChecked) {
                         sharedPref?.edit()
                             ?.putString(LAST_USER_LOGIN, loginSignInText.text.toString())?.apply()
-
                         sharedPref?.edit()
                             ?.putString(LAST_USER_PASSWORD, passwordSignInText.text.toString())
                             ?.apply()
-
-//                    Log.d("MyLog", "email exit = ${emailField.editText?.text.toString()}")
-//                    Log.d("MyLog", "email exit = ${passwordField.editText?.text.toString()}")
+                        sharePrefExternal?.edit()?.putLong(CURRENT_USER_ID, it)?.apply()
                     } else {
                         sharedPref?.edit()?.putString(LAST_USER_LOGIN, "")?.apply()
                         sharedPref?.edit()?.putString(LAST_USER_PASSWORD, "")?.apply()
@@ -400,19 +327,16 @@ class LoginFragment : Fragment() {
                     findNavController().navigate(R.id.action_loginFragment_to_cardsFragment)
                 }
             }
-
-//        startButton.setOnClickListener {
-//            findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
-//        }
-
     }
 
     private fun listenNoEmptyCondition(
-        loginSignUpText: TextInputEditText,
-        loginSignUpField: TextInputLayout
+        text: TextInputEditText,
+        field: TextInputLayout
     ) {
-        loginSignUpText.addTextChangedListener {
-            if (loginSignUpText.text?.isNotEmpty() == true) loginSignUpField.error = null
+        text.addTextChangedListener {
+            if (text.text?.isNotEmpty() == true) {
+                field.isErrorEnabled = false
+            }
         }
     }
 
@@ -420,6 +344,4 @@ class LoginFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
-
 }

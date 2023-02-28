@@ -41,25 +41,29 @@ class CardDecorResources {
         )
     }
 
-    val cardTextures = mapOf(
-        "paper_01" to R.drawable.paper_01,
-        "paper_43" to R.drawable.paper_43,
-        "paper_08" to R.drawable.paper_08,
-        "paper_015" to R.drawable.paper_015,
-        "paper_10" to R.drawable.paper_10,
-        "paper_019" to R.drawable.paper_019,
-        "paper_02" to R.drawable.paper_02,
-        "paper_033" to R.drawable.paper_033,
-        "paper_025" to R.drawable.paper_025,
-        "paper_03" to R.drawable.paper_03,
-        "paper_06" to R.drawable.paper_06,
-        "paper_09" to R.drawable.paper_09
+//    fun getBackgroundResource(): Li
+
+//    val cardTextColors = listOf<String>(
+//        "paper_01" to R.drawable.paper_01,
+//        "paper_43" to R.drawable.paper_43,
+//        "paper_08" to R.drawable.paper_08,
+//        "paper_015" to R.drawable.paper_015,
+//        "paper_10" to R.drawable.paper_10,
+//        "paper_019" to R.drawable.paper_019,
+//        "paper_02" to R.drawable.paper_02,
+//        "paper_033" to R.drawable.paper_033,
+//        "paper_025" to R.drawable.paper_025,
+//        "paper_03" to R.drawable.paper_03,
+//        "paper_06" to R.drawable.paper_06,
+//        "paper_09" to R.drawable.paper_09
+//    )
+
+    val background = mapOf(
+        "background_32" to R.drawable.background_32,
+        "background_03" to R.drawable.background_03,
+        "background_12" to R.drawable.background_12,
+        "background_18" to R.drawable.background_18,
+        "background_05" to R.drawable.background_05,
+        "background_09" to R.drawable.background_09
     )
-
-    fun sdf() {
-        cardTextures.keys.forEach {
-            if (true) cardTextures[it]
-        }
-
-    }
 }

@@ -82,7 +82,9 @@ class ProcessVcard  {
             var profSkillsValue = ""
             var privateInfoValue = ""
             var referenceValue = ""
-            var cardTextureValue = DEFAULT_CARD_TEXTURE
+            val cardDecorResource = CardDecorResources()
+            var cardTextureValue = cardDecorResource.getCardTextureResource().random().cardTextureName
+//            var cardTextureValue = DEFAULT_CARD_TEXTURE
             var cardTextColorValue = DEFAULT_CARD_TEXT_COLOR
             var cardCornerValue = DEFAULT_CARD_CORNER
             var formPhotoValue = DEFAULT_CARD_FORM_PHOTO

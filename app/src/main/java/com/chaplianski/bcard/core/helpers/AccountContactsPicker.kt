@@ -31,8 +31,6 @@ class AccountContactsPicker(
         requestPermissionLauncher.launch(android.Manifest.permission.READ_CONTACTS)
     }
 
-
-
     private fun getContacts(): List<Card> {
         val accountContacts = mutableListOf<Card>()
         val resolver = context.contentResolver

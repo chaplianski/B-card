@@ -3,16 +3,14 @@ package com.chaplianski.bcard.core.dialogs
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.util.Log
 import android.view.*
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.net.toUri
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.*
 import androidx.lifecycle.LifecycleOwner
@@ -20,8 +18,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
-import com.chaplianski.bcard.core.helpers.SimpleContract
+import com.chaplianski.bcard.core.helpers.CardSaver
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.SaveCardDialogViewModel
 import com.chaplianski.bcard.databinding.DialogSaveCardBinding
@@ -44,12 +43,17 @@ import java.io.IOException
 import javax.inject.Inject
 
 
-class SaveCardDialog : DialogFragment() {
-
-    private var _binding: DialogSaveCardBinding? = null
-    val binding get() = _binding!!
+class SaveCardDialog :
+    BasisDialogFragment<DialogSaveCardBinding>(DialogSaveCardBinding::inflate) {
 
     val vcardList = mutableListOf<VCard>()
+    val saveCards = registerForActivityResult(
+        ActivityResultContracts.CreateDocument(
+            SAVING_TYPE_FILE_VCF
+        )
+    ) {
+        saveFile(it)
+    }
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -62,24 +66,10 @@ class SaveCardDialog : DialogFragment() {
         super.onAttach(context)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val window: Window? = dialog!!.window
-        window?.setGravity(Gravity.BOTTOM or Gravity.NO_GRAVITY)
-        val params: WindowManager.LayoutParams? = window?.getAttributes()
-        params?.y = 30
-        window?.setAttributes(params)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        _binding = DialogSaveCardBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val saveButton = binding.btSaveCardDialogSave
+        val saveButton = binding.btSaveCardDialogOk
         val cancelButton = binding.btSaveCardDialogCancel
         val cardListRV = binding.rvSaveCardDialog
         var checkedCardCount = 0
@@ -89,34 +79,18 @@ class SaveCardDialog : DialogFragment() {
         cardListRV.layoutManager = LinearLayoutManager(context)
         cardListRV.adapter = cardListAdapter
 
-//        val cardSaver = ContactSaver(requireContext(), requireActivity().activityResultRegistry){}
-
-        val cardSaver = registerForActivityResult(SimpleContract()){ cardUri ->
-            lifecycleScope.launch(Dispatchers.IO) {
-                val outputStream = cardUri.let {
-                    it?.toUri()?.let { it1 -> context?.contentResolver?.openOutputStream(it1) }
-                }
-                Ezvcard.write(vcardList).go(outputStream)
-                outputStream?.flush()
-                outputStream?.close()
-            }
-            Log.d("MyLog", "save OK")
-        }
-
-        lifecycleScope.launch {
-            saveCardDialogViewModel.getCards(SURNAME)
-        }
 
 
         saveCardDialogViewModel.getCardListState
             .flowWithLifecycle(lifecycle)
             .onEach {
-                when(it){
+                when (it) {
                     is SaveCardDialogViewModel.GetCardsState.Loading -> {}
                     is SaveCardDialogViewModel.GetCardsState.Success -> {
                         val cardList = it.cardList
-                        var positionCurrentCheckedCard = 0
+//                        var positionCurrentCheckedCard = 0
                         val fullContactList = mutableListOf<ContactContent>()
+
                         val letterList =
                             cardList.sortedBy { it.surname }
                                 .map { it.surname.first().uppercaseChar() }.toSet()
@@ -128,15 +102,18 @@ class SaveCardDialog : DialogFragment() {
                                     }
                                     if (card.id == currentCardId) {
                                         card.isChecked = true
-                                        positionCurrentCheckedCard = index
+//                                        positionCurrentCheckedCard = index
                                     }
                                     fullContactList.add(ContactContent.Contact(card))
                                 }
                             }
                             checkedCardCount = 1
-                            saveButton.text = "Save [$checkedCardCount]"
+                            saveButton.text = getString(
+                                R.string.save_count,
+                                checkedCardCount
+                            ) //"Save [$checkedCardCount]"
                         }
-
+                        Log.d("MyLog", "checkList =  $fullContactList")
                         cardListAdapter.updateList(fullContactList)
 
                         cardListAdapter.checkBoxListener =
@@ -148,9 +125,10 @@ class SaveCardDialog : DialogFragment() {
                                             cardItem.isChecked = !cardItem.isChecked
                                             if (cardItem.isChecked) checkedCardCount++ else checkedCardCount--
                                         }
-
-//                        quantityCheckedCards.text = "$checkedCardCount cards"
-                                        saveButton.text = "Save [$checkedCardCount]"
+                                        saveButton.text = getString(
+                                            R.string.save_count,
+                                            checkedCardCount
+                                        ) //"Save [$checkedCardCount]"
                                     }
                                 }
                             }
@@ -164,68 +142,64 @@ class SaveCardDialog : DialogFragment() {
                                     listCard.add(cardItem)
                                     vcardList.add(createVCard(cardItem))
                                 }
-
                             }
 
-                            Log.d("MyLog", "${vcardList.size}")
-//                cardSaver.launch(vcardList)
                             if (!listCard.isNullOrEmpty()) {
                                 when (listCard.size) {
                                     1 -> {
                                         val card = listCard[0]
                                         val file = File("${card.surname}.vcf")
                                         saveVCardToPhone(file, card.surname)
-//                            cardSaver.launch(vcardList)
                                     }
                                     else -> {
                                         val file = File("contacts.vcf")
                                         saveVCardToPhone(file, "contacts")
                                     }
-
                                 }
-                            }
-
-                            var allCardCheckFlag = false
-                            checkboxAllCards.setOnClickListener {
-                                if (!allCardCheckFlag) {
-                                    cardList.forEach {
-                                        it.isChecked = true
-                                    }
-                                    checkedCardCount = cardList.size
-                                } else {
-                                    cardList.forEach {
-                                        it.isChecked = false
-                                    }
-                                    checkedCardCount = 0
-                                }
-
-                                val newContactList = mutableListOf<ContactContent>()
-                                val newLetterList =
-                                    cardList.sortedBy { it.surname }
-                                        .map { it.surname.first().uppercaseChar() }.toSet()
-                                newLetterList.forEach { letter ->
-                                    cardList.sortedBy { it.surname }.forEachIndexed { index, card ->
-                                        if (letter == card.surname.first().uppercaseChar()) {
-                                            if (!newContactList.contains(
-                                                    ContactContent.Letter(
-                                                        letter
-                                                    )
-                                                )
-                                            ) {
-                                                newContactList.add(ContactContent.Letter(letter))
-                                            }
-
-                                            newContactList.add(ContactContent.Contact(card))
-                                        }
-                                    }
-
-                                    saveButton.text = "Save [$checkedCardCount]"
-                                }
-
-                                cardListAdapter.updateList(fullContactList)
-                                allCardCheckFlag = !allCardCheckFlag
                             }
                         }
+                        var allCardCheckFlag = false
+                        checkboxAllCards.setOnClickListener {
+                            Log.d("MyLog", "check all")
+                            if (!allCardCheckFlag) {
+                                cardList.forEach {
+                                    it.isChecked = true
+                                }
+                                checkedCardCount = cardList.size
+                            } else {
+                                cardList.forEach {
+                                    it.isChecked = false
+                                }
+                                checkedCardCount = 0
+                            }
+
+                            val newContactList = mutableListOf<ContactContent>()
+                            val newLetterList =
+                                cardList.sortedBy { it.surname }
+                                    .map { it.surname.first().uppercaseChar() }.toSet()
+                            newLetterList.forEach { letter ->
+                                cardList.sortedBy { it.surname }.forEachIndexed { index, card ->
+                                    if (letter == card.surname.first().uppercaseChar()) {
+                                        if (!newContactList.contains(
+                                                ContactContent.Letter(
+                                                    letter
+                                                )
+                                            )
+                                        ) {
+                                            newContactList.add(ContactContent.Letter(letter))
+                                        }
+                                        newContactList.add(ContactContent.Contact(card))
+                                    }
+                                }
+                                saveButton.text = getString(
+                                    R.string.save_count,
+                                    checkedCardCount
+                                ) //"Save [$checkedCardCount]"
+                            }
+                            cardListAdapter.updateList(fullContactList)
+                            allCardCheckFlag = !allCardCheckFlag
+                        }
+
 
                     }
                     is SaveCardDialogViewModel.GetCardsState.Failure -> {}
@@ -233,6 +207,9 @@ class SaveCardDialog : DialogFragment() {
             }
             .launchIn(lifecycleScope)
 
+        lifecycleScope.launch(Dispatchers.IO) {
+            saveCardDialogViewModel.getCards(SURNAME)
+        }
 
         saveButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
@@ -293,8 +270,6 @@ class SaveCardDialog : DialogFragment() {
         strokeColor.group = CARD_SETTINGS
         cardCorner.group = CARD_SETTINGS
         formPhoto.group = CARD_SETTINGS
-
-        Log.d("MyLog", "vcard = $vcard")
         return vcard
     }
 
@@ -305,82 +280,73 @@ class SaveCardDialog : DialogFragment() {
         path.mkdirs()
         val uriForFile = Uri.fromFile(file)
         try {
-            createFile(uriForFile, "${fileName}.vcf")
+//            createFile(uriForFile, "${fileName}.vcf")
+            saveCards.launch("${fileName}.vcf")
         } catch (e: Exception) {
             Log.d("MyLog", "e = $e")
         }
     }
 
-    private fun createFile(pickerInitialUri: Uri, fileName: String) {
+//    private fun createFile(pickerInitialUri: Uri, fileName: String) {
+//
+//        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+//            addCategory(Intent.CATEGORY_OPENABLE)
+//            type = SAVING_TYPE_FILE_VCF
+//            putExtra(Intent.EXTRA_TITLE, fileName)
+//            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+//        }
+//        startActivityForResult(intent, CREATE_FILE)
+//
+//    }
+//
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == 111 && resultCode == Activity.RESULT_OK) {
+//            val selectedFile = data?.data //The uri with the location of the file
+//            val outputStream = data?.data?.let {
+//                context?.contentResolver?.openOutputStream(it)
+//            }
+////            outputStream?.write(vCard)
+//            Ezvcard.write(vcardList).go(outputStream)
+//            outputStream?.flush()
+//            outputStream?.close()
+//        }
+//        if (requestCode == 222 && resultCode == Activity.RESULT_OK) {
+//            data?.data?.also {
+//
+//                val inputStream = context?.contentResolver?.openInputStream(it)
+//                val readVcard = Ezvcard.parse(inputStream).first()
+//                Log.d("MyLog", "readVcard = $readVcard")
+//            }
+//        }
+//    }
 
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/vcf"
-            putExtra(Intent.EXTRA_TITLE, fileName)
-            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+    private fun saveFile(uri: Uri?) {
+        val outputStream = uri?.let {
+            context?.contentResolver?.openOutputStream(uri)
         }
-        startActivityForResult(intent, CREATE_FILE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 111 && resultCode == Activity.RESULT_OK) {
-            val selectedFile = data?.data //The uri with the location of the file
-            val outputStream = data?.data?.let {
-                context?.contentResolver?.openOutputStream(it)
-            }
-//            outputStream?.write(vCard)
-            Ezvcard.write(vcardList).go(outputStream)
-            outputStream?.flush()
-            outputStream?.close()
-        }
-        if (requestCode == 222 && resultCode == Activity.RESULT_OK) {
-            data?.data?.also {
-
-                val inputStream = context?.contentResolver?.openInputStream(it)
-//                val file = File(it.path.toString())
-                val readVcard = Ezvcard.parse(inputStream).first()
-                Log.d("MyLog", "readVcard = $readVcard")
-            }
-        }
-    }
-
-    override fun onStart() {
-        dialog?.window?.setLayout(
-            ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.MATCH_PARENT
-        )
-        super.onStart()
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
+        Ezvcard.write(vcardList).go(outputStream)
+        outputStream?.flush()
+        outputStream?.close()
+        dismiss()
     }
 
     companion object {
 
-        //        val KEY_RESPONSE = "key response"
         val CHECKED_OPTION = "checked option"
         val SAVE_STATUS = "save status"
         val CANCEL_STATUS = "cancel status"
         val SURNAME = "surname"
+        val SAVING_TYPE_FILE_VCF = "application/vcf"
 
         const val CREATE_FILE = 111
-        const val PICK_FILE = 222
 
         val TAG = SaveCardDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
 
-        //
         fun show(manager: FragmentManager, currentCardId: Long) {
             val dialogFragment = SaveCardDialog()
-//            val kids = ArrayList(kidList)
             dialogFragment.arguments = bundleOf(
-//                CURRENT_TASK to task.mapToEditTask(),
-//                "kids" to kids,
-//                CURRENT_CHORE_ID to task.choreId,
-//                TASK_STATUS to taskStatus
                 CURRENT_CARD_ID to currentCardId
             )
             dialogFragment.show(manager, TAG)
@@ -400,21 +366,9 @@ class SaveCardDialog : DialogFragment() {
                     if (status != null) {
                         listener.invoke(cardId, status)
                     }
-
-//                    .let { listener.invoke(it)
-//                result.getString(REJECTED_TASK_STATUS).let {
-//                    if (it != null) {
-//                        listener.invoke(it)
-//                    }
-//                }
-
-
-//                }
                 })
         }
     }
-
-
 
 
 }

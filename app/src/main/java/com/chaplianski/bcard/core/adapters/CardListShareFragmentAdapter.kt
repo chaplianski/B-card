@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.chaplianski.bcard.R
+import com.chaplianski.bcard.core.utils.UiText
 import com.chaplianski.bcard.databinding.ItemCardListShareContactBinding
 import com.chaplianski.bcard.databinding.ItemCardListShareLetterBinding
 import com.chaplianski.bcard.domain.model.ContactContent
@@ -20,16 +22,9 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
 
     fun updateList(list: List<ContactContent>) {
 
-//        Log.d("MyLog", "cardList1 ${cardList}")
-//        Log.d("MyLog", "cardList2 ${list}")
         val diffCallback = ContactCheckDiffCallback(cardList, list)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
-//        Log.d("MyLog", "diffCallback = $diffCallback, diffResult =  $diffResult")
-//        cardList = list as MutableList<ContactContent>
         this.cardList.clear()
-//        this.cardList.addAll(list)
-
-//        Log.d("MyLog", "cardList2 ${cardList}")
         val newList = mutableListOf<ContactContent>()
         list.forEach {
             if (it is ContactContent.Contact) {
@@ -38,15 +33,8 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
             } else newList.add(it)
         }
         cardList.addAll(newList)
-
-//        Log.d("MyLog", "cardList3 ${newList}")
-//        notifyDataSetChanged()
-
         diffResult.dispatchUpdatesTo(this)
-
     }
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -69,10 +57,8 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
-//        Log.d("MyLog", "item = ${cardList[position]}")
         when(cardList[position]){
             is ContactContent.Letter -> {
-//                Log.d("MyLog", "letter = ${cardList[position]}")
                 (holder as LetterViewHolder).onBind(cardList[position] as ContactContent.Letter)
             }
             is ContactContent.Contact -> {
@@ -83,10 +69,8 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
                 if (payloads.isEmpty()) {
                     return
                 } else {
-//                    Log.d("MyLog", "click on checkbox")
                     holder.update(payloads)
                 }
-
             }
         }
     }
@@ -113,28 +97,19 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
 
     inner class ContactViewHolder (binding: ItemCardListShareContactBinding): RecyclerView.ViewHolder(binding.root){
 
-//        var binding: ItemCardListShareContactBinding
-//        init{
-//            this.binding = binding
-//        }
-
         val checkBox = binding.checkBoxItemCardListShared
         val contactName = binding.tvItemCardListSharedContact
         fun  onBind(card: ContactContent.Contact){
 //            Log.d("MyLog", "onCheck = ${card.card.isChecked}")
             checkBox.isChecked = card.card.isChecked
-            contactName.text = "${card.card.surname} ${card.card.name}"
-
-
-
+            contactName.text = UiText.StringResource(
+                R.string.two_value_without_comma, card.card.surname, card.card.name).asString(contactName.context)
             checkBox.setOnClickListener {
-//                Log.d("MyLog", "click on checkbox")
-                checkBoxListener?.onCheck(card)
+            checkBoxListener?.onCheck(card)
             }
 
         }
         fun update(payloads: MutableList<Any>){
-//            Log.d("MyLog", "payloads = $payloads")
             val isChecked = payloads[0] as Boolean
             checkBox.isChecked = isChecked
         }
@@ -158,16 +133,11 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return when {
                 oldList[oldItemPosition] is ContactContent.Letter && newList[newItemPosition] is ContactContent.Letter -> {
-//                    Log.d("MyLog", "cardList1, return = ${(oldList[oldItemPosition] as ContactContent.Letter).letter == (newList[newItemPosition] as ContactContent.Letter).letter}")
                     (oldList[oldItemPosition] as ContactContent.Letter).letter == (newList[newItemPosition] as ContactContent.Letter).letter
                 }
                 oldList[oldItemPosition] is ContactContent.Contact && newList[newItemPosition] is ContactContent.Contact -> {
                     val oldItem = oldList[oldItemPosition] as ContactContent.Contact
                     val newItem = newList[newItemPosition] as ContactContent.Contact
-
-//                    Log.d("MyLog", "itemOld = ${oldItem.card.isChecked}, itemNew = ${newItem.card.surname}")
-
-//                    oldItem.card.id == newItem.card.id &&
                     oldItem.card.id == newItem.card.id
                 }
                 oldList[oldItemPosition] is ContactContent.Letter && newList[newItemPosition] is ContactContent.Contact -> {
@@ -181,20 +151,16 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
                     true
                 }
             }
-//            return false
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return when {
                 oldList[oldItemPosition] is ContactContent.Letter && newList[newItemPosition] is ContactContent.Letter -> {
-//                    Log.d("MyLog", "cardList10, return = ${(oldList[oldItemPosition] as ContactContent.Letter).letter == (newList[newItemPosition] as ContactContent.Letter).letter}")
                     (oldList[oldItemPosition] as ContactContent.Letter) == (newList[newItemPosition] as ContactContent.Letter)
                 }
                 oldList[oldItemPosition] is ContactContent.Contact && newList[newItemPosition] is ContactContent.Contact -> {
                    val oldItem = oldList[oldItemPosition] as ContactContent.Contact
                    val newItem = newList[newItemPosition] as ContactContent.Contact
-
-//                    Log.d("MyLog", "itemOld = ${oldItem.card}, newItem = ${newItem.card}")
                     oldItem.card == newItem.card
                 }
                 else -> {
@@ -202,12 +168,9 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
                     false
                 }
             }
-//            return false
         }
 
         override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
-//            Log.d("MyLog", "getChangePayload")
-
 
             if (oldList[oldItemPosition] is ContactContent.Contact && newList[newItemPosition] is ContactContent.Contact){
                 val oldItem = (oldList[oldItemPosition] as ContactContent.Contact).card
@@ -217,14 +180,6 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
                 } else newItem.isChecked
             }
             return false
-
-//            val oldItem = oldList[oldItemPosition] as ContactContent.Contact.card
-//            val newItem = newList[newItemPosition].card
-////            Log.d("MyLog", "newItem.isChecked = ${newItem.isChecked}")
-//           return if (oldItem.isChecked == newItem.isChecked) {
-//                super.getChangePayload(oldItemPosition, newItemPosition)
-//            } else newItem.isChecked
-
         }
     }
 

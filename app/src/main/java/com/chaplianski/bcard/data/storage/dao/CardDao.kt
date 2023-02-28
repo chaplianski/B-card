@@ -12,27 +12,30 @@ abstract class CardDao {
     @Query("SELECT * FROM cards ORDER BY surname ASC")
     abstract fun getAllCards(): List<CardDTO>
 
-    @Query("SELECT * FROM cards ORDER BY surname ASC")
-    abstract fun getSortedSurnameCardList(): List<CardDTO>
-    @Query("SELECT * FROM cards ORDER BY workPhone ASC")
-    abstract fun getSortedPhoneCardList(): List<CardDTO>
+    @Query("SELECT * FROM cards WHERE userId = :userId ORDER BY surname ASC")
+    abstract fun getSortedSurnameCardList(userId: Long): List<CardDTO>
+    @Query("SELECT * FROM cards WHERE userId = :userId ORDER BY workPhone ASC")
+    abstract fun getSortedPhoneCardList(userId: Long): List<CardDTO>
 
-    @Query("SELECT * FROM cards ORDER BY email ASC")
-    abstract fun getSortedEmailCardList(): List<CardDTO>
-    @Query("SELECT * FROM cards ORDER BY organization ASC")
-    abstract fun getSortedOrganizationCardList(): List<CardDTO>
-    @Query("SELECT * FROM cards ORDER BY town ASC")
-    abstract fun getSortedTownCardList(): List<CardDTO>
+    @Query("SELECT * FROM cards WHERE userId = :userId ORDER BY email ASC")
+    abstract fun getSortedEmailCardList(userId: Long): List<CardDTO>
+    @Query("SELECT * FROM cards WHERE userId = :userId ORDER BY organization ASC")
+    abstract fun getSortedOrganizationCardList(userId: Long): List<CardDTO>
+    @Query("SELECT * FROM cards WHERE userId = :userId ORDER BY town ASC")
+    abstract fun getSortedTownCardList(userId: Long): List<CardDTO>
 
+//    @Query("SELECT * FROM cards WHERE name OR surname  LIKE '%' || :searchValue || '%'")
+    @Query("SELECT * FROM cards WHERE name LIKE '%' || :searchValue || '%' OR surname  LIKE '%' || :searchValue || '%' AND userId = :userId ")
+    abstract fun getAllCardsBySearchValue(searchValue: String, userId: Long): List<CardDTO>
 
-    fun getSortedCardList(fieldForSorting: String): List<CardDTO>{
+    fun getSortedCardList(fieldForSorting: String, userId: Long): List<CardDTO>{
         return when(fieldForSorting){
-            SURNAME -> getSortedSurnameCardList()
-            PHONE -> getSortedPhoneCardList()
-            EMAIL -> getSortedEmailCardList()
-            ORGANIZATION -> getSortedOrganizationCardList()
-            LOCATION -> getSortedTownCardList()
-            else -> getSortedSurnameCardList()
+            SURNAME -> getSortedSurnameCardList(userId)
+            PHONE -> getSortedPhoneCardList(userId)
+            EMAIL -> getSortedEmailCardList(userId)
+            ORGANIZATION -> getSortedOrganizationCardList(userId)
+            LOCATION -> getSortedTownCardList(userId)
+            else -> getSortedSurnameCardList(userId)
         }
     }
     @Query("SELECT * FROM users")

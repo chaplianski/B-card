@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetCardListUseCase @Inject constructor(private val cardRepository: CardRepository) {
 
     fun execute (fieldBySorting: String) = resultOf {
-        Log.d("MyLog", "cardList 3")
+//        Log.d("MyLog", "cardList 3")
         cardRepository.getCardList(fieldBySorting)
     }
 

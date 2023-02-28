@@ -7,7 +7,7 @@
     android:layout_height="630dp"
     android:animateLayoutChanges="true"
     android:background="@drawable/border"
-    tools:context=".core.dialogs.LoadCardDialog">
+    tools:context=".core.dialogs.LoadCardListFromVCFDialog">
 
     <TextView
         android:id="@+id/tv_load_card_dialog_wait"

@@ -1,6 +1,5 @@
 package com.chaplianski.bcard.core.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -17,18 +16,12 @@ class CardTextureAdapter: RecyclerView.Adapter<CardTextureAdapter.ViewHolder>() 
         }
 
         override fun areContentsTheSame(oldItem: CardTexture, newItem: CardTexture): Boolean {
-
             return oldItem == newItem
         }
     }
     val differ = AsyncListDiffer(this, differCallback)
 
     var checkedPosition = -1
-//    init {
-//        differ.currentList.forEachIndexed { index, cardTexture ->
-//            if (cardTexture.isChecked) checkedPosition = index
-//        }
-//    }
 
     interface CardTextureListener{
         fun onClickItem (cardTexture:CardTexture)
@@ -57,10 +50,5 @@ class CardTextureAdapter: RecyclerView.Adapter<CardTextureAdapter.ViewHolder>() 
     }
 
     class ViewHolder (val binding: ItemCardTextureBinding): RecyclerView.ViewHolder(binding.root){
-
-
     }
-
-
-
 }

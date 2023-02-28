@@ -11,82 +11,16 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_registrationFragment"
-            app:destination="@id/registrationFragment" />
-        <action
             android:id="@+id/action_loginFragment_to_cardsFragment"
-            app:destination="@id/cardsFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_newCardFragment"
-            app:destination="@id/newCardFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/registrationFragment"
-        android:name="com.chaplianski.bcard.core.ui.RegistrationFragment"
-        android:label="fragment_registration"
-        tools:layout="@layout/fragment_registration" >
-        <action
-            android:id="@+id/action_registrationFragment_to_cardsFragment"
-            app:destination="@id/cardsFragment" />
+            app:destination="@id/cardsFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_left"/>
     </fragment>
     <fragment
         android:id="@+id/cardsFragment"
         android:name="com.chaplianski.bcard.core.ui.CardsFragment"
         android:label="fragment_cards"
-        tools:layout="@layout/fragment_cards" >
-        <action
-            android:id="@+id/action_cardsFragment_to_editCardFragment"
-            app:destination="@id/editCardFragment" />
-        <action
-            android:id="@+id/action_cardsFragment_to_deleteCardFragment"
-            app:destination="@id/deleteCardFragment" />
-        <action
-            android:id="@+id/action_cardsFragment_to_checkCardListSaveFragment"
-            app:destination="@id/checkCardListSaveFragment" />
-        <action
-            android:id="@+id/action_cardsFragment_to_checkCardListLoadFragment"
-            app:destination="@id/checkCardListLoadFragment" />
-        <action
-            android:id="@+id/action_cardsFragment_to_goodFragment"
-            app:destination="@id/goodFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/editCardFragment"
-        android:name="com.chaplianski.bcard.core.ui.EditCardFragment"
-        android:label="fragment_edit_card"
-        tools:layout="@layout/fragment_edit_card" >
-        <action
-            android:id="@+id/action_editCardFragment_to_cardsFragment"
-            app:destination="@id/cardsFragment" />
-    </fragment>
-    <dialog
-        android:id="@+id/deleteCardFragment"
-        android:name="com.chaplianski.bcard.core.dialogs.DeleteCardDialog"
-        android:label="fragment_delete_card"
-        tools:layout="@layout/fragment_delete_card" />
-    <fragment
-        android:id="@+id/QRFragment"
-        android:name="com.chaplianski.bcard.core.ui.QRFragment"
-        android:label="fragment_q_r"
-        tools:layout="@layout/fragment_q_r" />
-    <fragment
-        android:id="@+id/checkCardListSaveFragment"
-        android:name="com.chaplianski.bcard.core.ui.CheckCardListSaveFragment"
-        android:label="fragment_check_card_list"
-        tools:layout="@layout/fragment_check_card_list_save"/>
-    <fragment
-        android:id="@+id/checkCardListLoadFragment"
-        android:name="com.chaplianski.bcard.core.ui.CheckCardListLoadFragment"
-        android:label="fragment_check_card_list_load"
-        tools:layout="@layout/fragment_check_card_list_load" />
-    <fragment
-        android:id="@+id/newCardFragment"
-        android:name="com.chaplianski.bcard.core.ui.NewCardFragment"
-        android:label="fragment_new_card"
-        tools:layout="@layout/fragment_new_card" />
-    <fragment
-        android:id="@+id/goodFragment"
-        android:name="com.chaplianski.bcard.core.dialogs.LoadContactListDialog"
-        android:label="fragment_good"
-        tools:layout="@layout/fragment_good" />
+        tools:layout="@layout/fragment_cards" />
 </navigation>

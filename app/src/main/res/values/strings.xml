@@ -1,11 +1,8 @@
 <resources>
-    <string name="app_name">B-card</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name" translatable="false">B-card</string>
     <string name="password">Password</string>
     <string name="email_address">Email Address</string>
     <string name="welcome_to_b_card">Welcome to B-card</string>
-    <string name="enter_instruction">Please enter your email address and password for authorization or register in the application</string>
     <string name="remember">Remember</string>
     <string name="sign_in">Sign In</string>
     <string name="registration_account">Registration account</string>
@@ -13,7 +10,7 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
-    <string name="logo">logo</string>
+    <string name="logo" translatable="false">logo</string>
     <string name="registration_panel">registration panel</string>
     <string name="please_enter_login">Please, enter login</string>
     <string name="please_enter_password">Please, enter password</string>
@@ -60,8 +57,10 @@
     <string name="background">Background</string>
     <string name="language">Language</string>
     <string name="about">About</string>
-    <string name="save_contacts">Save contacts</string>
-    <string name="load_from_file">Load from file</string>
+    <string name="save_vcf">Save to file (.vcf)</string>
+    <string name="save_csv">Save to file (.csv)</string>
+    <string name="load_from_file_vcf">Load from file (.vcf)</string>
+    <string name="load_from_file_csv">Load from file (.csv)</string>
     <string name="load_from_account">Load from account</string>
     <string name="let_s_start">Let\'s start</string>
     <string name="login">Login</string>
@@ -73,5 +72,12 @@
     <string name="i_forget_password">I forget password</string>
     <string name="sign_up">Sign Up</string>
     <string name="delete">Delete</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save_items">Add [%d]</string>
+    <string name="save_count">Save [%d]</string>
+    <string name="please_enter_name">Please, enter name</string>
+    <string name="please_enter_surname">Please, enter surname</string>
+    <string name="please_enter_phone">Please, enter phone</string>
 
 </resources>

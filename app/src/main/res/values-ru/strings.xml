@@ -58,8 +58,10 @@
     <string name="background">Фон приложения</string>
     <string name="language">Язык</string>
     <string name="about">О нас</string>
-    <string name="save_contacts">Сохранить контакты</string>
-    <string name="load_from_file">Загрузить из файла</string>
+    <string name="save_vcf">Сохранить в файл (.vcf)</string>
+    <string name="save_csv">Сохранить в файл (.csv)</string>
+    <string name="load_from_file_vcf">Загрузить из файла (.vcf)</string>
+    <string name="load_from_file_csv">Загрузить из файла (.csv)</string>
     <string name="load_from_account">Загрузить с аккаунта</string>
     <string name="let_s_start">Давайте начнем</string>
     <string name="login">Логин</string>
@@ -71,4 +73,5 @@
     <string name="i_forget_password">Не помню пароль</string>
     <string name="sign_up">Зарегистрироваться</string>
     <string name="delete">Удалить</string>
+    <string name="app_name">B-card</string>
 </resources>

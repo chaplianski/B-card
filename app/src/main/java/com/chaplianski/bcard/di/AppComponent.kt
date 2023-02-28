@@ -22,7 +22,7 @@ interface AppComponent {
     fun additionalInfoDialogInject(additionalInformationDialog: AdditionalInformationDialog)
     fun cardSettingsDialogInject(cardSettingsDialog: CardSettingsDialog)
     fun saveCardDialogInject(saveCardDialog: SaveCardDialog)
-    fun loadCardsDialogInject(loadCardDialog: LoadCardDialog)
+    fun loadCardsDialogInject(loadCardListFromVCFDialog: LoadCardListFromVCFDialog)
     fun checkDoubleCardListDialogInject(checkDoubleCardListDialog: CheckDoubleCardListDialog)
     fun loadContactListDialogInject(loadContactListDialog: LoadContactListDialog)
 

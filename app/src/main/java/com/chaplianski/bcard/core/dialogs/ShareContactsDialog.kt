@@ -9,7 +9,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
-import com.chaplianski.bcard.core.helpers.AccountContactsPicker
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.databinding.DialogShareContactsBinding
 
@@ -28,7 +27,6 @@ class ShareContactsDialog : DialogFragment() {
         val window: Window? = dialog!!.window
         window?.setGravity(Gravity.BOTTOM or Gravity.NO_GRAVITY)
         val params: WindowManager.LayoutParams? = window?.getAttributes()
-        //      params?.x = 300
         params?.y = 30
         window?.setAttributes(params)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -40,21 +38,35 @@ class ShareContactsDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val saveButton = binding.tvShareDialogSave
-        val loadButton = binding.tvShareDialogLoad
+        val saveVcfButton = binding.tvShareDialogSaveVcf
+        val saveCsvButton = binding.tvShareDialogSaveCsv
+        val loadVcfButton = binding.tvShareDialogLoadVcf
+        val loadCsvButton = binding.tvShareDialogLoadCsv
         val cancelButton = binding.tvShareDialogCancel
         val loadFromAccountButton = binding.tvShareDialogLoadFromAccount
         val currentCardId = arguments?.getLong(CURRENT_CARD_ID, -1L)
 
-        saveButton.setOnClickListener {
+        saveVcfButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
-                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to SAVE_OPTION)
+                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to SAVE_VCF_OPTION)
             )
             dismiss()
         }
-        loadButton.setOnClickListener {
+        saveCsvButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
-                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to LOAD_FROM_FILE_OPTION)
+                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to SAVE_CSV_OPTION)
+            )
+            dismiss()
+        }
+        loadVcfButton.setOnClickListener {
+            parentFragmentManager.setFragmentResult(
+                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to LOAD_FROM_VCF_FILE_OPTION)
+            )
+            dialog?.dismiss()
+        }
+        loadCsvButton.setOnClickListener {
+            parentFragmentManager.setFragmentResult(
+                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to LOAD_FROM_CSV_FILE_OPTION)
             )
             dialog?.dismiss()
         }
@@ -78,8 +90,10 @@ class ShareContactsDialog : DialogFragment() {
     companion object {
 
         val CHECKED_OPTION = "checked share option"
-        val SAVE_OPTION = "save share option"
-        val LOAD_FROM_FILE_OPTION = "load from file option"
+        val SAVE_VCF_OPTION = "save vcf share option"
+        val SAVE_CSV_OPTION = "save csv share option"
+        val LOAD_FROM_VCF_FILE_OPTION = "load from vcf file option"
+        val LOAD_FROM_CSV_FILE_OPTION = "load from csv file option"
         val LOAD_FROM_GOOGLE_ACCOUNT_OPTION = "load from google account option"
 
 

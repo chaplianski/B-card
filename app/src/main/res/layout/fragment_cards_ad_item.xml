@@ -31,11 +31,11 @@
             layout="@layout/layout_logo_to_card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+android:elevation="1dp"
             android:visibility="visible" />
 
         <FrameLayout
             android:id="@+id/layout_card_fragment_ad_container"
-            android:elevation="1dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

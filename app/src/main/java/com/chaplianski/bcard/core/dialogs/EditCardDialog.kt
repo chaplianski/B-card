@@ -40,7 +40,7 @@ class EditCardDialog : DialogFragment() {
         val window: Window? = dialog!!.window
         window?.setGravity(Gravity.BOTTOM or Gravity.NO_GRAVITY)
         val params: WindowManager.LayoutParams? = window?.getAttributes()
-        params?.y = 300
+        params?.y = 30
         window?.setAttributes(params)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 

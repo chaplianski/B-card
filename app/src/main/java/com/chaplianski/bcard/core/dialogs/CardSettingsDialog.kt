@@ -23,6 +23,7 @@ import com.chaplianski.bcard.core.adapters.CardTextureAdapter
 import com.chaplianski.bcard.core.helpers.CardDecorResources
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.CardSettingsDialogViewModel
+import com.chaplianski.bcard.databinding.DialogAdditionalInformationBinding
 import com.chaplianski.bcard.databinding.DialogCardSettingsBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.CardSettings
@@ -30,10 +31,8 @@ import com.chaplianski.bcard.domain.model.CardTexture
 import javax.inject.Inject
 
 
-class CardSettingsDialog : DialogFragment() {
-
-    private var _binding: DialogCardSettingsBinding? = null
-    val binding get() = _binding!!
+class CardSettingsDialog :
+    BasisDialogFragment<DialogCardSettingsBinding>(DialogCardSettingsBinding::inflate){
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -44,21 +43,6 @@ class CardSettingsDialog : DialogFragment() {
             .getAppComponent()
             .cardSettingsDialogInject(this)
         super.onAttach(context)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val window: Window? = dialog!!.window
-        window?.setGravity(Gravity.BOTTOM or Gravity.NO_GRAVITY)
-        val params: WindowManager.LayoutParams? = window?.getAttributes()
-        params?.y = 230
-        window?.setAttributes(params)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        _binding = DialogCardSettingsBinding.inflate(layoutInflater, container, false)
-        return binding.root
-//        return inflater.inflate(R.layout.dialog_person_information, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,8 +56,6 @@ class CardSettingsDialog : DialogFragment() {
         val textColor6 = binding.rgCardSettingsDialogTextColorLightYellow
         val textColor7 = binding.rgCardSettingsDialogTextColorWhite
 
-//        val cardTexture1 = binding.radiogroupCardSettingsDialogTexture1
-//        val cardTexture2 = binding.radiogroupCardSettingsDialogTexture2
         val cardTextureImage = binding.ivCardSettingsDialogTexture
         val cardViewTextureImage = binding.cardViewCardSettingsDialogTexture
         val cardAvatar = binding.ivCardSettingsDialogAvatar
@@ -96,6 +78,7 @@ class CardSettingsDialog : DialogFragment() {
         var checkedColorTextVariant = DEFAULT_CARD_TEXT_COLOR
 
         val cardTextureRV = binding.rvCardSettingsDialogTexture
+        val cardDecorResource = CardDecorResources()
 
         val cardTextureAdapter = CardTextureAdapter()
         cardTextureRV.layoutManager =
@@ -110,25 +93,25 @@ class CardSettingsDialog : DialogFragment() {
             fillTextureToImage(checkedCardTextureVariant, cardTextureImage)
 
             when (checkedColorTextVariant) {
-                resources.getString(R.color.black) -> {
+                resources.getString(cardDecorResource.viewColor[0]) -> {
                     textColor1.isChecked = true
                 }
-                resources.getString(R.color.purple_700) -> {
+                resources.getString(cardDecorResource.viewColor[1]) -> {
                     textColor2.isChecked = true
                 }
-                resources.getString(R.color.violet) -> {
+                resources.getString(cardDecorResource.viewColor[2]) -> {
                     textColor3.isChecked = true
                 }
-                resources.getString(R.color.red) -> {
+                resources.getString(cardDecorResource.viewColor[3]) -> {
                     textColor4.isChecked = true
                 }
-                resources.getString(R.color.dark_yellow) -> {
+                resources.getString(cardDecorResource.viewColor[4]) -> {
                     textColor5.isChecked = true
                 }
-                resources.getString(R.color.light_yellow) -> {
+                resources.getString(cardDecorResource.viewColor[5]) -> {
                     textColor6.isChecked = true
                 }
-                resources.getString(R.color.white) -> {
+                resources.getString(cardDecorResource.viewColor[6]) -> {
                     textColor7.isChecked = true
                 }
             }
@@ -153,30 +136,28 @@ class CardSettingsDialog : DialogFragment() {
             checkedFormAvatarVariant = card.cardFormPhoto
 
             val listCardTexture = checkItemCardTexture(checkedCardTextureVariant)
-            Log.d("MyLog", "listTexture = $listCardTexture")
             cardTextureAdapter.differ.submitList(listCardTexture)
-//            fillCardTexureVariants(checkedCardTextureVariant)
 
             when (checkedColorTextVariant) {
-                resources.getString(R.color.black) -> {
+                resources.getString(cardDecorResource.viewColor[0]) -> {
                     textColor1.isChecked = true
                 }
-                resources.getString(R.color.purple_700) -> {
+                resources.getString(cardDecorResource.viewColor[1]) -> {
                     textColor2.isChecked = true
                 }
-                resources.getString(R.color.violet) -> {
+                resources.getString(cardDecorResource.viewColor[2]) -> {
                     textColor3.isChecked = true
                 }
-                resources.getString(R.color.red) -> {
+                resources.getString(cardDecorResource.viewColor[3]) -> {
                     textColor4.isChecked = true
                 }
-                resources.getString(R.color.dark_yellow) -> {
+                resources.getString(cardDecorResource.viewColor[4]) -> {
                     textColor5.isChecked = true
                 }
-                resources.getString(R.color.light_yellow) -> {
+                resources.getString(cardDecorResource.viewColor[5]) -> {
                     textColor6.isChecked = true
                 }
-                resources.getString(R.color.white) -> {
+                resources.getString(cardDecorResource.viewColor[6]) -> {
                     textColor7.isChecked = true
                 }
             }
@@ -194,48 +175,30 @@ class CardSettingsDialog : DialogFragment() {
             fillTextureToImage(checkedCardTextureVariant, cardTextureImage)
         }
 
-
-
-
-//        cardTextureImage.background = AppCompatResources.getDrawable(requireContext(), checkedCardTextureVariant)
         val currentColor = Color.parseColor(checkedColorTextVariant)
         textSchemaImage.setColorFilter(currentColor)
 
         if (checkedCornerSizeVariant) cardViewTextureImage.radius = CARD_CORNER_SIZE
-
-
-        var isChecking = true
-        var currentTexture = 0
 
         cardTextureAdapter.cardTextureListener = object : CardTextureAdapter.CardTextureListener{
             override fun onClickItem(cardTexture: CardTexture) {
 
                 fillTextureToImage(cardTexture.cardTextureName, cardTextureImage)
                 checkedCardTextureVariant = cardTexture.cardTextureName
-//            val textureResource1 = this.resources.getIdentifier(
-//                    checkedCardTextureVariant,
-//                    "drawable",
-//                    activity?.packageName
-//                )
-//                cardTextureImage.setImageResource(textureResource)
         }
-
         }
-
-
-        Log.d("MyLog", "checkedCardTextureVariant = $checkedCardTextureVariant")
 
         cardTextSchema.setOnCheckedChangeListener { group, checkedId ->
             val nameCheckedColorTextVariant = when (checkedId) {
-                R.id.rg_card_settings_dialog_text_color_black -> R.color.black
-                R.id.rg_card_settings_dialog_text_color_purple -> R.color.purple_700
-                R.id.rg_card_settings_dialog_text_color_violet -> R.color.violet
-                R.id.rg_card_settings_dialog_text_color_red -> R.color.red
-                R.id.rg_card_settings_dialog_text_color_dark_yellow -> R.color.dark_yellow
-                R.id.rg_card_settings_dialog_text_color_light_yellow -> R.color.light_yellow
-                R.id.rg_card_settings_dialog_text_color_white -> R.color.white
+                R.id.rg_card_settings_dialog_text_color_black -> cardDecorResource.viewColor[0]
+                R.id.rg_card_settings_dialog_text_color_purple -> cardDecorResource.viewColor[1]
+                R.id.rg_card_settings_dialog_text_color_violet -> cardDecorResource.viewColor[2]
+                R.id.rg_card_settings_dialog_text_color_red -> cardDecorResource.viewColor[3]
+                R.id.rg_card_settings_dialog_text_color_dark_yellow -> cardDecorResource.viewColor[4]
+                R.id.rg_card_settings_dialog_text_color_light_yellow -> cardDecorResource.viewColor[5]
+                R.id.rg_card_settings_dialog_text_color_white -> cardDecorResource.viewColor[6]
                 else -> {
-                    R.color.black
+                    cardDecorResource.viewColor[0]
                 }
             }
             val currentColor = Color.parseColor(getString(nameCheckedColorTextVariant))
@@ -325,19 +288,6 @@ class CardSettingsDialog : DialogFragment() {
             }
         }
         return listCardTexture
-    }
-
-    override fun onStart() {
-        dialog?.window?.setLayout(
-            ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.MATCH_PARENT
-        )
-        super.onStart()
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
     }
 
     companion object {

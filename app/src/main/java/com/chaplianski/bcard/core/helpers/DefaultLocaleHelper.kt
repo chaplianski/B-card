@@ -12,7 +12,7 @@ class DefaultLocaleHelper private constructor(context: Context) : BaseLocaleHelp
         fun getInstance(context: Context): LocaleHelper {
             synchronized(LOCK) {
                 if (instance == null) instance = DefaultLocaleHelper(context)
-                return instance!!
+                return instance as LocaleHelper // !!
             }
         }
     }

@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -24,35 +25,17 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.formats.NativeAdOptions
 import com.google.android.gms.ads.nativead.NativeAd
-import com.google.android.gms.ads.nativead.NativeAdOptions.*
 import com.google.android.gms.ads.nativead.NativeAdView
 
 
 class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val view = View.inflate(context, R.layout.layout_ad_to_card, null)
-    var adView = view.findViewById<NativeAdView>(R.id.adView_ad_to_card)
+    val view: View = View.inflate(context, R.layout.layout_ad_to_card, null)
+    var adView: NativeAdView = view.findViewById(R.id.adView_ad_to_card)
+    var adCount = 5
     init{
-        val binding = LayoutAdToCardBinding.inflate(LayoutInflater.from(context))
-        val adLoader = AdLoader.Builder(context, AD_UNIT_ID)
-            .forNativeAd { nativeAd ->
-                Log.d("MyLog", "is success")
-                adView = populateNativeAdView(nativeAd, binding)
-
-            }
-            .withAdListener(object : AdListener() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Log.d("MyLog", "is failure")
-                }
-            })
-            .withNativeAdOptions(NativeAdOptions.Builder()
-
-                .build())
-
-            .build()
-        adLoader.loadAds(AdRequest.Builder().build(), 5)
+        loadAdv()
     }
 
     interface ShortOnClickListener {
@@ -91,9 +74,6 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
             }
             else -> throw IllegalArgumentException("Unknown view type $viewType")
         }
-//
-//        binding = FragmentCardsCardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-//        return ViewHolder()
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -116,7 +96,6 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
                 }
             }
         }
-
     }
 
     override fun getItemCount(): Int {
@@ -131,7 +110,6 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(card: Card) {
-//            Log.d("MyLog", "card in holder = $card")
             binding.apply {
                 tvCardFragmentId.text = card.id.toString()
                 tvCardFragmentItemWorkPhone.text = card.workPhone
@@ -161,6 +139,7 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
                         )
                     }
                     else -> {
+                        tvCardFragmentItemLocation.text = ""
 //                        tvCardFragmentItemLocation.isVisible = false
 //                        ivCardFragmentLocation.isVisible = false
                     }
@@ -197,10 +176,9 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
 //                    ivCardFragmentWorkPhone.visibility = View.GONE
 //                }
 //
-//                if (card.email.isNullOrEmpty()) {
-//                    tvCardFragmentItemEmail.visibility = View.GONE
-//                    ivCardFragmentEmail.visibility = View.GONE
-//                }
+                if (card.email.isNullOrEmpty()) {
+                    tvCardFragmentItemEmail.text = ""
+                }
 
                 if (card.isCardCorner) cardviewCardFragmentCard.radius = 40f
 
@@ -228,11 +206,26 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
             if (adView.parent != null) {
                 (adView.parent as ViewGroup).removeView(adView)
             }
-//            adContainerView.removeView(adView)
+            adContainerView.isVisible = adView.bodyView != null
+            if (adView.bodyView == null) loadAdv()
             adContainerView.addView(adView)
         }
     }
 
+    private fun loadAdv(){
+        val binding = LayoutAdToCardBinding.inflate(LayoutInflater.from(context))
+        val adLoader = AdLoader.Builder(context, AD_UNIT_ID)
+            .forNativeAd { nativeAd ->
+                adView = populateNativeAdView(nativeAd, binding)
+            }
+            .withAdListener(object : AdListener() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Log.d("MyLog", "is failure")
+                }
+            })
+            .build()
+        adLoader.loadAds(AdRequest.Builder().build(), 5)
+    }
 
     private fun populateNativeAdView(nativeAd: NativeAd, adViews: LayoutAdToCardBinding): NativeAdView {
 

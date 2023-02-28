@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chaplianski.bcard.databinding.ItemLanguageBinding
+import com.chaplianski.bcard.domain.model.LanguageItem
 
-class LanguageSettingsAdapter(private val languageList: List<String>): RecyclerView.Adapter<LanguageSettingsAdapter.ViewHolder>() {
+class LanguageSettingsAdapter(private val languageList: List<LanguageItem>): RecyclerView.Adapter<LanguageSettingsAdapter.ViewHolder>() {
 
     var checkedPosition = -1
 
     interface LanguageCheckListener{
-        fun onClickLanguage(language: String)
+        fun onClickLanguage(language: LanguageItem)
     }
     var languageCheckListener: LanguageCheckListener? = null
 
@@ -29,36 +30,19 @@ class LanguageSettingsAdapter(private val languageList: List<String>): RecyclerV
         holder.itemView.setOnClickListener {
             languageCheckListener?.onClickLanguage(languageList[position])
         }
-
-//        if (checkedPosition == -1 && languageList[position].isChecked){
-//            checkedPosition = position
-//        }
         holder.checkBoxLanguage.isChecked = (checkedPosition == position)
         holder.checkBoxLanguage.setOnClickListener {
             languageCheckListener?.onClickLanguage(languageList[position])
             this.checkedPosition = holder.adapterPosition
             notifyDataSetChanged()
         }
-
     }
 
     class ViewHolder(binding: ItemLanguageBinding): RecyclerView.ViewHolder(binding.root) {
         val checkBoxLanguage = binding.checkBoxItemLanguage
 
-        fun onBind(language: String){
-            checkBoxLanguage.text = language
+        fun onBind(language: LanguageItem){
+            checkBoxLanguage.text = language.longName
         }
-
     }
-
-//    private val differCallback = object : DiffUtil.ItemCallback<Card>() {
-//
-//        override fun areItemsTheSame(oldItem: Card, newItem: Card): Boolean = oldItem == newItem
-//
-//        override fun areContentsTheSame(oldItem: Card, newItem: Card): Boolean {
-//            return oldItem.hashCode() == newItem.hashCode()
-//        }
-//
-//    }
-//    val differ = AsyncListDiffer(this, differCallback)
 }

@@ -118,7 +118,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="+375447445638"
+
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_card_fragment_work_phone"
@@ -134,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="+375447445638"
+
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_card_fragment_home_phone"
@@ -156,7 +156,6 @@
             android:singleLine="true"
             android:maxLines="1"
             autofit:minTextSize="10sp"
-            android:text="michalevich@gmail.com"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_card_fragment_email"
@@ -172,7 +171,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="Pinsk, Belarus"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:singleLine="true"

@@ -11,7 +11,6 @@ import com.chaplianski.bcard.domain.model.Contact
 class DoubleCardListAdapter: RecyclerView.Adapter<DoubleCardListAdapter.ViewHolder>() {
 
     val contactList = mutableListOf<Contact>()
-
     interface CheckItemListener{
         fun onClick(contact: Contact)
     }
@@ -63,7 +62,6 @@ class DoubleCardListAdapter: RecyclerView.Adapter<DoubleCardListAdapter.ViewHold
             val isChecked = payloads[0] as Boolean
             checkBox.isChecked = isChecked
         }
-
     }
 
     class CheckItemsDiffCallback(
@@ -94,9 +92,6 @@ class DoubleCardListAdapter: RecyclerView.Adapter<DoubleCardListAdapter.ViewHold
                 return if (oldItem.isChecked == newItem.isChecked) {
                     super.getChangePayload(oldItemPosition, newItemPosition)
                 } else newItem.isChecked
-
         }
     }
-
-
 }

@@ -15,4 +15,6 @@ interface CardRepository {
 
     fun deleteCard(cardId: Long): Int
 
+    fun getCardListBySearchValue(searchValue: String): List<Card>
+
 }

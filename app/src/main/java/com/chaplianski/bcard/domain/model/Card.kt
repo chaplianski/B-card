@@ -5,8 +5,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Card(
-    val id: Long = 0,
-    val userId: Long = 0,
+    var id: Long = 0,
+    var userId: Long = 0,
     var name: String = "",
     var surname: String = "",
     var photo: String = "",
@@ -21,7 +21,7 @@ data class Card(
     var professionalInfo: String = "",
     var privateInfo: String = "",
     val reference: String = "",
-    val cardTexture: String = "",
+    var cardTexture: String = "",
     val cardTextColor: String = "#0097A7",
     val isCardCorner: Boolean = false,
     val cardFormPhoto: String = "oval",

@@ -35,7 +35,6 @@ class PhotoPicker @Inject constructor(
 
     private lateinit var photoUri: Uri
 
-
     private val cropPhotoContract = object : ActivityResultContract<Any?, Uri?>() {
         override fun createIntent(context: Context, input: Any?): Intent {
             return CropImage.activity()

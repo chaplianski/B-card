@@ -21,7 +21,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="186dp"
+            android:layout_height="310dp"
             android:background="@drawable/square_background"/>
 
         <LinearLayout
@@ -29,14 +29,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tv_share_dialog_save"
+                android:id="@+id/tv_share_dialog_save_vcf"
                 style="@style/Regular"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="top|center_horizontal"
-
                 android:gravity="center"
-                android:text="@string/save_contacts"
+                android:text="@string/save_vcf"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -45,13 +44,43 @@
                 android:layout_height="2dp"
                 android:background="@color/black"/>
             <TextView
-                android:id="@+id/tv_share_dialog_load"
+                android:id="@+id/tv_share_dialog_save_csv"
+                style="@style/Regular"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="top|center_horizontal"
+
+                android:gravity="center"
+                android:text="@string/save_csv"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/black"/>
+            <TextView
+                android:id="@+id/tv_share_dialog_load_vcf"
                 style="@style/Regular"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="center|center_horizontal"
                 android:gravity="center"
-                android:text="@string/load_from_file"
+                android:text="@string/load_from_file_vcf"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/black"/>
+            <TextView
+                android:id="@+id/tv_share_dialog_load_csv"
+                style="@style/Regular"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center|center_horizontal"
+                android:gravity="center"
+                android:text="@string/load_from_file_csv"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
             <View

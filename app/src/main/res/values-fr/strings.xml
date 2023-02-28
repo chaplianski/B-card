@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<resources>
+    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="app_name" translatable="false">B-card</string>
+    <string name="password">Mot de passe</string>
+    <string name="email_address">Adresse</string>
+    <string name="welcome_to_b_card">Accueillir</string>
+    <string name="remember">Rappeler</string>
+    <string name="sign_in">Se Connecter</string>
+    <string name="registration_account">Compte d\'inscription</string>
+    <string name="check_all">Tout Vérifier</string>
+    <string name="save">Enregistrer</string>
+    <string name="cancel">Annuler</string>
+    <string name="logo">logo</string>
+    <string name="registration_panel">registration panel</string>
+    <string name="please_enter_login">Veuillez entrer login</string>
+    <string name="please_enter_password">Veuillez entrer le mot de passe</string>
+    <string name="please_enter_secret_question">Veuillez entrer une question secrète</string>
+    <string name="please_enter_secret_answer">Veuillez entrer la réponse à la question secrète</string>
+    <string name="password_does_not_match">Le mot de passe ne correspond pas</string>
+    <string name="answer_please">Répondez, s\'il vous plait</string>
+    <string name="answer">Réponse</string>
+    <string name="such_login_not_exist">Une telle connexion n\'existe pas</string>
+    <string name="answer_is_wrong">La réponse est fausse</string>
+    <string name="add">Ajouter</string>
+    <string name="two_value_with_comma">%1s, %2s</string>
+    <string name="two_value_without_comma">%1s %2s</string>
+    <string name="postal_address">Adresse postale:\n</string>
+    <string name="note">Remarque: </string>
+    <string name="nickname">Surnom: </string>
+    <string name="ad_attribution">Ad</string>
+    <string name="setup">Configuration</string>
+    <string name="additional_information">Informations supplémentaires</string>
+    <string name="personal_additional_information">Informations personnelles supplémentaires</string>
+    <string name="nickname_full_postal_address_timezone_links_and_ets">Surnom, adresse postale complète, fuseau horaire, liens et ets.</string>
+    <string name="education_and_professional_skills">Éducation et compétences professionnelles</string>
+    <string name="educational_institution_courses_technology_stack">Établissement d\'enseignement, cours, pile technologique</string>
+    <string name="private_information">Informations privées</string>
+    <string name="reference">Référence</string>
+    <string name="card_settings">Paramètres de la carte</string>
+    <string name="card_color">Couleur de la carte</string>
+    <string name="corners_round">Coins arrondis</string>
+    <string name="form_of_photo">Forme de la photo</string>
+    <string name="text_color">Couleur du texte</string>
+    <string name="this_contact_is_being_in_you_collection_mark_the_contacts_you_want_to_load">Ce contact est dans votre collection. Marquez les contacts que vous souhaitez charger</string>
+    <string name="select_photo_from_gallery">Sélectionnez une photo dans la galerie</string>
+    <string name="capture_photo_from_camera">Capturez une photo à partir de l\'appareil photo</string>
+    <string name="person_information">Informations sur la personne</string>
+    <string name="name">Nom</string>
+    <string name="surname">Nom de famille</string>
+    <string name="work_phone">Téléphone de travail</string>
+    <string name="home_phone">Téléphone fixe</string>
+    <string name="organization">Organisation</string>
+    <string name="position_specialty">Position / Spécialité</string>
+    <string name="email">E-mail</string>
+    <string name="town">Ville</string>
+    <string name="country">Pays</string>
+    <string name="background">Arrière-plan</string>
+    <string name="language">Langue</string>
+    <string name="about">À propos</string>
+    <string name="save_vcf">Enregistrer dans un fichier (.vcf)</string>
+    <string name="save_csv">Enregistrer dans un fichier (.csv)</string>
+    <string name="load_from_file_vcf">Charger à partir du fichier (.vcf)</string>
+    <string name="load_from_file_csv">Charger à partir du fichier (.csv)</string>
+    <string name="load_from_account">Charger à partir du compte</string>
+    <string name="let_s_start">Commençons</string>
+    <string name="login">Connexion</string>
+    <string name="repeat_password">Répéter le mot de passe</string>
+    <string name="secret_question">Question secrète</string>
+    <string name="ok">Ok</string>
+    <string name="change_password">Changer le mot de passe</string>
+    <string name="new_password">Nouveau mot de passe</string>
+    <string name="i_forget_password">J\'ai oublié le mot de passe</string>
+    <string name="sign_up">S\'inscrire</string>
+    <string name="delete">Supprimer</string>
+
+</resources>

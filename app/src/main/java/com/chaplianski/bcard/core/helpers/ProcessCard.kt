@@ -1,13 +1,16 @@
 package com.chaplianski.bcard.core.helpers
 
-import android.util.Log
+
+import android.content.Context
 import android.widget.CheckBox
 import androidx.appcompat.widget.AppCompatButton
+import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
+import com.chaplianski.bcard.core.utils.UiText
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.model.ContactContent
 
-class ProcessCard {
+class ProcessCard (val context: Context){
 
      fun fillCardAdapter(
         listCard: List<Card>,
@@ -28,7 +31,6 @@ class ProcessCard {
                 it.surname = it.name
                 it.name = ""
             }
-//            Log.d("MyLog", "name = ${it.name}, surname = ${it.surname}, letter = ${it.surname.first().uppercaseChar()}")
         }
 
         var newLetterList = cardList
@@ -36,7 +38,7 @@ class ProcessCard {
             .map { it.surname.first().uppercaseChar()}
             .toSet()
 
-        Log.d("MyLog", "letters = $newLetterList")
+//        Log.d("MyLog", "letters = $newLetterList")
         newLetterList.forEach { letter ->
 
             cardList
@@ -50,7 +52,8 @@ class ProcessCard {
                         newContactList.add(ContactContent.Contact(card))
                     }
                 }
-            addButton.text = "Add [$checkedCardCount]"
+
+            addButton.text = UiText.StringResource(R.string.save_items, checkedCardCount).asString(context)//"Add [$checkedCardCount]"
         }
 
         cardListAdapter.updateList(newContactList)
@@ -63,7 +66,7 @@ class ProcessCard {
                             cardItem.isChecked = !cardItem.isChecked
                             if (cardItem.isChecked) checkedCardCount++ else checkedCardCount--
                         }
-                        addButton.text = "Add [$checkedCardCount]"
+                        addButton.text = UiText.StringResource(R.string.save_items, checkedCardCount).asString(context) //"Add [$checkedCardCount]"
                     }
                 }
             }
@@ -95,7 +98,7 @@ class ProcessCard {
                         newContactList.add(ContactContent.Contact(card))
                     }
                 }
-                addButton.text = "Save [$checkedCardCount]"
+                addButton.text = UiText.StringResource(R.string.save_items, checkedCardCount).asString(context)//"Save [$checkedCardCount]"
             }
             cardListAdapter.updateList(newContactList)
             allCardCheckFlag = !allCardCheckFlag
