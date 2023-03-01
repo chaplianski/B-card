@@ -17,9 +17,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
 import com.chaplianski.bcard.core.helpers.ProcessCard
-import com.chaplianski.bcard.core.helpers.ProcessVcard
+import com.chaplianski.bcard.core.helpers.ProcessCsvCard
+import com.chaplianski.bcard.core.helpers.ProcessVcfCard
+import com.chaplianski.bcard.core.utils.CSV_TYPE
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.core.utils.DESTINATION
+import com.chaplianski.bcard.core.utils.VCF_TYPE
 import com.chaplianski.bcard.core.viewmodels.LoadCardsDialogViewModel
 import com.chaplianski.bcard.databinding.DialogLoadCardBinding
 import com.chaplianski.bcard.di.DaggerApp
@@ -33,7 +36,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class LoadCardListFromVCFDialog :
+class LoadCardListFromFileDialog :
     BasisDialogFragment<DialogLoadCardBinding>(DialogLoadCardBinding::inflate){
 
     var cardList = emptyList<Card>()
@@ -87,13 +90,35 @@ class LoadCardListFromVCFDialog :
             .launchIn(lifecycleScope)
 
         currentUri?.toUri().also {
+            val mimeType = it?.let { it1 -> context?.contentResolver?.getType(it1) }
+            Log.d("MyLog", "type file = $mimeType")
             val inputStream = it?.let { it1 -> context?.contentResolver?.openInputStream(it1) }
             val readVcard = Ezvcard.parse(inputStream).all()//.first()
             val contentResolver = context?.contentResolver
-            val processVcard = ProcessVcard()
-            cardList = if (contentResolver != null) {
-                    processVcard.convertVcardToCardList(readVcard, contentResolver, requireContext())
+            val processVcfCard = ProcessVcfCard()
+            val processCsvCard = ProcessCsvCard()
+            when(mimeType){
+                VCF_TYPE -> {
+                    cardList = if (contentResolver != null) {
+                    processVcfCard.convertVcardToCardList(readVcard, contentResolver, requireContext())
                 } else emptyList<Card>()
+                }
+                CSV_TYPE -> {
+                    cardList = if (contentResolver != null) {
+                        processCsvCard.getCardList(requireContext(), it)
+                    } else emptyList<Card>()}
+
+                }
+//            }
+            Log.d("MyLog", "list card 100 = $cardList")
+
+//            val inputStream = it?.let { it1 -> context?.contentResolver?.openInputStream(it1) }
+//            val readVcard = Ezvcard.parse(inputStream).all()//.first()
+//            val contentResolver = context?.contentResolver
+//            val processVcard = ProcessVcard()
+//            cardList = if (contentResolver != null) {
+//                    processVcard.convertVcardToCardList(readVcard, contentResolver, requireContext())
+//                } else emptyList<Card>()
             if (cardList.isNotEmpty()) {
                 processCard.fillCardAdapter(cardList,
                     addButton,
@@ -205,11 +230,11 @@ class LoadCardListFromVCFDialog :
         val SURNAME = "surname"
         val CURRENT_URI = "current uri"
 
-        val TAG = LoadCardListFromVCFDialog::class.java.simpleName
+        val TAG = LoadCardListFromFileDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
 
         fun show(manager: FragmentManager, uri: Uri){ //currentCardId: Long, destination: String ) {
-            val dialogFragment = LoadCardListFromVCFDialog()
+            val dialogFragment = LoadCardListFromFileDialog()
             dialogFragment.arguments = bundleOf(
                 CURRENT_URI to uri.toString()
             )

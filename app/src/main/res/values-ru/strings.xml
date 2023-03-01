@@ -60,7 +60,7 @@
     <string name="about">О нас</string>
     <string name="save_vcf">Сохранить в файл (.vcf)</string>
     <string name="save_csv">Сохранить в файл (.csv)</string>
-    <string name="load_from_file_vcf">Загрузить из файла (.vcf)</string>
+    <string name="load_from_file">Загрузить из файла (.vcf)</string>
     <string name="load_from_file_csv">Загрузить из файла (.csv)</string>
     <string name="load_from_account">Загрузить с аккаунта</string>
     <string name="let_s_start">Давайте начнем</string>

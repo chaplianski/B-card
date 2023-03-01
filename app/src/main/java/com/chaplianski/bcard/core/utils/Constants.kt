@@ -41,6 +41,10 @@ const val DESTINATION = "destination"
 const val LOAD_FROM_GOOGLE_ACCOUNT = "load from google account"
 const val LOAD_FROM_FILE = "load from file"
 
+// ****** Mime Types ***************
+const val VCF_TYPE = "application/vcf"
+const val CSV_TYPE = "text/csv"
+
 //***** Ad
 //const val AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
 const val AD_UNIT_ID = "ca-app-pub-3940256099942544/2247696110"

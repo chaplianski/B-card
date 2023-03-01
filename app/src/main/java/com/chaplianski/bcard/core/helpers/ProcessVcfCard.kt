@@ -13,7 +13,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-class ProcessVcard  {
+class ProcessVcfCard  {
 
     fun convertVcardToCardList(
         vcardList: List<VCard>,

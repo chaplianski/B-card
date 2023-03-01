@@ -137,7 +137,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
-            loadContactListDialogViewModel.getCards(LoadCardListFromVCFDialog.SURNAME)
+            loadContactListDialogViewModel.getCards(LoadCardListFromFileDialog.SURNAME)
         }
 
         loadContactListDialogViewModel.getCardListState
@@ -551,8 +551,8 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                 setupCheckDoubleCardListDialog()
             } else {
                 parentFragmentManager.setFragmentResult(
-                    LoadCardListFromVCFDialog.REQUEST_KEY,
-                    bundleOf(LoadCardListFromVCFDialog.CHECKED_OPTION to LoadCardListFromVCFDialog.ADD_STATUS)
+                    LoadCardListFromFileDialog.REQUEST_KEY,
+                    bundleOf(LoadCardListFromFileDialog.CHECKED_OPTION to LoadCardListFromFileDialog.ADD_STATUS)
                 )
                 dismiss()
             }
@@ -575,15 +575,15 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                         loadContactListDialogViewModel.addCard(it)
                     }
                     parentFragmentManager.setFragmentResult(
-                        LoadCardListFromVCFDialog.REQUEST_KEY,
-                        bundleOf(LoadCardListFromVCFDialog.CHECKED_OPTION to LoadCardListFromVCFDialog.AFTER_CHECK_DOUBLE_STATUS, CURRENT_CARD_ID to LoadCardListFromVCFDialog.FAKE_CURRENT_CARD_ID)
+                        LoadCardListFromFileDialog.REQUEST_KEY,
+                        bundleOf(LoadCardListFromFileDialog.CHECKED_OPTION to LoadCardListFromFileDialog.AFTER_CHECK_DOUBLE_STATUS, CURRENT_CARD_ID to LoadCardListFromFileDialog.FAKE_CURRENT_CARD_ID)
                     )
                     dismiss()
                 }
                 CheckDoubleCardListDialog.CANCEL_STATUS -> {
                     parentFragmentManager.setFragmentResult(
-                        LoadCardListFromVCFDialog.REQUEST_KEY,
-                        bundleOf(LoadCardListFromVCFDialog.CHECKED_OPTION to LoadCardListFromVCFDialog.AFTER_CHECK_DOUBLE_STATUS, CURRENT_CARD_ID to LoadCardListFromVCFDialog.FAKE_CURRENT_CARD_ID)
+                        LoadCardListFromFileDialog.REQUEST_KEY,
+                        bundleOf(LoadCardListFromFileDialog.CHECKED_OPTION to LoadCardListFromFileDialog.AFTER_CHECK_DOUBLE_STATUS, CURRENT_CARD_ID to LoadCardListFromFileDialog.FAKE_CURRENT_CARD_ID)
                     )
                     dismiss()
                 }

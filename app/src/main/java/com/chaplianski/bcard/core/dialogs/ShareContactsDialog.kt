@@ -40,8 +40,7 @@ class ShareContactsDialog : DialogFragment() {
 
         val saveVcfButton = binding.tvShareDialogSaveVcf
         val saveCsvButton = binding.tvShareDialogSaveCsv
-        val loadVcfButton = binding.tvShareDialogLoadVcf
-        val loadCsvButton = binding.tvShareDialogLoadCsv
+        val loadFromFileButton = binding.tvShareDialogLoadVcf
         val cancelButton = binding.tvShareDialogCancel
         val loadFromAccountButton = binding.tvShareDialogLoadFromAccount
         val currentCardId = arguments?.getLong(CURRENT_CARD_ID, -1L)
@@ -58,15 +57,9 @@ class ShareContactsDialog : DialogFragment() {
             )
             dismiss()
         }
-        loadVcfButton.setOnClickListener {
+        loadFromFileButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
-                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to LOAD_FROM_VCF_FILE_OPTION)
-            )
-            dialog?.dismiss()
-        }
-        loadCsvButton.setOnClickListener {
-            parentFragmentManager.setFragmentResult(
-                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to LOAD_FROM_CSV_FILE_OPTION)
+                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to LOAD_FROM_FILE_OPTION)
             )
             dialog?.dismiss()
         }
@@ -92,8 +85,7 @@ class ShareContactsDialog : DialogFragment() {
         val CHECKED_OPTION = "checked share option"
         val SAVE_VCF_OPTION = "save vcf share option"
         val SAVE_CSV_OPTION = "save csv share option"
-        val LOAD_FROM_VCF_FILE_OPTION = "load from vcf file option"
-        val LOAD_FROM_CSV_FILE_OPTION = "load from csv file option"
+        val LOAD_FROM_FILE_OPTION = "load from file option"
         val LOAD_FROM_GOOGLE_ACCOUNT_OPTION = "load from google account option"
 
 

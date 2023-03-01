@@ -952,21 +952,12 @@ class CardsFragment : Fragment() {
                 ShareContactsDialog.SAVE_CSV_OPTION -> {
                     showSaveCsvCardsDialog(cardId)
                 }
-                ShareContactsDialog.LOAD_FROM_VCF_FILE_OPTION -> {
+                ShareContactsDialog.LOAD_FROM_FILE_OPTION -> {
                     val filePicker = ContactPicker(
                         requireContext(),
                         requireActivity().activityResultRegistry
                     ) { uri ->
                         showLoadVcfCardsDialog(uri)
-                    }
-                    filePicker.checkReadFilesPermission()
-                }
-                ShareContactsDialog.LOAD_FROM_CSV_FILE_OPTION -> {
-                    val filePicker = ContactPicker(
-                        requireContext(),
-                        requireActivity().activityResultRegistry
-                    ) { uri ->
-                        showLoadCsvCardsDialog(uri)
                     }
                     filePicker.checkReadFilesPermission()
                 }
@@ -1003,19 +994,19 @@ class CardsFragment : Fragment() {
     }
 
     private fun setupLoadCardsDialog() {
-        LoadCardListFromVCFDialog.setupListener(
+        LoadCardListFromFileDialog.setupListener(
             parentFragmentManager, this.viewLifecycleOwner
         ) { status, cardId ->
             when (status) {
-                LoadCardListFromVCFDialog.ADD_STATUS -> {
+                LoadCardListFromFileDialog.ADD_STATUS -> {
                     lifecycleScope.launch(Dispatchers.IO) {
                         cardsFragmentViewModel.getCards(SURNAME)
                     }
                 }
-                LoadCardListFromVCFDialog.CANCEL_STATUS -> {
+                LoadCardListFromFileDialog.CANCEL_STATUS -> {
                     showShareDialog(cardId)
                 }
-                LoadCardListFromVCFDialog.AFTER_CHECK_DOUBLE_STATUS -> {
+                LoadCardListFromFileDialog.AFTER_CHECK_DOUBLE_STATUS -> {
                     lifecycleScope.launch(Dispatchers.IO) {
                         cardsFragmentViewModel.getCards(SURNAME)
                     }
@@ -1029,11 +1020,7 @@ class CardsFragment : Fragment() {
     }
 
     private fun showLoadVcfCardsDialog(uri: Uri) {
-        LoadCardListFromVCFDialog.show(parentFragmentManager, uri)
-    }
-
-    private fun showLoadCsvCardsDialog(uri: Uri) {
-
+        LoadCardListFromFileDialog.show(parentFragmentManager, uri)
     }
 
     private fun showSaveCsvCardsDialog(cardId: Long) {

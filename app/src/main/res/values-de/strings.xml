@@ -122,7 +122,7 @@
 
     <string name="save_csv">Speichern unter (.csv)</string>
 
-    <string name="load_from_file_vcf">Lade von der Datei (.vcf)</string>
+    <string name="load_from_file">Lade von der Datei (.vcf)</string>
 
     <string name="load_from_file_csv">Lade von der Datei (.csv)</string>
 
