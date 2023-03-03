@@ -2,6 +2,9 @@ package com.chaplianski.bcard.data.storage.modeldto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.chaplianski.bcard.core.utils.DEFAULT_CARD_CORNER
+import com.chaplianski.bcard.core.utils.DEFAULT_CARD_FORM_PHOTO
+import com.chaplianski.bcard.core.utils.DEFAULT_CARD_TEXT_COLOR
 
 
 @Entity(tableName = "cards")
@@ -24,9 +27,9 @@ data class CardDTO(
     val privateInfo: String = "",
     val reference: String = "",
     val cardTexture: String = "",
-    val cardTextColor: String = "#0097A7",
-    val isCardCorner: Boolean = false,
-    val cardFormPhoto: String = "oval",
+    val cardTextColor: String = DEFAULT_CARD_TEXT_COLOR,
+    val isCardCorner: Boolean = DEFAULT_CARD_CORNER,
+    val cardFormPhoto: String = DEFAULT_CARD_FORM_PHOTO,
     var isChecked: Boolean = false
 
 

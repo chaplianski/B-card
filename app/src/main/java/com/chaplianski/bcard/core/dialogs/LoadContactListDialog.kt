@@ -268,7 +268,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                         val name: String = data.getString(2)
 
                         val nameList = name.split(" ")
-                        Log.d("MyLog", "nameList = $nameList")
+//                        Log.d("MyLog", "nameList = $nameList")
                         var nameValue = ""
                         var surnameValue = ""
                         when(nameList.size){
@@ -285,7 +285,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
 
 
 //                        val nameValue = nameList[0].trimStart()
-                        Log.d("MyLog", "nameValue = $nameValue")
+//                        Log.d("MyLog", "nameValue = $nameValue")
 //                        if (nameList.size > 1) surnameValue = name.split(",")[1].trimStart()
                         cardList.add(
                             Card(
@@ -550,9 +550,10 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
             if (doubleCardList.isNotEmpty()){
                 setupCheckDoubleCardListDialog()
             } else {
+               Log.d("MyLog", "add button, not empty double card list")
                 parentFragmentManager.setFragmentResult(
-                    LoadCardListFromFileDialog.REQUEST_KEY,
-                    bundleOf(LoadCardListFromFileDialog.CHECKED_OPTION to LoadCardListFromFileDialog.ADD_STATUS)
+                    REQUEST_KEY,
+                    bundleOf(CHECKED_OPTION to ADD_STATUS)
                 )
                 dismiss()
             }

@@ -91,7 +91,6 @@ class LoadCardListFromFileDialog :
 
         currentUri?.toUri().also {
             val mimeType = it?.let { it1 -> context?.contentResolver?.getType(it1) }
-            Log.d("MyLog", "type file = $mimeType")
             val inputStream = it?.let { it1 -> context?.contentResolver?.openInputStream(it1) }
             val readVcard = Ezvcard.parse(inputStream).all()//.first()
             val contentResolver = context?.contentResolver
@@ -109,16 +108,7 @@ class LoadCardListFromFileDialog :
                     } else emptyList<Card>()}
 
                 }
-//            }
-            Log.d("MyLog", "list card 100 = $cardList")
 
-//            val inputStream = it?.let { it1 -> context?.contentResolver?.openInputStream(it1) }
-//            val readVcard = Ezvcard.parse(inputStream).all()//.first()
-//            val contentResolver = context?.contentResolver
-//            val processVcard = ProcessVcard()
-//            cardList = if (contentResolver != null) {
-//                    processVcard.convertVcardToCardList(readVcard, contentResolver, requireContext())
-//                } else emptyList<Card>()
             if (cardList.isNotEmpty()) {
                 processCard.fillCardAdapter(cardList,
                     addButton,

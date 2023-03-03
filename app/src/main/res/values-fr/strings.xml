@@ -61,8 +61,7 @@
     <string name="about">À propos</string>
     <string name="save_vcf">Enregistrer dans un fichier (.vcf)</string>
     <string name="save_csv">Enregistrer dans un fichier (.csv)</string>
-    <string name="load_from_file">Charger à partir du fichier (.vcf)</string>
-    <string name="load_from_file_csv">Charger à partir du fichier (.csv)</string>
+    <string name="load_from_file">Charger à partir du fichier</string>
     <string name="load_from_account">Charger à partir du compte</string>
     <string name="let_s_start">Commençons</string>
     <string name="login">Connexion</string>

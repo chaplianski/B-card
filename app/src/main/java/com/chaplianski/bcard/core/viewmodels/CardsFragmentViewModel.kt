@@ -39,7 +39,7 @@ class CardsFragmentViewModel @Inject constructor(
 //        Log.d("MyLog", "cardList 2")
         getCardListUseCase.execute(fieldForSorting)
                .onSuccess {
-                   Log.d("MyLog", "cardList 5 = $it")
+//                   Log.d("MyLog", "cardList 5 = $it")
                    _getCardListState.emit(GetCardListState.GetCardList(it)) }
                .onFailure {  }
     }

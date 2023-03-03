@@ -59,8 +59,7 @@
     <string name="about">About</string>
     <string name="save_vcf">Save to file (.vcf)</string>
     <string name="save_csv">Save to file (.csv)</string>
-    <string name="load_from_file">Load from file (.vcf)</string>
-    <string name="load_from_file_csv">Load from file (.csv)</string>
+    <string name="load_from_file">Load from file</string>
     <string name="load_from_account">Load from account</string>
     <string name="let_s_start">Let\'s start</string>
     <string name="login">Login</string>

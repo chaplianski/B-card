@@ -981,9 +981,11 @@ class CardsFragment : Fragment() {
             parentFragmentManager,
             this.viewLifecycleOwner
         ) { status ->
+            Log.d("MyLog", "add card status, status = $status")
             when (status) {
                 LoadContactListDialog.ADD_STATUS -> {
                     lifecycleScope.launch(Dispatchers.IO) {
+                        Log.d("MyLog", "add card status")
                         cardsFragmentViewModel.getCards(SURNAME)
                     }
                 }

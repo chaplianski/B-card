@@ -120,9 +120,7 @@
 
     <string name="save_csv">Zapisz plik w (.csv)</string>
 
-    <string name="load_from_file">Załaduj z pliku (.vcf)</string>
-
-    <string name="load_from_file_csv">Załaduj z pliku (.csv)</string>
+    <string name="load_from_file">Załaduj z pliku</string>
 
     <string name="load_from_account">Załaduj z konta</string>
 
