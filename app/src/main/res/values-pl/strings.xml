@@ -116,7 +116,7 @@
 
     <string name="about">O nas</string>
 
-    <string name="save_vcf">Zapisz plik w (.vcf)</string>
+    <string name="save_to_file">Zapisz plik w (.vcf)</string>
 
     <string name="save_csv">Zapisz plik w (.csv)</string>
 

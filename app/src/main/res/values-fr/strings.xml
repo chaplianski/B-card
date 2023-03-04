@@ -59,7 +59,7 @@
     <string name="background">Arrière-plan</string>
     <string name="language">Langue</string>
     <string name="about">À propos</string>
-    <string name="save_vcf">Enregistrer dans un fichier (.vcf)</string>
+    <string name="save_to_file">Enregistrer dans un fichier (.vcf)</string>
     <string name="save_csv">Enregistrer dans un fichier (.csv)</string>
     <string name="load_from_file">Charger à partir du fichier</string>
     <string name="load_from_account">Charger à partir du compte</string>

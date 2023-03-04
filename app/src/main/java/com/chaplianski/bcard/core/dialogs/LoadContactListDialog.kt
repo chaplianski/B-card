@@ -282,11 +282,6 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                                 surnameValue = nameList[nameListSize-1].trimStart()
                             }
                         }
-
-
-//                        val nameValue = nameList[0].trimStart()
-//                        Log.d("MyLog", "nameValue = $nameValue")
-//                        if (nameList.size > 1) surnameValue = name.split(",")[1].trimStart()
                         cardList.add(
                             Card(
                                 name = nameValue, surname = surnameValue, photo = photoUri,
@@ -504,7 +499,6 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         cardListRV.adapter = cardListAdapter
         val checkboxAllCards = binding.checkBoxLoadCardDialogCheckAll
         processCardList.fillCardAdapter(cardList, addButton, cardListAdapter, checkboxAllCards)
-//        Log.d("MyLog", "cardListContact = $cardList")
 
         addButton.setOnClickListener {
             val listCard = mutableListOf<Card>()
@@ -544,13 +538,11 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                     )
                     contactList.add(contact)
                 }
-//                Log.d("MyLog", "contactList = ${contactList.size}, doubleListSize = ${doubleCardList.size}")
                 showCheckDoubleCardListDialog(contactList)
             }
             if (doubleCardList.isNotEmpty()){
                 setupCheckDoubleCardListDialog()
             } else {
-               Log.d("MyLog", "add button, not empty double card list")
                 parentFragmentManager.setFragmentResult(
                     REQUEST_KEY,
                     bundleOf(CHECKED_OPTION to ADD_STATUS)
@@ -558,7 +550,6 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                 dismiss()
             }
         }
-
 
     }
 

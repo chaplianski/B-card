@@ -32,14 +32,12 @@ class ShareContactsDialog : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         _binding = DialogShareContactsBinding.inflate(layoutInflater, container, false)
         return binding.root
-//        return inflater.inflate(R.layout.dialog_share_contacts, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val saveVcfButton = binding.tvShareDialogSaveVcf
-        val saveCsvButton = binding.tvShareDialogSaveCsv
         val loadFromFileButton = binding.tvShareDialogLoadVcf
         val cancelButton = binding.tvShareDialogCancel
         val loadFromAccountButton = binding.tvShareDialogLoadFromAccount
@@ -47,13 +45,7 @@ class ShareContactsDialog : DialogFragment() {
 
         saveVcfButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
-                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to SAVE_VCF_OPTION)
-            )
-            dismiss()
-        }
-        saveCsvButton.setOnClickListener {
-            parentFragmentManager.setFragmentResult(
-                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to SAVE_CSV_OPTION)
+                REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to SAVE_TO_File_OPTION)
             )
             dismiss()
         }
@@ -69,7 +61,6 @@ class ShareContactsDialog : DialogFragment() {
                 )
                 dismiss()
         }
-
         cancelButton.setOnClickListener {
             dismiss()
         }
@@ -83,13 +74,9 @@ class ShareContactsDialog : DialogFragment() {
     companion object {
 
         val CHECKED_OPTION = "checked share option"
-        val SAVE_VCF_OPTION = "save vcf share option"
-        val SAVE_CSV_OPTION = "save csv share option"
+        val SAVE_TO_File_OPTION = "save to file share option"
         val LOAD_FROM_FILE_OPTION = "load from file option"
         val LOAD_FROM_GOOGLE_ACCOUNT_OPTION = "load from google account option"
-
-
-
         val TAG = ShareContactsDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
         //

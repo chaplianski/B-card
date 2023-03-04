@@ -946,11 +946,8 @@ class CardsFragment : Fragment() {
     private fun setupShareDialog() {
         ShareContactsDialog.setupListener(parentFragmentManager, this) { cardId, status ->
             when (status) {
-                ShareContactsDialog.SAVE_VCF_OPTION -> {
+                ShareContactsDialog.SAVE_TO_File_OPTION -> {
                     showSaveVcfCardsDialog(cardId)
-                }
-                ShareContactsDialog.SAVE_CSV_OPTION -> {
-                    showSaveCsvCardsDialog(cardId)
                 }
                 ShareContactsDialog.LOAD_FROM_FILE_OPTION -> {
                     val filePicker = ContactPicker(
@@ -1025,10 +1022,6 @@ class CardsFragment : Fragment() {
         LoadCardListFromFileDialog.show(parentFragmentManager, uri)
     }
 
-    private fun showSaveCsvCardsDialog(cardId: Long) {
-
-    }
-
     private fun showSaveVcfCardsDialog(cardId: Long) {
         SaveCardDialog.show(parentFragmentManager, cardId)
     }
@@ -1036,7 +1029,6 @@ class CardsFragment : Fragment() {
     private fun showShareDialog(currentCardId: Long) {
         ShareContactsDialog.show(parentFragmentManager, currentCardId)
     }
-
 
     fun SnapHelper.getSnapPosition(recyclerView: RecyclerView): Int {
         val layoutManager = recyclerView.layoutManager ?: return RecyclerView.NO_POSITION

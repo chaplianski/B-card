@@ -1,5 +1,6 @@
 package com.chaplianski.bcard.core.helpers
 
+import android.util.Log
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.model.ContactCsv
 
@@ -12,7 +13,7 @@ fun ContactCsv.mapContactCsvToCard(): Card {
         name = givenName ?: "",
         surname = familyName ?: "",
         photo = "",
-        workPhone = phone1Type ?: "",
+        workPhone = phone1Value ?: "",
         homePhone = phone2Value ?: "",
         email = email1Value ?: "",
         speciality = organization1JobDescription ?: "",
@@ -21,34 +22,39 @@ fun ContactCsv.mapContactCsvToCard(): Card {
         country = address1Country ?: "",
         additionalContactInfo = notes ?: "",
         professionalInfo = organization1Department ?: "",
-        privateInfo = notes ?: "",
+        privateInfo = nickname ?: "",
     )
 }
 
 fun Card.mapCardToContactCsv(): ContactCsv {
-    return ContactCsv(
-        name = name,
-        givenName = surname,
-        familyName = surname,
-        nickname = privateInfo,
-        birthday = professionalInfo,
-        location = town,
-        occupation = speciality,
-        notes = additionalContactInfo,
-        photo = photo,
-        email1Value = email,
-        email2Value = email,
-        phone1Value = workPhone,
-        phone2Value = homePhone,
-        address1Formatted = null,
-        address1City = town,
-        address1Country = country,
-        organization1Name = organization,
-        organization1Title = organization,
-        organization1Department = null,
-        organization1JobDescription = speciality,
-        website1Value = additionalContactInfo,
-    )
+    var firstName = ""
+    var secondName = ""
+    val nameArray = name.split(" ")
+    if (nameArray.size > 1) {
+        firstName = nameArray[0]
+        secondName = nameArray[1].trimStart()
+    } else firstName = name
+
+        return ContactCsv(
+            name = "$name $surname",
+            givenName = firstName,
+            additionalName = secondName,
+            familyName = surname,
+            nickname = privateInfo,
+            occupation = speciality,
+            notes = additionalContactInfo,
+            photo = photo,
+            email1Value = email,
+            email2Value = email,
+            phone1Value = workPhone,
+            phone2Value = homePhone,
+            address1City = town,
+            address1Country = country,
+            organization1Name = organization,
+            organization1Title = organization,
+            organization1Department = professionalInfo,
+            organization1JobDescription = speciality,
+        )
 }
 
 

@@ -58,7 +58,7 @@
     <string name="background">Фон приложения</string>
     <string name="language">Язык</string>
     <string name="about">О нас</string>
-    <string name="save_vcf">Сохранить в файл (.vcf)</string>
+    <string name="save_to_file">Сохранить в файл (.vcf)</string>
     <string name="save_csv">Сохранить в файл (.csv)</string>
     <string name="load_from_file">Загрузить из файла</string>
     <string name="load_from_account">Загрузить с аккаунта</string>

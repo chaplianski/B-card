@@ -21,7 +21,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="184dp"
             android:background="@drawable/square_background"/>
 
         <LinearLayout
@@ -35,7 +35,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="top|center_horizontal"
                 android:gravity="center"
-                android:text="@string/save_vcf"
+                android:text="@string/save_to_file"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -43,22 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/black"/>
-            <TextView
-                android:id="@+id/tv_share_dialog_save_csv"
-                style="@style/Regular"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_gravity="top|center_horizontal"
 
-                android:gravity="center"
-                android:text="@string/save_csv"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/black"/>
             <TextView
                 android:id="@+id/tv_share_dialog_load_vcf"
                 style="@style/Regular"

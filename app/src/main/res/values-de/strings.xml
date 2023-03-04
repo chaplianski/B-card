@@ -118,7 +118,7 @@
 
     <string name="about">Über uns</string>
 
-    <string name="save_vcf">Speichern unter (.vcf)</string>
+    <string name="save_to_file">Speichern unter (.vcf)</string>
 
     <string name="save_csv">Speichern unter (.csv)</string>
 

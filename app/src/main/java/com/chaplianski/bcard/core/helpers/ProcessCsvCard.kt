@@ -10,7 +10,9 @@ import com.chaplianski.bcard.domain.model.ContactCsv
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import java.io.FileWriter
 import java.io.InputStream
+import java.io.OutputStream
 
 class ProcessCsvCard {
 
@@ -51,6 +53,15 @@ class ProcessCsvCard {
                 .readValues<T>(reader)
                 .readAll()
                 .toList()
+        }
+    }
+
+    inline fun <reified T> writeCsvFile(data: Collection<T>, outputStream: OutputStream) {
+        outputStream.use { writer ->
+            csvMapper.writer(csvMapper.schemaFor(T::class.java).withHeader())
+                .writeValues(writer)
+                .writeAll(data)
+                .close()
         }
     }
 }

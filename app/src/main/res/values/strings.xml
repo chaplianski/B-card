@@ -24,6 +24,7 @@
     <string name="add">Add</string>
     <string name="two_value_with_comma">%1s, %2s</string>
     <string name="two_value_without_comma">%1s %2s</string>
+    <string name="two_values_together" translatable="false">%1s%2s</string>
     <string name="postal_address">Postal address:\n</string>
     <string name="note">Note: </string>
     <string name="nickname">Nickname: </string>
@@ -57,8 +58,7 @@
     <string name="background">Background</string>
     <string name="language">Language</string>
     <string name="about">About</string>
-    <string name="save_vcf">Save to file (.vcf)</string>
-    <string name="save_csv">Save to file (.csv)</string>
+    <string name="save_to_file">Save to file</string>
     <string name="load_from_file">Load from file</string>
     <string name="load_from_account">Load from account</string>
     <string name="let_s_start">Let\'s start</string>

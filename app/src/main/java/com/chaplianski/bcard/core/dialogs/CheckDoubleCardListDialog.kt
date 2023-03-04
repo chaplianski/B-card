@@ -52,7 +52,7 @@ class CheckDoubleCardListDialog :
                             currentContact.isChecked = !currentContact.isChecked
                             if (currentContact.isChecked) checkedContactCount++ else checkedContactCount--
                         }
-                        addButton.text = getString(R.string.save_items, checkedContactCount) //"Save [$checkedContactCount]"
+                        addButton.text = getString(R.string.save_items, checkedContactCount)
                     }
                 }
             }
@@ -69,8 +69,7 @@ class CheckDoubleCardListDialog :
                 }
                 checkedContactCount = 0
             }
-//            Log.d("MyLog", "check all = ${checkedContactCount}")
-            addButton.text = getString(R.string.save_items, checkedContactCount)//"Save [$checkedContactCount]"
+            addButton.text = getString(R.string.save_items, checkedContactCount)
 
             currentContactList?.toList()?.let { it1 -> contactListAdapter.updateList(it1) }
             allCardCheckFlag = !allCardCheckFlag
@@ -98,9 +97,9 @@ class CheckDoubleCardListDialog :
 
     companion object {
 
-        val CHECKED_OPTION = "checked option"
-        val ADD_STATUS = "add cards status"
-        val CANCEL_STATUS = "cancel load cards status"
+        val CHECKED_OPTION = "checked double option"
+        val ADD_STATUS = "add double cards status"
+        val CANCEL_STATUS = "cancel double cards status"
         val DOUBLE_CARD_LIST = "double card list"
         val TAG = CheckDoubleCardListDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
@@ -110,7 +109,6 @@ class CheckDoubleCardListDialog :
             val contactArrayList = contactList as ArrayList<Contact>
             Log.d("MyLog", "arraylist show = ${contactArrayList}")
             dialogFragment.arguments = bundleOf(
-//                CURRENT_CARD_ID to currentCardId
                 DOUBLE_CARD_LIST to contactArrayList
             )
             dialogFragment.show(manager, TAG)

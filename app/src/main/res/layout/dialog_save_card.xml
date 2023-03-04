@@ -92,10 +92,10 @@ tools:context=".core.dialogs.SaveCardDialog">
             android:id="@+id/layout_save_card_dialog_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:layout_marginBottom="20dp"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_gravity="bottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -105,17 +105,30 @@ tools:context=".core.dialogs.SaveCardDialog">
             app:layout_constraintVertical_bias="1.0">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt_save_card_dialog_ok"
+                android:id="@+id/bt_save_card_dialog_vcf"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 style="@style/BCard.Button"
                 android:layout_weight="1"
                 android:background="@drawable/square_button"
-                android:text="@string/save" />
+                android:text="Save .vcf" />
 
             <View
-                android:layout_width="16dp"
-                android:layout_height="0dp" />
+                android:layout_width="0dp"
+                android:layout_height="3dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_save_card_dialog_csv"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                style="@style/BCard.Button"
+                android:layout_weight="1"
+                android:background="@drawable/square_button"
+                android:text="Save .csv (without photo)" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="3dp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/bt_save_card_dialog_cancel"

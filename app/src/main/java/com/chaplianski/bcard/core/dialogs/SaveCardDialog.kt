@@ -16,12 +16,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
+import com.chaplianski.bcard.core.helpers.ProcessCsvCard
+import com.chaplianski.bcard.core.helpers.mapCardToContactCsv
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.SaveCardDialogViewModel
+import com.chaplianski.bcard.data.repository.cardMapDomainToData
 import com.chaplianski.bcard.databinding.DialogSaveCardBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.model.ContactContent
+import com.chaplianski.bcard.domain.model.ContactCsv
 import ezvcard.Ezvcard
 import ezvcard.VCard
 import ezvcard.parameter.AddressType
@@ -42,12 +46,21 @@ class SaveCardDialog :
     BasisDialogFragment<DialogSaveCardBinding>(DialogSaveCardBinding::inflate) {
 
     val vcardList = mutableListOf<VCard>()
+    val cardListForCsv = mutableListOf<ContactCsv>()
     val saveCards = registerForActivityResult(
         ActivityResultContracts.CreateDocument(
             SAVING_TYPE_FILE_VCF
         )
     ) {
         saveFile(it)
+    }
+
+    val saveCSVCards = registerForActivityResult(
+        ActivityResultContracts.CreateDocument(
+            SAVING_TYPE_FILE_CSV
+        )
+    ) {
+        saveCSVFile(it)
     }
 
     @Inject
@@ -64,7 +77,8 @@ class SaveCardDialog :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val saveButton = binding.btSaveCardDialogOk
+        val saveVCFButton = binding.btSaveCardDialogVcf
+        val saveCSVButton = binding.btSaveCardDialogCsv
         val cancelButton = binding.btSaveCardDialogCancel
         val cardListRV = binding.rvSaveCardDialog
         var checkedCardCount = 0
@@ -74,8 +88,6 @@ class SaveCardDialog :
         cardListRV.layoutManager = LinearLayoutManager(context)
         cardListRV.adapter = cardListAdapter
 
-
-
         saveCardDialogViewModel.getCardListState
             .flowWithLifecycle(lifecycle)
             .onEach {
@@ -83,7 +95,6 @@ class SaveCardDialog :
                     is SaveCardDialogViewModel.GetCardsState.Loading -> {}
                     is SaveCardDialogViewModel.GetCardsState.Success -> {
                         val cardList = it.cardList
-//                        var positionCurrentCheckedCard = 0
                         val fullContactList = mutableListOf<ContactContent>()
 
                         val letterList =
@@ -103,24 +114,22 @@ class SaveCardDialog :
                                 }
                             }
                             checkedCardCount = 1
-                            saveButton.text = getString(
+                            saveVCFButton.text = getString(
                                 R.string.save_count,
                                 checkedCardCount
                             ) //"Save [$checkedCardCount]"
                         }
-                        Log.d("MyLog", "checkList =  $fullContactList")
                         cardListAdapter.updateList(fullContactList)
 
                         cardListAdapter.checkBoxListener =
                             object : CardListShareFragmentAdapter.CheckBoxListener {
                                 override fun onCheck(card: ContactContent.Contact) {
-                                    Log.d("MyLog", "check $checkedCardCount")
                                     cardList.forEach { cardItem ->
                                         if (cardItem.id == card.card.id) {
                                             cardItem.isChecked = !cardItem.isChecked
                                             if (cardItem.isChecked) checkedCardCount++ else checkedCardCount--
                                         }
-                                        saveButton.text = getString(
+                                        saveVCFButton.text = getString(
                                             R.string.save_count,
                                             checkedCardCount
                                         ) //"Save [$checkedCardCount]"
@@ -129,7 +138,8 @@ class SaveCardDialog :
                             }
 
                         val listCard = mutableListOf<Card>()
-                        saveButton.setOnClickListener {
+
+                        saveVCFButton.setOnClickListener {
                             vcardList.clear()
                             listCard.clear()
                             cardList.forEach { cardItem ->
@@ -143,19 +153,46 @@ class SaveCardDialog :
                                 when (listCard.size) {
                                     1 -> {
                                         val card = listCard[0]
-                                        val file = File("${card.surname}.vcf")
-                                        saveVCardToPhone(file, card.surname)
+                                        val file = File(getString(R.string.two_values_together, card.surname, TYPE_FILE_VCF))
+                                        saveVCardToPhone(file, card.surname, TYPE_FILE_VCF)
                                     }
                                     else -> {
-                                        val file = File("contacts.vcf")
-                                        saveVCardToPhone(file, "contacts")
+                                        val file = File(getString(R.string.two_values_together, COMMON_NAME_FILE, TYPE_FILE_VCF))
+                                        saveVCardToPhone(file, COMMON_NAME_FILE, TYPE_FILE_VCF)
                                     }
                                 }
                             }
                         }
+
+                        saveCSVButton.setOnClickListener {
+                            cardListForCsv.clear()
+                            cardList.forEach { cardItem ->
+                                if (cardItem.isChecked) {
+                                    cardListForCsv.add(cardItem.mapCardToContactCsv())
+                                }
+                            }
+
+                            if (!cardListForCsv.isNullOrEmpty()) {
+                                when (cardListForCsv.size) {
+                                    1 -> {
+                                        val card = cardListForCsv[0]
+                                        val file = File(getString(R.string.two_values_together, card.familyName, TYPE_FILE_CSV))
+                                        card.familyName?.let { it1 ->
+                                            saveVCardToPhone(file,
+                                                it1, TYPE_FILE_CSV)
+                                        }
+                                    }
+                                    else -> {
+                                       val file = File(getString(R.string.two_values_together, COMMON_NAME_FILE, TYPE_FILE_VCF))
+                                        saveVCardToPhone(file, COMMON_NAME_FILE, TYPE_FILE_CSV)
+                                    }
+
+                                }
+                            }
+                        }
+
                         var allCardCheckFlag = false
                         checkboxAllCards.setOnClickListener {
-                            Log.d("MyLog", "check all")
                             if (!allCardCheckFlag) {
                                 cardList.forEach {
                                     it.isChecked = true
@@ -186,7 +223,7 @@ class SaveCardDialog :
                                         newContactList.add(ContactContent.Contact(card))
                                     }
                                 }
-                                saveButton.text = getString(
+                                saveVCFButton.text = getString(
                                     R.string.save_count,
                                     checkedCardCount
                                 ) //"Save [$checkedCardCount]"
@@ -194,8 +231,6 @@ class SaveCardDialog :
                             cardListAdapter.updateList(fullContactList)
                             allCardCheckFlag = !allCardCheckFlag
                         }
-
-
                     }
                     is SaveCardDialogViewModel.GetCardsState.Failure -> {}
                 }
@@ -206,7 +241,7 @@ class SaveCardDialog :
             saveCardDialogViewModel.getCards(SURNAME)
         }
 
-        saveButton.setOnClickListener {
+        saveVCFButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
                 REQUEST_KEY,
                 bundleOf(CURRENT_CARD_ID to currentCardId, CHECKED_OPTION to SAVE_STATUS)
@@ -268,53 +303,18 @@ class SaveCardDialog :
         return vcard
     }
 
-    private fun saveVCardToPhone(file: File, fileName: String) {
+    private fun saveVCardToPhone(file: File, fileName: String, fileType: String) {
         val path = Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_DOCUMENTS
         )
         path.mkdirs()
-        val uriForFile = Uri.fromFile(file)
         try {
-//            createFile(uriForFile, "${fileName}.vcf")
-            saveCards.launch("${fileName}.vcf")
+            if (fileType == TYPE_FILE_VCF) saveCards.launch(getString(R.string.two_values_together, fileName, fileType))
+            else saveCSVCards.launch("${fileName}$fileType")
         } catch (e: Exception) {
             Log.d("MyLog", "e = $e")
         }
     }
-
-//    private fun createFile(pickerInitialUri: Uri, fileName: String) {
-//
-//        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-//            addCategory(Intent.CATEGORY_OPENABLE)
-//            type = SAVING_TYPE_FILE_VCF
-//            putExtra(Intent.EXTRA_TITLE, fileName)
-//            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
-//        }
-//        startActivityForResult(intent, CREATE_FILE)
-//
-//    }
-//
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == 111 && resultCode == Activity.RESULT_OK) {
-//            val selectedFile = data?.data //The uri with the location of the file
-//            val outputStream = data?.data?.let {
-//                context?.contentResolver?.openOutputStream(it)
-//            }
-////            outputStream?.write(vCard)
-//            Ezvcard.write(vcardList).go(outputStream)
-//            outputStream?.flush()
-//            outputStream?.close()
-//        }
-//        if (requestCode == 222 && resultCode == Activity.RESULT_OK) {
-//            data?.data?.also {
-//
-//                val inputStream = context?.contentResolver?.openInputStream(it)
-//                val readVcard = Ezvcard.parse(inputStream).first()
-//                Log.d("MyLog", "readVcard = $readVcard")
-//            }
-//        }
-//    }
 
     private fun saveFile(uri: Uri?) {
         val outputStream = uri?.let {
@@ -326,6 +326,19 @@ class SaveCardDialog :
         dismiss()
     }
 
+    private fun saveCSVFile(uri: Uri?) {
+        val processCsvCard = ProcessCsvCard()
+        val outputStream = uri?.let {
+            context?.contentResolver?.openOutputStream(uri)
+        }
+        if (outputStream != null){
+            processCsvCard.writeCsvFile(cardListForCsv, outputStream)
+            outputStream.flush()
+            outputStream.close()
+        }
+        dismiss()
+    }
+
     companion object {
 
         val CHECKED_OPTION = "checked option"
@@ -333,9 +346,10 @@ class SaveCardDialog :
         val CANCEL_STATUS = "cancel status"
         val SURNAME = "surname"
         val SAVING_TYPE_FILE_VCF = "application/vcf"
-
-        const val CREATE_FILE = 111
-
+        val SAVING_TYPE_FILE_CSV = "text/csv"
+        val TYPE_FILE_VCF = ".vcf"
+        val TYPE_FILE_CSV = ".csv"
+        val COMMON_NAME_FILE = "contacts"
         val TAG = SaveCardDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
 
@@ -364,6 +378,4 @@ class SaveCardDialog :
                 })
         }
     }
-
-
 }

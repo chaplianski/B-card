@@ -64,7 +64,6 @@ class LoadCardListFromFileDialog :
 
         val checkboxAllCards = binding.checkBoxLoadCardDialogCheckAll
         val currentCardId = arguments?.getLong(CURRENT_CARD_ID, -1L)
-        val currentDestination = arguments?.getString(DESTINATION)
         val currentUri = arguments?.getString(CURRENT_URI)
         val processCard = ProcessCard(requireContext())
 
@@ -211,8 +210,8 @@ class LoadCardListFromFileDialog :
 
     companion object {
 
-        val CHECKED_OPTION = "checked option"
-        val ADD_STATUS = "add cards status"
+        val CHECKED_OPTION = "checked load option"
+        val ADD_STATUS = "add load cards status"
         val CANCEL_STATUS = "cancel load cards status"
         val AFTER_CHECK_DOUBLE_STATUS = "after check double status"
         val FAKE_CURRENT_CARD_ID = -1L
