@@ -1,14 +1,10 @@
 package com.chaplianski.bcard.core.dialogs
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.*
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
@@ -17,14 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.core.viewmodels.AdditionalInfoDialogViewModel
 import com.chaplianski.bcard.databinding.DialogAdditionalInformationBinding
-import com.chaplianski.bcard.databinding.DialogBackgroundSettingsBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.AdditionalInfo
 import javax.inject.Inject
 
 
-class AdditionalInformationDialog : //DialogFragment() {
-    BasisDialogFragment<DialogAdditionalInformationBinding>(DialogAdditionalInformationBinding::inflate){
+class AdditionalInformationDialog : BasisDialogFragment<DialogAdditionalInformationBinding>(DialogAdditionalInformationBinding::inflate){
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory

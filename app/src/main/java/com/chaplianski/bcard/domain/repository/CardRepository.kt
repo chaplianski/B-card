@@ -1,7 +1,6 @@
 package com.chaplianski.bcard.domain.repository
 
 import com.chaplianski.bcard.domain.model.Card
-import kotlinx.coroutines.flow.Flow
 
 interface CardRepository {
 

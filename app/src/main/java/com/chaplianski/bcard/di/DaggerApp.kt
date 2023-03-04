@@ -15,5 +15,4 @@ class DaggerApp: Application () {
     }
 
     fun getAppComponent() = appComponent
-
 }

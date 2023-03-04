@@ -23,5 +23,4 @@ class AdditionalInfoDialogViewModel @Inject constructor(
             _currentCard.postValue(card)
         }
     }
-
 }

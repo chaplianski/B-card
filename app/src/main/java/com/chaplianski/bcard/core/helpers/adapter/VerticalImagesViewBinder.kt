@@ -1,4 +1,4 @@
-package com.chaplianski.bcard.core.helpers
+package com.chaplianski.bcard.core.helpers.adapter
 
 import android.view.LayoutInflater
 import android.view.View

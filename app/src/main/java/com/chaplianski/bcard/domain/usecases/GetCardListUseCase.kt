@@ -1,7 +1,5 @@
 package com.chaplianski.bcard.domain.usecases
 
-import android.util.Log
-import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.repository.CardRepository
 import java.util.concurrent.CancellationException
 import javax.inject.Inject

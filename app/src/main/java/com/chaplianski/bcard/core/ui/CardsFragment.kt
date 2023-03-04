@@ -1,5 +1,6 @@
 package com.chaplianski.bcard.core.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.media.MediaScannerConnection
@@ -86,7 +87,6 @@ class CardsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val backgroundLayout = binding.clCardsFragment
         val adContainerView = binding.layoutCardFragmentAd
         val settingsButton = binding.btCardsFragmentSettings
         val editButton = binding.btCardsFragmentEdit
@@ -162,7 +162,7 @@ class CardsFragment : Fragment() {
             showSettingsDialog()
         }
         setupSettingsDialog()
-        setupBackgroundSettingsDialog(backgroundLayout)
+        setupBackgroundSettingsDialog(binding.clCardsFragment)
         setupLanguageDialog()
 
         editButton.setOnClickListener {
@@ -281,8 +281,6 @@ class CardsFragment : Fragment() {
         }
 
         cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
-
-//            Log.d("MyLog", "card cardId = ${card.id}")
             currentCard = card
             currentCardId = card.id
             imageUri = card.photo
@@ -367,28 +365,6 @@ class CardsFragment : Fragment() {
                 }
             }
     }
-
-//    private fun loadAD(context: Context, adContainerView: FrameLayout) {
-//        val binding = LayoutAdToCardBinding.inflate(LayoutInflater.from(context))
-//        val adLoader = AdLoader.Builder(context, AD_UNIT_ID)
-//            .forNativeAd { nativeAd ->
-//                Log.d("MyLog", "is success")
-//                val adView = populateNativeAdView(nativeAd, binding)
-//                adContainerView.addView(adView)
-//            }
-//            .withAdListener(object : AdListener() {
-//                override fun onAdFailedToLoad(adError: LoadAdError) {
-//                    Log.d("MyLog", "is failure")
-//                }
-//            })
-//            .withNativeAdOptions(
-//                NativeAdOptions.Builder()
-//
-//                .build())
-//
-//            .build()
-//        adLoader.loadAds(AdRequest.Builder().build(), 5)
-//    }
 
     private fun addSearchFieldListener(
         searchField: EditText,
@@ -725,10 +701,8 @@ class CardsFragment : Fragment() {
 
     private fun setupSettingsDialog() {
         SettingsDialog.setupListener(parentFragmentManager, this.viewLifecycleOwner) { status ->
-//            Log.d("MyLog", "status settings = $status")
             when (status) {
                 SettingsDialog.BACKGROUND_STATUS -> {
-//                    Log.d("MyLog", "background")
                     showBackgroundSettingsDialog()
                 }
                 SettingsDialog.LANGUAGE_STATUS -> {
@@ -742,6 +716,7 @@ class CardsFragment : Fragment() {
     }
 
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun setupBackgroundSettingsDialog(backgroundLayout: CoordinatorLayout) {
         BackgroundSettingsDialog.setupListener(
             parentFragmentManager, this.viewLifecycleOwner
@@ -790,7 +765,7 @@ class CardsFragment : Fragment() {
             }
         }
     }
-
+    //not used
     fun RecyclerView.addScrollListener(onScroll: (position: Int) -> Unit) {
         var lastPosition = 0
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -809,6 +784,7 @@ class CardsFragment : Fragment() {
         })
     }
 
+    //not used
     fun RecyclerView.addGlobalLayoutListener(onScroll: (position: Int) -> Unit) {
         var lastPosition = 0
         viewTreeObserver.addOnGlobalLayoutListener(object :
@@ -827,7 +803,6 @@ class CardsFragment : Fragment() {
 
         })
     }
-
 
     private fun setupEditDialog() {
         EditCardDialog.setupListener(parentFragmentManager, this) { cardId, status ->
@@ -885,7 +860,6 @@ class CardsFragment : Fragment() {
         CardSettingsDialog.setupListener(
             parentFragmentManager, this
         ) { cardId, status, cardSettingsInfo ->
-//            Log.d("MyLog", "cardInfo = $cardSettingsInfo")
             if (status == CardSettingsDialog.SAVE_STATUS) {
                 currentCardSettings = cardSettingsInfo as CardSettings
                 cardSettingsCheck = true
@@ -898,7 +872,6 @@ class CardsFragment : Fragment() {
         AdditionalInformationDialog.setupListener(
             parentFragmentManager, this
         ) { cardId, status, additionalInfo ->
-//            Log.d("MyLog", "addInfo = $additionalInfo")
             if (status == AdditionalInformationDialog.SAVE_STATUS) {
                 currentAdditionalInfo = additionalInfo as AdditionalInfo
                 additionalInfoCheck =
@@ -915,7 +888,6 @@ class CardsFragment : Fragment() {
             if (status == PersonInformationDialog.SAVE_STATUS) {
                 currentPersonInfo = personInfo as PersonInfo
                 personInfoCheck = true
-//                Log.d("MyLog", "setup person info, cardId = $cardId")
                 showEditDialog(cardId)
             } else showEditDialog(cardId)
         }
@@ -1061,7 +1033,6 @@ class CardsFragment : Fragment() {
             lifecycleScope.launch(Dispatchers.IO) {
                 if (currentCardId != null) {
                     deleteImage(currentCard.photo)
-//                Log.d("MyLog", "del current position = ${currentPosition}, cardId = $currentCardId")
                     cardsFragmentViewModel.deleteCard(currentCardId)
                     currentCardDeleteId = currentCardId
                 }
@@ -1080,7 +1051,7 @@ class CardsFragment : Fragment() {
                     arrayOf(Environment.getExternalStorageDirectory().toString()),
                     null
                 ) { path, uri ->
-//                    Log.d("MyLog", "DONE")
+                    //to do ??
                 }
             }
         }

@@ -30,7 +30,6 @@ import com.chaplianski.bcard.domain.model.CardSettings
 import com.chaplianski.bcard.domain.model.CardTexture
 import javax.inject.Inject
 
-
 class CardSettingsDialog :
     BasisDialogFragment<DialogCardSettingsBinding>(DialogCardSettingsBinding::inflate){
 

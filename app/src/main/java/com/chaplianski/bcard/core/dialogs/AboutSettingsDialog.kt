@@ -10,11 +10,10 @@ import androidx.lifecycle.LifecycleOwner
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.databinding.DialogAboutSettingsBinding
 
-
 class AboutSettingsDialog :
     BasisDialogFragment<DialogAboutSettingsBinding>(DialogAboutSettingsBinding::inflate){
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(vew: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val okButton = binding.btAboutDialogOk

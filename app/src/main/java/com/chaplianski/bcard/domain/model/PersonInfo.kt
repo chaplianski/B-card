@@ -2,9 +2,9 @@ package com.chaplianski.bcard.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-
+//??? этот тоже в вью слое только используется
 @Parcelize
-data class PersonInfo(
+data class PersonInfo constructor(
     var id: Long = 0,
     val userId: Long = 0,
     val name: String = "",

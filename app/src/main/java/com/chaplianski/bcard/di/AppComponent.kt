@@ -32,6 +32,4 @@ interface AppComponent {
         fun context(context: Context): Builder
         fun build(): AppComponent
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.chaplianski.bcard.data.storage.net
+package com.chaplianski.bcard.data.storage.firebase
 
 //class FirebaseAuthorization @Inject constructor(){
 //

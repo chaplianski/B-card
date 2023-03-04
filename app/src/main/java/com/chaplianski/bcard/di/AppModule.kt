@@ -46,9 +46,4 @@ class AppModule() {
     fun provideBCardStorage(impl: CardStorageImpl): CardStorage = impl
     @Provides
     fun provideUserStorage(impl: UserStorageImpl): UserStorage = impl
-
-
-
-
-
 }

@@ -8,9 +8,6 @@ import javax.inject.Inject
 
 class CardStorageImpl @Inject constructor(private val cardDao: CardDao): CardStorage {
 
-//    @Inject
-//    lateinit var cardDao: CardDao
-
 //    override fun addCard(cardDTO: CardDTO) = cardDao.insertCard(cardDTO)
 
     override fun getCards(): List<CardDTO> {
