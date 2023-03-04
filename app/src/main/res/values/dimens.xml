@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_corner_radius">20dp</dimen>
+    <dimen name="zero_dp">0dp</dimen>
+    <dimen name="default_margin_10dp">10dp</dimen>
+    <dimen name="default_margin_16dp">16dp</dimen>
 </resources>

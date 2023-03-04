@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--textSize move to dimen size and for TextView could you please use style with param-->
     <TextView
         android:id="@+id/tv_card_impl_person_info"
         style="@style/Bold"
@@ -37,6 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_card_impl_person_info"
         app:layout_constraintVertical_bias="0.0">
 
+        <!--Hardcoded size in view bad practice -->
         <ImageView
             android:id="@+id/iv_card_impl_avatar"
             android:layout_width="100dp"
@@ -50,6 +52,7 @@
             app:layout_constraintTop_toTopOf="@+id/cl_card_impl_person_info"
             app:layout_constraintVertical_bias="0.0" />
 
+        <!-- String must move to string resources -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/otf_card_impl_name"
             style="@style/BCard.OutlinedBox.Field"

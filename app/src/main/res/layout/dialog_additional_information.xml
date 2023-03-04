@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/default_margin_10dp"
                 android:text="@string/additional_information"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
@@ -62,11 +62,11 @@
                 style="@style/Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="@dimen/default_margin_16dp"
+                android:layout_marginTop="@dimen/default_margin_16dp"
                 android:text="@string/personal_additional_information"
                 android:textColor="@color/black"/>
-
+            <!--size view export to dimen resources -->
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
