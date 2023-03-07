@@ -44,10 +44,6 @@ class LoginFragmentViewModel @Inject constructor(
         }
     }
 
-    fun checkSecretAnswer(login: String, answer: String){
-
-    }
-
     override fun onCleared() {
         viewModelScope.cancel()
     }

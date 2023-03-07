@@ -3,7 +3,6 @@ package com.chaplianski.bcard.core.dialogs
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
@@ -21,7 +20,6 @@ import com.chaplianski.bcard.core.helpers.ProcessCsvCard
 import com.chaplianski.bcard.core.helpers.ProcessVcfCard
 import com.chaplianski.bcard.core.utils.CSV_TYPE
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
-import com.chaplianski.bcard.core.utils.DESTINATION
 import com.chaplianski.bcard.core.utils.VCF_TYPE
 import com.chaplianski.bcard.core.viewmodels.LoadCardsDialogViewModel
 import com.chaplianski.bcard.databinding.DialogLoadCardBinding
@@ -35,12 +33,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 class LoadCardListFromFileDialog :
     BasisDialogFragment<DialogLoadCardBinding>(DialogLoadCardBinding::inflate){
 
     var cardList = emptyList<Card>()
-//    val loadingProgressBar = view?.findViewById<LottieAnimationView>(R.id.pb_load_card_dialog_loading)
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -59,9 +55,7 @@ class LoadCardListFromFileDialog :
         val addButton = binding.btLoadCardDialogAdd
         val cancelButton = binding.btLoadCardDialogCancel
         val cardListRV = binding.rvLoadCardDialog
-
         var allCardList = emptyList<Card>()
-
         val checkboxAllCards = binding.checkBoxLoadCardDialogCheckAll
         val currentCardId = arguments?.getLong(CURRENT_CARD_ID, -1L)
         val currentUri = arguments?.getString(CURRENT_URI)
@@ -153,7 +147,6 @@ class LoadCardListFromFileDialog :
                     )
                     contactList.add(contact)
                 }
-//                Log.d("MyLog", "contactList = ${contactList.size}, doubleListSize = ${doubleCardList.size}")
                 showCheckDoubleCardListDialog(contactList)
             }
             if (doubleCardList.isNotEmpty()){
@@ -166,7 +159,7 @@ class LoadCardListFromFileDialog :
                 dismiss()
             }
         }
-//
+
         cancelButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
                 REQUEST_KEY,
@@ -218,11 +211,10 @@ class LoadCardListFromFileDialog :
         val REGISTRY_KEY_LOAD_FILE = "registry key load photo"
         val SURNAME = "surname"
         val CURRENT_URI = "current uri"
-
         val TAG = LoadCardListFromFileDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
 
-        fun show(manager: FragmentManager, uri: Uri){ //currentCardId: Long, destination: String ) {
+        fun show(manager: FragmentManager, uri: Uri){
             val dialogFragment = LoadCardListFromFileDialog()
             dialogFragment.arguments = bundleOf(
                 CURRENT_URI to uri.toString()

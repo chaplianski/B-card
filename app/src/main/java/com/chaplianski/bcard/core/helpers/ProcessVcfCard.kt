@@ -14,7 +14,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 class ProcessVcfCard  {
-
     fun convertVcardToCardList(
         vcardList: List<VCard>,
         contentResolver: ContentResolver,
@@ -46,7 +45,6 @@ class ProcessVcfCard  {
                     specialityValue = vcard.titles[0].value
                 }
             }
-            Log.d("MyLog", "org = ${vcard.organization}")
             if (vcard.organization != null){
                 organizationValue = vcard.organization.values[0]
             }
@@ -84,11 +82,9 @@ class ProcessVcfCard  {
             var referenceValue = ""
             val cardDecorResource = CardDecorResources()
             var cardTextureValue = cardDecorResource.getCardTextureResource().random().cardTextureName
-//            var cardTextureValue = DEFAULT_CARD_TEXTURE
             var cardTextColorValue = DEFAULT_CARD_TEXT_COLOR
             var cardCornerValue = DEFAULT_CARD_CORNER
             var formPhotoValue = DEFAULT_CARD_FORM_PHOTO
-
 
             val personAdditionalInfo = vcard.getExtendedProperties(PROFIL_INFO)
             personAdditionalInfo.forEach {
@@ -158,12 +154,6 @@ class ProcessVcfCard  {
     }
 
     fun insertPhoto(contentResolver: ContentResolver, context: Context, bitmap: Bitmap): String? {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            val uri = getTmpFileUri(context)
-
-//            var bitmapPhoto = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-////            var bitmapByteCount: Int? = bitmapPhoto?.let { BitmapCompat.getAllocationByteCount(it) }
-//            val imageFile = File(uri.toString())
         var bitmapPhoto = bitmap
 
         val currentHeight = bitmapPhoto.height.toDouble()
@@ -172,8 +162,6 @@ class ProcessVcfCard  {
             val cameraCoef = currentHeight / currentWidth
             val height = 150 * cameraCoef
             bitmapPhoto = getResizedBitmap(bitmapPhoto, 150.0, height)
-//                 bitmapByteCount =
-//                    bitmapPhoto?.let { BitmapCompat.getAllocationByteCount(it) }
         }
 
         if (currentHeight < currentWidth && currentHeight > 150) {
@@ -181,17 +169,10 @@ class ProcessVcfCard  {
             val width = 150 * cameraCoef
 
             bitmapPhoto = getResizedBitmap(bitmapPhoto, width, 150.0)
-//                bitmapByteCount =
-//                    bitmapPhoto?.let { BitmapCompat.getAllocationByteCount(it) }
         }
 
         val uriAvatar = saveImageInExternalCacheDir(context, bitmapPhoto)
-
-//            _photoUri.postValue(uriAvatar)
-
         return uriAvatar
-
-//        }
     }
 
     fun getResizedBitmap(bm: Bitmap, newWidth: Double, newHeight: Double): Bitmap {

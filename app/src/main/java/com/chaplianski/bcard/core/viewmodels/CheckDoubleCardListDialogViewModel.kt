@@ -17,5 +17,4 @@ class CheckDoubleCardListDialogViewModel @Inject constructor(
             addCardUseCase.execute(card)
         }
     }
-
 }

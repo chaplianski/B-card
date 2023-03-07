@@ -40,7 +40,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     private var _binding: DialogLoadContactsBinding? = null
@@ -162,7 +161,6 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
             ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT
         )
-
         super.onStart()
     }
 
@@ -171,9 +169,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         super.onDestroyView()
     }
 
-
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-//        Log.d("MyLog", "onCreate Loader, id = $id")
         return when (id) {
             0 -> CursorLoader(
                 requireContext(),
@@ -247,9 +243,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                 mSelectionArgs,
                 SORT_ORDER
             )
-
             else -> CursorLoader(requireContext())
-
         }
     }
 
@@ -550,7 +544,6 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                 dismiss()
             }
         }
-
     }
 
     private fun setupCheckDoubleCardListDialog() {
@@ -562,7 +555,6 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                         val card = cardList.filter { it.name == contact.name && it.surname == contact.surname && it.workPhone == contact.workPhone }
                         addDoubleCardList.addAll(card)
                     }
-                    Log.d("MyLog", "contactList = $contactList, addDoubleList = $addDoubleCardList")
                     addDoubleCardList.forEach {
                         loadContactListDialogViewModel.addCard(it)
                     }
@@ -593,7 +585,6 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         }
 
         const val SORT_ORDER = Data.MIMETYPE
-
         val CHECKED_OPTION = "checked option"
         val ADD_STATUS = "add contacts status"
         val CANCEL_STATUS = "cancel load contacts status"
@@ -620,8 +611,5 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                     }
                 })
         }
-
-
     }
-
 }

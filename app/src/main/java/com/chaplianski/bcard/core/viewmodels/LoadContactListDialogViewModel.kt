@@ -31,12 +31,9 @@ class LoadContactListDialogViewModel @Inject constructor(
             addCardUseCase.execute(card)
         }
     }
-
-
     sealed class GetCardsState{
         object Loading: GetCardsState()
         class Success(val cardList: List<Card>): GetCardsState()
         class Failure(val exception: String): GetCardsState()
-
     }
 }

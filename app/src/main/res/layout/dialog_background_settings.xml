@@ -3,27 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout14"
-    android:layout_width="400dp"
-    android:layout_height="630dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@drawable/border"
     tools:context=".core.dialogs.BackgroundSettingsDialog">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="6dp"
-        app:cardCornerRadius="20dp"
+        style="@style/dialog_style"
+        app:cardCornerRadius="@dimen/card_radius_20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
-
 
         <ImageView
             android:layout_width="match_parent"
@@ -43,11 +37,8 @@
             <ImageView
                 android:id="@+id/iv_background_settings_dialog"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="30dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
+                android:layout_height="@dimen/zero_dp"
+                android:layout_margin="@dimen/default_margin_30dp"
                 app:layout_constraintBottom_toTopOf="@+id/radiogroup_background_settings_dialog"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -59,7 +50,7 @@
                 android:id="@+id/radiogroup_background_settings_dialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="@dimen/default_margin_20dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/layout_background_settings_dialog_buttons"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -70,48 +61,46 @@
 
                 <RadioButton
                     android:id="@+id/rb_background_settings_dialog_1"
-                    android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:buttonTint="@color/light_brown"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin_20dp"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/light_brown" />
 
                 <RadioButton
                     android:id="@+id/rb_background_settings_dialog_2"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/light_brown"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/light_brown" />
 
                 <RadioButton
                     android:id="@+id/rb_background_settings_dialog_3"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/light_brown"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/light_brown" />
 
                 <RadioButton
                     android:id="@+id/rb_background_settings_dialog_4"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/light_brown"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/light_brown" />
 
                 <RadioButton
                     android:id="@+id/rb_background_settings_dialog_5"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/light_brown"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/light_brown" />
 
                 <RadioButton
                     android:id="@+id/rb_background_settings_dialog_6"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/light_brown"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/light_brown" />
             </RadioGroup>
 
             <LinearLayout
@@ -119,9 +108,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="@dimen/default_margin_20dp"
+                android:layout_marginBottom="@dimen/default_margin_20dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -134,7 +122,7 @@
                     android:id="@+id/bt_background_settings_dialog_setup"
                     style="@style/BCard.Button"
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
+                    android:layout_height="@dimen/default_button_height_50dp"
                     android:layout_weight="1"
                     android:background="@drawable/square_button"
                     android:text="@string/setup" />
@@ -147,12 +135,11 @@
                     android:id="@+id/bt_background_settings_dialog_cancel"
                     style="@style/BCard.Button"
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
+                    android:layout_height="@dimen/default_button_height_50dp"
                     android:layout_weight="1"
                     android:background="@drawable/square_button"
                     android:text="@string/cancel" />
             </LinearLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

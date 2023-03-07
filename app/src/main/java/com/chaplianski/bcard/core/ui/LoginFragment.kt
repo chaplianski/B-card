@@ -2,7 +2,6 @@ package com.chaplianski.bcard.core.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,14 +22,12 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import javax.inject.Inject
 
-
 class LoginFragment : Fragment() {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
     private val loginFragmentViewModel: LoginFragmentViewModel by viewModels { vmFactory }
 
-//    lateinit var auth: FirebaseAuth
     var _binding: FragmentLoginBinding? = null
     val binding get() = _binding!!
 
@@ -46,7 +43,6 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -58,7 +54,6 @@ class LoginFragment : Fragment() {
         val startButton = binding.btLoginFragmentSignin
         val registrationPanel = binding.clLoginFragmentLeftLeftPanel
         val motionLayout = binding.motionLayoutLoginFragment
-//        val buttonMotionLayout = binding.clLoginFragmentLeftLeftPanel
         val layoutSignIn = binding.layoutLoginFragmentSignIn.layoutSignIn
         val loginSignInField = binding.layoutLoginFragmentSignIn.otfLayoutSignInLogin
         val loginSignInText = binding.layoutLoginFragmentSignIn.etLayoutSignInLogin
@@ -104,7 +99,6 @@ class LoginFragment : Fragment() {
         val secretAnswerSignUpField = binding.layoutLoginFragmentSignUp.otfLayoutSignUpSecretAnswer
         val saveSignUpButton = binding.layoutLoginFragmentSignUp.btLayoutSignUpSave
 
-//        val rememberCheck = binding.cbLoginFragmentRemember
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val sharePrefExternal = context?.getSharedPreferences("data", Context.MODE_PRIVATE)
         val currentBackground = sharedPref?.getString(CURRENT_BACKGROUND, DEFAULT_BACKGROUND)
@@ -118,7 +112,6 @@ class LoginFragment : Fragment() {
                 it, backgroundResource
             )
         }
-//        backgroundLayout.background = resources.getDrawable(backgroundResource)
 
         var registrationPanelCount = true
 
@@ -149,7 +142,6 @@ class LoginFragment : Fragment() {
         if (loginSignInText.text.toString().isNotEmpty() && passwordSignInText.text.toString().isNotEmpty()){
             rememberPasswordSignInButton.isChecked = true
         }else {
-//            rememberPasswordSignInButton.isChecked = false
             startButton.isActivated = false
         }
 
@@ -216,7 +208,6 @@ class LoginFragment : Fragment() {
             layoutSignUp.visibility = View.VISIBLE
         }
 
-
         //******** Sign UP block view  **********
 
         listenNoEmptyCondition(loginSignUpText, loginSignUpField)
@@ -273,8 +264,6 @@ class LoginFragment : Fragment() {
 
         listenNoEmptyCondition(secretAnswerForgotPasswordText, secretAnswerForgotPasswordField)
 
-
-
         cancelForgotPassword.setOnClickListener {
             layoutForgotPassword.visibility = View.GONE
             layoutSignIn.visibility = View.VISIBLE
@@ -285,8 +274,6 @@ class LoginFragment : Fragment() {
             layoutForgotPassword.visibility = View.VISIBLE
         }
 
-
-        //***********************************************************************
             registrationPanel.setOnClickListener {
                 if (registrationPanelCount) {
                     motionLayout.setTransition(R.id.click_left_panel_forward)
@@ -300,7 +287,6 @@ class LoginFragment : Fragment() {
             }
 
             startButton.setOnClickListener {
-//                Log.d("MyLog", "startButtonstate2 = ${startButton.isActivated}")
                 if (startButton.isActivated) {
                     val login = loginSignInText.text.toString()
                     val password = passwordSignInText.text.toString()

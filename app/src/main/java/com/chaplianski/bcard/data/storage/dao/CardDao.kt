@@ -1,10 +1,8 @@
 package com.chaplianski.bcard.data.storage.dao
 
-import android.util.Log
 import androidx.room.*
 import com.chaplianski.bcard.data.storage.modeldto.CardDTO
 import com.chaplianski.bcard.data.storage.modeldto.UserDTO
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class CardDao {
@@ -50,13 +48,6 @@ abstract class CardDao {
     @Query("DELETE FROM cards WHERE cards.id = :cardId")
     abstract fun deleteCard(cardId: Long): Int
 
-//    fun updateCard(cardDTO: CardDTO){
-//        val cardId = cardDTO.id
-//        deleteCard(cardId)
-//        cardDTO.id = cardId
-//        insertCard(cardDTO)
-//    }
-
     @Query("SELECT * FROM cards WHERE cards.id=:cardId")
     abstract fun getCard(cardId: Long): CardDTO
 
@@ -78,8 +69,6 @@ abstract class CardDao {
     fun checkCurrentUser(userDTO: UserDTO): Long {
         val login = userDTO.login
         val password = userDTO.password
-        Log.d("MyLog", "userDto = $userDTO")
-        Log.d("MyLog", "users = ${getAllUsers()}")
         val isExist = checkUser(login, password)
         return if (isExist) getUserId(login, password).id
         else -1
@@ -92,5 +81,4 @@ abstract class CardDao {
         val ORGANIZATION = "organization"
         val LOCATION = "location"
     }
-
 }

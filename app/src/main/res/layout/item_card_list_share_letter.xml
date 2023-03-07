@@ -7,10 +7,10 @@
 
     <View
         android:id="@+id/view_item_card_list_share_line_before"
-        android:layout_width="30dp"
-        android:layout_height="2dp"
+        android:layout_width="@dimen/layout_width_30dp"
+        android:layout_height="@dimen/default_view_2dp"
         android:background="@color/light_brown"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/default_margin_16dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_item_card_list_share_letter"
         app:layout_constraintEnd_toStartOf="@+id/tv_item_card_list_share_letter"
         app:layout_constraintHorizontal_bias="1"
@@ -22,7 +22,6 @@
         android:id="@+id/tv_item_card_list_share_letter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="W"
         android:textColor="@color/light_brown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,10 +32,10 @@
 
     <View
         android:id="@+id/view_item_card_list_share_line_after"
-        android:layout_width="30dp"
-        android:layout_height="2dp"
+        android:layout_width="@dimen/layout_width_30dp"
+        android:layout_height="@dimen/default_view_2dp"
         android:background="@color/light_brown"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/default_margin_16dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_item_card_list_share_letter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

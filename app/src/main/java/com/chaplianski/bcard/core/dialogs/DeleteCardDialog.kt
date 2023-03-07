@@ -13,7 +13,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 
-
 class DeleteCardDialog : DialogFragment() {
 
     override fun onCreateView(
@@ -23,12 +22,10 @@ class DeleteCardDialog : DialogFragment() {
         val window: Window? = dialog!!.window
         window?.setGravity(Gravity.BOTTOM or Gravity.NO_GRAVITY)
         val params: WindowManager.LayoutParams? = window?.getAttributes()
-        //      params?.x = 300
         params?.y = 30
         window?.setAttributes(params)
-//        window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        return inflater.inflate(R.layout.fragment_delete_card, container, false)
+        return inflater.inflate(R.layout.dialog_delete_card, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,8 +39,6 @@ class DeleteCardDialog : DialogFragment() {
 
         deleteButton.setOnClickListener {
             if (cardId != null) {
-//                deleteCardFragmentViewModel.deleteCard(cardId)
-//                cardsFragmentViewModel.deleteCard(cardId)
                 parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(CURRENT_CARD_ID to currentCardId))
                 dismiss()
             }
@@ -56,7 +51,6 @@ class DeleteCardDialog : DialogFragment() {
 
     companion object {
         val TAG = DeleteCardDialog::class.java.simpleName
-        val KEY_RESPONSE = "key response"
         val REQUEST_KEY = "request key"
 
         fun show(manager: FragmentManager, cardId: Long) {
@@ -64,7 +58,6 @@ class DeleteCardDialog : DialogFragment() {
             dialogFragment.arguments = bundleOf(
                 CURRENT_CARD_ID to cardId)
             dialogFragment.show(manager, TAG)}
-
 
         fun setupListener(manager: FragmentManager, lifecycleOwner: LifecycleOwner, listener: (Long) -> Unit) {
             manager.setFragmentResultListener(REQUEST_KEY, lifecycleOwner, FragmentResultListener { key, result ->

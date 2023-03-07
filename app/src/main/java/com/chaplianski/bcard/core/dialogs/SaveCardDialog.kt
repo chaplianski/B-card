@@ -41,7 +41,6 @@ import java.io.File
 import java.io.IOException
 import javax.inject.Inject
 
-
 class SaveCardDialog :
     BasisDialogFragment<DialogSaveCardBinding>(DialogSaveCardBinding::inflate) {
 
@@ -108,7 +107,6 @@ class SaveCardDialog :
                                     }
                                     if (card.id == currentCardId) {
                                         card.isChecked = true
-//                                        positionCurrentCheckedCard = index
                                     }
                                     fullContactList.add(ContactContent.Contact(card))
                                 }
@@ -117,7 +115,7 @@ class SaveCardDialog :
                             saveVCFButton.text = getString(
                                 R.string.save_count,
                                 checkedCardCount
-                            ) //"Save [$checkedCardCount]"
+                            )
                         }
                         cardListAdapter.updateList(fullContactList)
 
@@ -132,7 +130,7 @@ class SaveCardDialog :
                                         saveVCFButton.text = getString(
                                             R.string.save_count,
                                             checkedCardCount
-                                        ) //"Save [$checkedCardCount]"
+                                        )
                                     }
                                 }
                             }
@@ -226,7 +224,7 @@ class SaveCardDialog :
                                 saveVCFButton.text = getString(
                                     R.string.save_count,
                                     checkedCardCount
-                                ) //"Save [$checkedCardCount]"
+                                )
                             }
                             cardListAdapter.updateList(fullContactList)
                             allCardCheckFlag = !allCardCheckFlag
@@ -248,7 +246,7 @@ class SaveCardDialog :
             )
             dismiss()
         }
-//
+
         cancelButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
                 REQUEST_KEY,

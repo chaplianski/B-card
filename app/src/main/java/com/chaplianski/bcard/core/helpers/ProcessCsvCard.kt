@@ -2,7 +2,6 @@ package com.chaplianski.bcard.core.helpers
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.utils.UiText
 import com.chaplianski.bcard.domain.model.Card
@@ -10,12 +9,10 @@ import com.chaplianski.bcard.domain.model.ContactCsv
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import java.io.FileWriter
 import java.io.InputStream
 import java.io.OutputStream
 
 class ProcessCsvCard {
-
     fun getCardList(context: Context, uri: Uri): List<Card>{
         val inputStream = context.contentResolver?.openInputStream(uri)
         return if (inputStream != null) {

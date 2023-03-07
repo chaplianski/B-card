@@ -1,6 +1,5 @@
 package com.chaplianski.bcard.domain.usecases
 
-import androidx.lifecycle.MutableLiveData
 import com.chaplianski.bcard.domain.model.User
 import com.chaplianski.bcard.domain.repository.UserRepository
 import javax.inject.Inject

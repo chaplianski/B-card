@@ -5,7 +5,6 @@ import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.model.User
 import com.chaplianski.bcard.data.storage.modeldto.UserDTO
 
-
 fun Card.cardMapDomainToData(): CardDTO {
     return CardDTO(
         id = id,

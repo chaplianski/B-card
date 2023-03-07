@@ -1,6 +1,5 @@
 package com.chaplianski.bcard.core.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -55,7 +54,6 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
         onBindViewHolder(holder,position, mutableListOf())
     }
 
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         when(cardList[position]){
             is ContactContent.Letter -> {
@@ -80,7 +78,6 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     override fun getItemViewType(position: Int): Int {
-
         return when(cardList[position]){
             is ContactContent.Letter -> TYPE_LETTER
             else -> TYPE_CONTACT
@@ -107,7 +104,6 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
             checkBox.setOnClickListener {
             checkBoxListener?.onCheck(card)
             }
-
         }
         fun update(payloads: MutableList<Any>){
             val isChecked = payloads[0] as Boolean
@@ -147,7 +143,6 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
                     true
                 }
                 else -> {
-//                    Log.d("MyLog", "cardList5")
                     true
                 }
             }
@@ -164,7 +159,6 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
                     oldItem.card == newItem.card
                 }
                 else -> {
-//                    Log.d("MyLog", "cardList50, return = false")
                     false
                 }
             }
@@ -187,10 +181,6 @@ class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHold
         private val TYPE_LETTER = 0
         private val TYPE_CONTACT = 1
     }
-
-
-
-
 }
 
 

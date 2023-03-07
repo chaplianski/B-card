@@ -12,21 +12,6 @@ import com.theartofdev.edmodo.cropper.CropImage
 import java.io.File
 import javax.inject.Inject
 
-//********************************************************
-// start launcher
-// photoPicker = PhotoPicker(requireContext(), requireActivity().activityResultRegistry) { uri ->
-//                savePhotoContact(uri)
-//            }
-// then photoPicker.getAndCropPhoto() if want crop or photoPicker.pickPhoto() (get photo from gallery)
-// or photoPicker.takePhoto() (get photo from camera)
-// For crop need add dependency
-// api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
-//    implementation "androidx.activity:activity-ktx:1.7.0-alpha04"
-// add to Manifest:
-//<activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-//            android:theme="@style/Base.Theme.AppCompat" />
-//***************************************************************
-
 class PhotoPicker @Inject constructor(
     val context: Context,
     activityResultRegistry: ActivityResultRegistry,
@@ -54,7 +39,6 @@ class PhotoPicker @Inject constructor(
         callback.invoke(uri)
     }
 
-
     private val getContentLauncher = activityResultRegistry.register(
         REGISTRY_KEY_GET_CONTENT,
         ActivityResultContracts.GetContent()
@@ -62,7 +46,6 @@ class PhotoPicker @Inject constructor(
           if (uri != null) {
               getAndCropPhoto()
           }
-//        callback.invoke(uri)
     }
 
     private val takePhotoLauncher = activityResultRegistry.register(
@@ -95,8 +78,6 @@ class PhotoPicker @Inject constructor(
 
     private fun getTmpFileUri(): Uri {
 
-        //     val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        //    val tmpFile = File.createTempFile("br", ".jpg", storageDir)
         val tmpFile = File(context.cacheDir, "temp.jpg")
         return FileProvider.getUriForFile(
             context,
@@ -104,13 +85,10 @@ class PhotoPicker @Inject constructor(
             tmpFile
         )
     }
-
     companion object {
         val REGISTRY_KEY_PERMISSION = "registry key permission"
         val REGISTRY_KEY_TAKE_PHOTO = "registry key take photo"
         val REGISTRY_KEY_GET_CONTENT = "registry key get content"
         val REGISTERY_KEY_CROP_PHOTO = "registry key crop photo"
     }
-
-
 }

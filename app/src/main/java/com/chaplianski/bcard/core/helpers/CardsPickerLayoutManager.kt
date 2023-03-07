@@ -7,7 +7,6 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-
 class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayout: Boolean) :
     LinearLayoutManager(context, orientation, reverseLayout) {
     interface CardScrollStopListener {
@@ -19,12 +18,10 @@ class CardsPickerLayoutManager(context: Context?, orientation: Int, reverseLayou
     override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
         try {
             super.onLayoutChildren(recycler, state)
-            //      scaleDownView(0)
             scaleCentralView()
         } catch (e: IndexOutOfBoundsException) {
             Log.e("TAG", "meet a IOOBE in RecyclerView")
         }
-
     }
 
     override fun scrollHorizontallyBy(

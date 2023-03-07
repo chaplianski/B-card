@@ -2,34 +2,28 @@ package com.chaplianski.bcard.core.dialogs
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
-import android.view.*
+import android.view.View
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardTextureAdapter
 import com.chaplianski.bcard.core.helpers.CardDecorResources
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.CardSettingsDialogViewModel
-import com.chaplianski.bcard.databinding.DialogAdditionalInformationBinding
 import com.chaplianski.bcard.databinding.DialogCardSettingsBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.CardSettings
 import com.chaplianski.bcard.domain.model.CardTexture
 import javax.inject.Inject
-
 
 class CardSettingsDialog :
     BasisDialogFragment<DialogCardSettingsBinding>(DialogCardSettingsBinding::inflate){
@@ -206,8 +200,6 @@ class CardSettingsDialog :
             checkedColorTextVariant = getString(nameCheckedColorTextVariant)
         }
 
-
-
         cornerRound.setOnCheckedChangeListener { group, checkedId ->
             checkedCornerSizeVariant = when (checkedId) {
                 R.id.cb_card_settings_dialog_yes -> {
@@ -296,12 +288,9 @@ class CardSettingsDialog :
         val SAVE_STATUS = "card settings save button status"
         val CANCEL_STATUS = "card settings cancel button status"
         val SETTINGS_CARD_INFO = "card settings  information"
-
-
         val TAG = CardSettingsDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
 
-        //
         fun show(manager: FragmentManager, currentCardId: Long) {
             val dialogFragment = CardSettingsDialog()
             dialogFragment.arguments = bundleOf(

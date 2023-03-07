@@ -1,18 +1,13 @@
 package com.chaplianski.bcard.core.dialogs
 
-import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
-import android.view.*
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
@@ -24,14 +19,12 @@ import com.chaplianski.bcard.core.helpers.PhotoPicker
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.core.utils.CURRENT_USER_ID
 import com.chaplianski.bcard.core.viewmodels.PersonInfoDialogViewModel
-import com.chaplianski.bcard.databinding.DialogCardSettingsBinding
 import com.chaplianski.bcard.databinding.DialogPersonInformationBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.PersonInfo
 import javax.inject.Inject
 
-
-class PersonInformationDialog : //DialogFragment() {
+class PersonInformationDialog :
     BasisDialogFragment<DialogPersonInformationBinding>(DialogPersonInformationBinding::inflate) {
 
     lateinit var photoPicker: PhotoPicker
@@ -41,7 +34,6 @@ class PersonInformationDialog : //DialogFragment() {
     val personInfoDialogViewModel: PersonInfoDialogViewModel by viewModels { vmFactory }
 
     var avatarUri = ""
-//    var userIdValue = 0L
 
     override fun onAttach(context: Context) {
         (context.applicationContext as DaggerApp)
@@ -75,9 +67,6 @@ class PersonInformationDialog : //DialogFragment() {
         val saveButton = binding.btUserPersonInfoOk
         val cancelButton = binding.btUserPersonInfoCancel
         val cardID = arguments?.getLong(CURRENT_CARD_ID, 0L)
-        val currentCardId = arguments?.getLong(CURRENT_CARD_ID)
-
-        Log.d("MyLog", "onViewCreated person info, cardId = $cardID")
 
         avatar.setOnClickListener {
             photoPicker.getAndCropPhoto()
@@ -210,11 +199,9 @@ class PersonInformationDialog : //DialogFragment() {
         val SAVE_STATUS = "person save button status"
         val CANCEL_STATUS = "person cancel button status"
         val PERSON_INFO_DATA = "person information data"
-
         val TAG = PersonInformationDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
 
-        //
         fun show(manager: FragmentManager, currentCardId: Long) {
             val dialogFragment = PersonInformationDialog()
             dialogFragment.arguments = bundleOf(

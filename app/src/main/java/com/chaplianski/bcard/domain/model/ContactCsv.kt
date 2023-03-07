@@ -69,6 +69,5 @@ data class ContactCsv(
     @field:JsonProperty("Organization 1 - Location") val organization1Location: String? = null,
     @field:JsonProperty("Organization 1 - Job Description") val organization1JobDescription: String? = null,
     @field:JsonProperty("Website 1 - Type") val website1Type: String? = null,
-    @field:JsonProperty("Website 1 - Value") val website1Value: String? = null,
-
-    )
+    @field:JsonProperty("Website 1 - Value") val website1Value: String? = null
+)

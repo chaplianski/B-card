@@ -29,4 +29,4 @@ data class Card(
     val isCardCorner: Boolean = DEFAULT_CARD_CORNER,
     val cardFormPhoto: String = DEFAULT_CARD_FORM_PHOTO,
     var isChecked: Boolean = false
-    ): Parcelable
+) : Parcelable

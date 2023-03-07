@@ -1,13 +1,16 @@
 package com.chaplianski.bcard.domain.model
 
 import android.os.Parcelable
+import com.chaplianski.bcard.core.utils.DEFAULT_CARD_FORM_PHOTO
+import com.chaplianski.bcard.core.utils.DEFAULT_CARD_TEXTURE
+import com.chaplianski.bcard.core.utils.DEFAULT_CARD_TEXT_COLOR
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CardSettings(
     val cardId: Long = 0L,
-    val cardTexture: String = "paper_025",
+    val cardTexture: String = DEFAULT_CARD_TEXTURE,
     val cardCorner: Boolean = false,
-    val cardTextColor: String = "#FF000000",
-    val cardAvatarForm: String = "square"
+    val cardTextColor: String = DEFAULT_CARD_TEXT_COLOR,
+    val cardAvatarForm: String = DEFAULT_CARD_FORM_PHOTO
 ): Parcelable

@@ -24,5 +24,4 @@ class ContactPicker @Inject constructor(
         }
     }
     fun checkReadFilesPermission(){pickFileLauncher.launch (arrayOf(VCF_TYPE, CSV_TYPE))}
-
 }

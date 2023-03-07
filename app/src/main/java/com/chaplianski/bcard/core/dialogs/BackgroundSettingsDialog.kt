@@ -14,7 +14,6 @@ import com.chaplianski.bcard.core.utils.DEFAULT_BACKGROUND
 import com.chaplianski.bcard.core.utils.RESOURCE_TYPE_DRAWABLE
 import com.chaplianski.bcard.databinding.DialogBackgroundSettingsBinding
 
-
 class BackgroundSettingsDialog :
     BasisDialogFragment<DialogBackgroundSettingsBinding>(DialogBackgroundSettingsBinding::inflate){
 
@@ -102,7 +101,6 @@ class BackgroundSettingsDialog :
         val TAG = BackgroundSettingsDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
 
-        //
         fun show(manager: FragmentManager) {
             val dialogFragment = BackgroundSettingsDialog()
             dialogFragment.show(manager, TAG)

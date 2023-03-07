@@ -1,26 +1,18 @@
 package com.chaplianski.bcard.core.dialogs
 
-import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.view.View
 import androidx.core.os.bundleOf
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.DoubleCardListAdapter
-import com.chaplianski.bcard.databinding.DialogAdditionalInformationBinding
 import com.chaplianski.bcard.databinding.DialogCheckDoubleCardListBinding
-import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.model.Contact
-
 
 class CheckDoubleCardListDialog :
     BasisDialogFragment<DialogCheckDoubleCardListBinding>(DialogCheckDoubleCardListBinding::inflate){
@@ -33,10 +25,7 @@ class CheckDoubleCardListDialog :
         val cardListRV = binding.rvCheckDoubleCardListDialog
         var checkedContactCount = 0
         var allCardCheckFlag = false
-        var allCardList = emptyList<Card>()
-        var cardList = emptyList<Card>()
         val checkboxAllContacts = binding.checkBoxCheckDoubleCardListDialogCheckAll
-
         val currentContactList = arguments?.getParcelableArrayList<Contact>(DOUBLE_CARD_LIST)
 
         val contactListAdapter = DoubleCardListAdapter()
@@ -107,7 +96,6 @@ class CheckDoubleCardListDialog :
         fun show(manager: FragmentManager, contactList: List<Contact>) {
             val dialogFragment = CheckDoubleCardListDialog()
             val contactArrayList = contactList as ArrayList<Contact>
-            Log.d("MyLog", "arraylist show = ${contactArrayList}")
             dialogFragment.arguments = bundleOf(
                 DOUBLE_CARD_LIST to contactArrayList
             )

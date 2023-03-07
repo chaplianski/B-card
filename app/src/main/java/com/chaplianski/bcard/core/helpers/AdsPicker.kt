@@ -4,21 +4,16 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.utils.AD_UNIT_ID
-import com.chaplianski.bcard.databinding.LayoutAdToCardBinding
 import com.chaplianski.bcard.databinding.LayoutAdToFullScreenBinding
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.gms.ads.nativead.NativeAdView
 
-class AdsPicker() {
+class AdsPicker {
 
     fun setAdNative(context: Context, adContainerView: FrameLayout){
         val binding = LayoutAdToFullScreenBinding.inflate(LayoutInflater.from(context))
@@ -27,21 +22,17 @@ class AdsPicker() {
             .build()
         val adLoader = AdLoader.Builder(context, AD_UNIT_ID)
             .forNativeAd { nativeAd ->
-                Log.d("MyLog", "is success")
                 val adView = populateNativeAdView(nativeAd, binding)
                 adContainerView.addView(adView)
             }
             .withAdListener(object : AdListener() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Log.d("MyLog", "is failure")
                 }
             })
             .withNativeAdOptions(adOptions)
             .build()
         adLoader.loadAd(AdRequest.Builder().build())
     }
-
-
 
     private fun populateNativeAdView(nativeAd: NativeAd, adViews: LayoutAdToFullScreenBinding): NativeAdView {
 
@@ -110,9 +101,7 @@ class AdsPicker() {
             (adView.advertiserView as? TextView)?.text = nativeAd.advertiser
             adView.advertiserView?.visibility = View.VISIBLE
         }
-
         adView.setNativeAd(nativeAd)
         return adView
     }
-
 }

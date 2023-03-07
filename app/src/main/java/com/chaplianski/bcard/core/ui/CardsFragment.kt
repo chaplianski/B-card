@@ -6,8 +6,9 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +45,6 @@ import me.grantland.widget.AutofitTextView
 import java.io.File
 import javax.inject.Inject
 
-
 class CardsFragment : Fragment() {
 
     @Inject
@@ -67,7 +67,6 @@ class CardsFragment : Fragment() {
     var currentAddItemId = 0L
     var currentCardEditId = 0L
     var currentCardDeleteId = -2L
-    var currentCardDeletePosition = 0
     var scrolledPosition = 0
     var listCards = mutableListOf<Card>()
     override fun onAttach(context: Context) {
@@ -94,7 +93,6 @@ class CardsFragment : Fragment() {
         val shareButton = binding.btCardsFragmentShare
         val exitButton = binding.fabCardsFragmentExit
         val addCardButton = binding.btCardsFragmentAddCard
-
         val motionLayout = binding.motionLayoutFragmentCards
         val sortButton = binding.btCardsFragmentSort
         val searchButton = binding.btCardsFragmentSearch
@@ -103,15 +101,12 @@ class CardsFragment : Fragment() {
         val leftPanelImage = binding.ivFragmentCardsLeftPanel
         val rightPanelImage = binding.ivFragmentCardsRightPanel
         val cardsRV = binding.rvCardsFragmentCards
-
         val sortSurnameButton = binding.btCardsFragmentSortName
         val sortPhoneButton = binding.btCardsFragmentSortPhone
         val sortMailButton = binding.btCardsFragmentSortMail
         val sortOrganizationButton = binding.btCardsFragmentSortOrganisation
         val sortLocationButton = binding.btCardsFragmentSortLocation
-
         val userInfoLayout = binding.layoutUserInformation.clUserInfo
-
         val avatarUserInformation = binding.layoutUserInformation.ivUserInformationProfileAvatar
         val nameUserInformation = binding.layoutUserInformation.tvUserInformationProfileName
         val specialityUserInfo = binding.layoutUserInformation.tvUserInformationProfileSpeciality
@@ -191,14 +186,6 @@ class CardsFragment : Fragment() {
         val cardFragmentCardAdapter = CardListAdapter(requireContext())
         setupRecyclerView(cardsRV, cardFragmentCardAdapter, userInfoLayout, adContainerView)
 
-//        cardsRV.addGlobalLayoutListener(){position ->
-////            currentPosition = position
-//            Log.d("MyLog", "listener1: ${position}, currentCardId = $currentCardId")
-//        }
-//        cardsRV.addScrollListener(){position ->
-//            Log.d("MyLog", "listener2: ${position}, currectposition = ${position+(position/ AD_POSITION)}")
-//        }
-
         cardsFragmentViewModel.getCardListState
             .flowWithLifecycle(lifecycle)
             .onEach {
@@ -234,7 +221,6 @@ class CardsFragment : Fragment() {
                             currentCardEditId = 0
                         }
                         if (currentCardDeleteId != -2L) {
-                            Log.d("MyLog", "Current del it = $currentCardDeleteId")
                             if (currentCardDeleteId == -1L) cardsRV.scrollToPosition(0)
                             val cardListSize = listCards.size.toLong()
                             if (currentCardDeleteId == cardListSize) {
@@ -282,7 +268,6 @@ class CardsFragment : Fragment() {
 
         cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
 
-//            Log.d("MyLog", "card cardId = ${card.id}")
             currentCard = card
             currentCardId = card.id
             imageUri = card.photo
@@ -303,7 +288,6 @@ class CardsFragment : Fragment() {
                 referenceTitle,
                 reference
             )
-
             saveToCurrentCardEditDialogInformation(card)
 
             additionalInfoCheck =
@@ -367,29 +351,6 @@ class CardsFragment : Fragment() {
                 }
             }
     }
-
-//    private fun loadAD(context: Context, adContainerView: FrameLayout) {
-//        val binding = LayoutAdToCardBinding.inflate(LayoutInflater.from(context))
-//        val adLoader = AdLoader.Builder(context, AD_UNIT_ID)
-//            .forNativeAd { nativeAd ->
-//                Log.d("MyLog", "is success")
-//                val adView = populateNativeAdView(nativeAd, binding)
-//                adContainerView.addView(adView)
-//            }
-//            .withAdListener(object : AdListener() {
-//                override fun onAdFailedToLoad(adError: LoadAdError) {
-//                    Log.d("MyLog", "is failure")
-//                }
-//            })
-//            .withNativeAdOptions(
-//                NativeAdOptions.Builder()
-//
-//                .build())
-//
-//            .build()
-//        adLoader.loadAds(AdRequest.Builder().build(), 5)
-//    }
-
     private fun addSearchFieldListener(
         searchField: EditText,
         resetSearchButton: ImageButton
@@ -699,21 +660,14 @@ class CardsFragment : Fragment() {
             override fun selectedView(view: View?) {
                 val cardId =
                     view?.findViewById<TextView>(R.id.tv_card_fragment_id)
-                val userName =
-                    view?.findViewById<TextView>(R.id.tv_card_fragment_item_name)
-                val userAvatar =
-                    view?.findViewById<TextView>(R.id.tv_card_fragment_uri)
-//                Log.d("MyLog", "curd id wheel = ${cardId?.text}")
 
                 if (cardId != null) {
-//                    Log.d("MyLog", "get card wheel ")
                     userInfoLayout.isVisible = true
                     adContainerView.isVisible = false
                     listCards.forEachIndexed { index, card ->
                         if (card.id == cardId.text.toString().toLong()) currentPosition =
                             index + (index / AD_POSITION)
                     }
-//                    currentCardId = cardId.text.toString().toLong()
                     cardsFragmentViewModel.getCard(cardId.text.toString().toLong())
                 } else {
                     userInfoLayout.isVisible = false
@@ -725,10 +679,8 @@ class CardsFragment : Fragment() {
 
     private fun setupSettingsDialog() {
         SettingsDialog.setupListener(parentFragmentManager, this.viewLifecycleOwner) { status ->
-//            Log.d("MyLog", "status settings = $status")
             when (status) {
                 SettingsDialog.BACKGROUND_STATUS -> {
-//                    Log.d("MyLog", "background")
                     showBackgroundSettingsDialog()
                 }
                 SettingsDialog.LANGUAGE_STATUS -> {
@@ -740,7 +692,6 @@ class CardsFragment : Fragment() {
             }
         }
     }
-
 
     private fun setupBackgroundSettingsDialog(backgroundLayout: CoordinatorLayout) {
         BackgroundSettingsDialog.setupListener(
@@ -782,7 +733,6 @@ class CardsFragment : Fragment() {
             this.viewLifecycleOwner
         ) { status, language ->
             if (status == LanguageSettingsDialog.SETUP_LANGUAGE_STATUS) {
-//                Log.d("MyLog", "setup dialog lang = $language")
                 val defaultLocaleHelper = DefaultLocaleHelper
                 defaultLocaleHelper.getInstance(requireContext()).setCurrentLocale(language)
                 startActivity(Intent(activity, MainActivity::class.java))
@@ -790,44 +740,6 @@ class CardsFragment : Fragment() {
             }
         }
     }
-
-    fun RecyclerView.addScrollListener(onScroll: (position: Int) -> Unit) {
-        var lastPosition = 0
-        addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (layoutManager is LinearLayoutManager) {
-                    val currentVisibleItemPosition =
-                        (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-
-                    if (lastPosition != currentVisibleItemPosition && currentVisibleItemPosition != RecyclerView.NO_POSITION) {
-                        onScroll.invoke(currentVisibleItemPosition)
-                        lastPosition = currentVisibleItemPosition
-                    }
-                }
-            }
-        })
-    }
-
-    fun RecyclerView.addGlobalLayoutListener(onScroll: (position: Int) -> Unit) {
-        var lastPosition = 0
-        viewTreeObserver.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                if (layoutManager is LinearLayoutManager) {
-                    val currentVisibleItemPosition =
-                        (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-
-                    if (lastPosition != currentVisibleItemPosition && currentVisibleItemPosition != RecyclerView.NO_POSITION) {
-                        onScroll.invoke(currentVisibleItemPosition)
-                        lastPosition = currentVisibleItemPosition
-                    }
-                }
-            }
-
-        })
-    }
-
 
     private fun setupEditDialog() {
         EditCardDialog.setupListener(parentFragmentManager, this) { cardId, status ->
@@ -885,7 +797,6 @@ class CardsFragment : Fragment() {
         CardSettingsDialog.setupListener(
             parentFragmentManager, this
         ) { cardId, status, cardSettingsInfo ->
-//            Log.d("MyLog", "cardInfo = $cardSettingsInfo")
             if (status == CardSettingsDialog.SAVE_STATUS) {
                 currentCardSettings = cardSettingsInfo as CardSettings
                 cardSettingsCheck = true
@@ -898,7 +809,6 @@ class CardsFragment : Fragment() {
         AdditionalInformationDialog.setupListener(
             parentFragmentManager, this
         ) { cardId, status, additionalInfo ->
-//            Log.d("MyLog", "addInfo = $additionalInfo")
             if (status == AdditionalInformationDialog.SAVE_STATUS) {
                 currentAdditionalInfo = additionalInfo as AdditionalInfo
                 additionalInfoCheck =
@@ -915,7 +825,6 @@ class CardsFragment : Fragment() {
             if (status == PersonInformationDialog.SAVE_STATUS) {
                 currentPersonInfo = personInfo as PersonInfo
                 personInfoCheck = true
-//                Log.d("MyLog", "setup person info, cardId = $cardId")
                 showEditDialog(cardId)
             } else showEditDialog(cardId)
         }
@@ -978,11 +887,9 @@ class CardsFragment : Fragment() {
             parentFragmentManager,
             this.viewLifecycleOwner
         ) { status ->
-            Log.d("MyLog", "add card status, status = $status")
             when (status) {
                 LoadContactListDialog.ADD_STATUS -> {
                     lifecycleScope.launch(Dispatchers.IO) {
-                        Log.d("MyLog", "add card status")
                         cardsFragmentViewModel.getCards(SURNAME)
                     }
                 }
@@ -1030,18 +937,10 @@ class CardsFragment : Fragment() {
         ShareContactsDialog.show(parentFragmentManager, currentCardId)
     }
 
-    fun SnapHelper.getSnapPosition(recyclerView: RecyclerView): Int {
-        val layoutManager = recyclerView.layoutManager ?: return RecyclerView.NO_POSITION
-        val snapView = findSnapView(layoutManager) ?: return RecyclerView.NO_POSITION
-        return layoutManager.getPosition(snapView)
-    }
-
-
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
     }
-
 
     private fun showDeleteDialog(cardId: Long) {
         DeleteCardDialog.show(parentFragmentManager, cardId)
@@ -1051,14 +950,9 @@ class CardsFragment : Fragment() {
     ) {
         DeleteCardDialog.setupListener(parentFragmentManager, this.viewLifecycleOwner) {
             lifecycleScope.launch(Dispatchers.IO) {
-                if (currentCardId != null) {
                     deleteImage(currentCard.photo)
-//                Log.d("MyLog", "del current position = ${currentPosition}, cardId = $currentCardId")
                     cardsFragmentViewModel.deleteCard(currentCardId)
                     currentCardDeleteId = currentCardId
-                }
-
-
             }
         }
     }
@@ -1072,7 +966,6 @@ class CardsFragment : Fragment() {
                     arrayOf(Environment.getExternalStorageDirectory().toString()),
                     null
                 ) { path, uri ->
-//                    Log.d("MyLog", "DONE")
                 }
             }
         }

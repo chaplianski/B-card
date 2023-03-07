@@ -6,7 +6,6 @@ import com.chaplianski.bcard.core.utils.DEFAULT_CARD_CORNER
 import com.chaplianski.bcard.core.utils.DEFAULT_CARD_FORM_PHOTO
 import com.chaplianski.bcard.core.utils.DEFAULT_CARD_TEXT_COLOR
 
-
 @Entity(tableName = "cards")
 data class CardDTO(
     @PrimaryKey(autoGenerate = true)
@@ -31,6 +30,4 @@ data class CardDTO(
     val isCardCorner: Boolean = DEFAULT_CARD_CORNER,
     val cardFormPhoto: String = DEFAULT_CARD_FORM_PHOTO,
     var isChecked: Boolean = false
-
-
 )

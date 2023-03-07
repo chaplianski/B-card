@@ -10,7 +10,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.databinding.DialogAboutSettingsBinding
 
-
 class AboutSettingsDialog :
     BasisDialogFragment<DialogAboutSettingsBinding>(DialogAboutSettingsBinding::inflate){
 
@@ -20,19 +19,18 @@ class AboutSettingsDialog :
         val okButton = binding.btAboutDialogOk
         val policyButton = binding.tvAboutDialogPolicy
         val termsButton = binding.tvAboutDialogTerms
+        val textField = binding.tvAboutDialogContent
 
         okButton.setOnClickListener {
             dismiss()
         }
 
         policyButton.setOnClickListener {
-            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://levelty.app/levelty_privacy_policy"))
-            activity?.startActivity(i)
+            textField.text = "Any text about policy"
         }
 
         termsButton.setOnClickListener {
-            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://levelty.app/levelty_website_and_mobile_app_terms"))
-            activity?.startActivity(i)
+            textField.text = "Any text about terms"
         }
     }
 

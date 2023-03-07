@@ -49,6 +49,5 @@ class CardTextureAdapter: RecyclerView.Adapter<CardTextureAdapter.ViewHolder>() 
         }
     }
 
-    class ViewHolder (val binding: ItemCardTextureBinding): RecyclerView.ViewHolder(binding.root){
-    }
+    class ViewHolder (val binding: ItemCardTextureBinding): RecyclerView.ViewHolder(binding.root){}
 }

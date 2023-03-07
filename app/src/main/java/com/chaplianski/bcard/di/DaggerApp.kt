@@ -13,7 +13,5 @@ class DaggerApp: Application () {
             .context(context = this)
             .build()
     }
-
     fun getAppComponent() = appComponent
-
 }

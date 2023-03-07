@@ -14,7 +14,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.databinding.DialogEditCardBinding
 
-
 class EditCardDialog : DialogFragment() {
 
     private var _binding: DialogEditCardBinding? = null
@@ -31,7 +30,6 @@ class EditCardDialog : DialogFragment() {
         get() = requireArguments().getBoolean(
             CARD_SETTING_INFO_ENABLE
         )
-//    val isPersonInfoEnable = arguments?.getBoolean(PERSON_INFO_ENABLE)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +44,6 @@ class EditCardDialog : DialogFragment() {
 
         _binding = DialogEditCardBinding.inflate(layoutInflater, container, false)
         return binding.root
-//        return inflater.inflate(R.layout.dialog_edit_card, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,8 +58,6 @@ class EditCardDialog : DialogFragment() {
         val saveSettingsButton = binding.tvEditCardDialogSave
         val cancelButton = binding.tvEditCardDialogCancel
         val currentCardId = arguments?.getLong(CURRENT_CARD_ID)
-
-        Log.d("MyLog", "edit dialog onViewCreated, id = $currentCardId")
 
         if (isPersonInfoEnable == true) personInfoButtonIcon.isVisible = true
         if (isAdditionalInfoEnable == true) additionalInfoButtonIcon.isVisible = true
@@ -125,12 +120,9 @@ class EditCardDialog : DialogFragment() {
         val PERSON_INFO_ENABLE = "person information enable"
         val ADDITIONAL_INFO_ENABLE = "additional information enable"
         val CARD_SETTING_INFO_ENABLE = "card settings information enable"
-
-
         val TAG = EditCardDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
 
-        //
         fun show(
             manager: FragmentManager,
             currentCardId: Long,
@@ -143,12 +135,6 @@ class EditCardDialog : DialogFragment() {
                 "MyLog",
                 "show Edit Dialog, cardId = $currentCardId"
             )
-//            val bundle = Bundle()
-//            bundle.putLong(CURRENT_CARD_ID, currentCardId)
-//            bundle.putBoolean(PERSON_INFO_ENABLE, isPersonInfoEnable)
-//            bundle.putBoolean(ADDITIONAL_INFO_ENABLE, isAdditionalInfoEnable)
-//            bundle.putBoolean(CARD_SETTING_INFO_ENABLE, isCardSettingsEnable)
-//            dialogFragment.arguments = bundle
 
             dialogFragment.arguments = bundleOf(
                 PERSON_INFO_ENABLE to isPersonInfoEnable,
@@ -156,7 +142,6 @@ class EditCardDialog : DialogFragment() {
                 CARD_SETTING_INFO_ENABLE to isCardSettingsEnable,
                 CURRENT_CARD_ID to currentCardId,
             )
-//            Log.d("MyLog", "bundle = ${bundle}")
             dialogFragment.show(manager, TAG)
         }
 
@@ -171,18 +156,13 @@ class EditCardDialog : DialogFragment() {
                 FragmentResultListener { key, result ->
                     val cardId = result.getLong(CURRENT_CARD_ID)
                     val status = result.getString(CHECKED_OPTION)
-//                    val isPersonInfoEnable = result.getBoolean(PERSON_INFO_ENABLE, false)
-//                    val isAdditionalInfoEnable = result.getBoolean(ADDITIONAL_INFO_ENABLE, false)
-//                    val isCardSettingsEnable = result.getBoolean(CARD_SETTING_INFO_ENABLE, false)
                     if (status != null) {
                         listener.invoke(
                             cardId,
                             status
-                        ) //, isPersonInfoEnable, isAdditionalInfoEnable, isCardSettingsEnable)
+                        )
                     }
                 })
         }
     }
-
-
 }

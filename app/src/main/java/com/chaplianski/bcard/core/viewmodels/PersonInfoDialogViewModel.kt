@@ -36,8 +36,6 @@ class PersonInfoDialogViewModel @Inject constructor(
             _currentCard.postValue(card)
         }
     }
-
-
     fun insertPhoto(uri: Uri, contentResolver: ContentResolver, context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             var bitmapPhoto = MediaStore.Images.Media.getBitmap(contentResolver, uri)
@@ -65,8 +63,6 @@ class PersonInfoDialogViewModel @Inject constructor(
             val uriAvatar = saveImageInExternalCacheDir(context, bitmapPhoto)
 
             _photoUri.postValue(uriAvatar)
-
-
         }
     }
 

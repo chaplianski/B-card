@@ -36,11 +36,6 @@ const val DEFAULT_CARD_CORNER = false
 const val DEFAULT_CARD_FORM_PHOTO = "square"
 const val DEFAULT_BACKGROUND = "background_32"
 
-// ***** Destination *************
-const val DESTINATION = "destination"
-const val LOAD_FROM_GOOGLE_ACCOUNT = "load from google account"
-const val LOAD_FROM_FILE = "load from file"
-
 // ****** Mime Types ***************
 const val VCF_TYPE = "application/vcf"
 const val CSV_TYPE = "text/csv"

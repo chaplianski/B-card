@@ -12,12 +12,8 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun loginFragmentInject(loginFragment: LoginFragment)
-//    fun registrationFragmentInject(registrationFragment: RegistrationFragment)
     fun cardsFragmentInject(cardsFragment: CardsFragment)
-//    fun editCardFragmentInject(editCardFragment: EditCardFragment)
     fun deleteCardFragmentInject(deleteCardDialog: DeleteCardDialog)
-//    fun shareFragmentInject(shareFragment: ShareFragment)
-//    fun checkCardListFragmentInject(checkCardListSaveFragment: CheckCardListSaveFragment)
     fun personInfoDialogInject(personInformationDialog: PersonInformationDialog)
     fun additionalInfoDialogInject(additionalInformationDialog: AdditionalInformationDialog)
     fun cardSettingsDialogInject(cardSettingsDialog: CardSettingsDialog)
@@ -32,6 +28,4 @@ interface AppComponent {
         fun context(context: Context): Builder
         fun build(): AppComponent
     }
-
-
 }

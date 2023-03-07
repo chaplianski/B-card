@@ -22,8 +22,6 @@ class ShareContactsDialog : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-
         val window: Window? = dialog!!.window
         window?.setGravity(Gravity.BOTTOM or Gravity.NO_GRAVITY)
         val params: WindowManager.LayoutParams? = window?.getAttributes()
@@ -79,7 +77,7 @@ class ShareContactsDialog : DialogFragment() {
         val LOAD_FROM_GOOGLE_ACCOUNT_OPTION = "load from google account option"
         val TAG = ShareContactsDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
-        //
+
         fun show(manager: FragmentManager, currentCardId: Long) {
             val dialogFragment = ShareContactsDialog()
             dialogFragment.arguments = bundleOf(

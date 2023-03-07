@@ -1,6 +1,5 @@
 package com.chaplianski.bcard.core.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 class CardsFragmentViewModel @Inject constructor(
     private val getCardListUseCase: GetCardListUseCase,
@@ -33,13 +31,9 @@ class CardsFragmentViewModel @Inject constructor(
     private var _getCardListState = MutableStateFlow<GetCardListState>(GetCardListState.Loading)
     val getCardListState get() = _getCardListState.asStateFlow()
 
-//    var cardList = emptyList<Card>()
-
     suspend fun getCards(fieldForSorting: String) {
-//        Log.d("MyLog", "cardList 2")
         getCardListUseCase.execute(fieldForSorting)
                .onSuccess {
-//                   Log.d("MyLog", "cardList 5 = $it")
                    _getCardListState.emit(GetCardListState.GetCardList(it)) }
                .onFailure {  }
     }
@@ -51,12 +45,7 @@ class CardsFragmentViewModel @Inject constructor(
             }
             .onFailure {  }
     }
-
-    suspend fun switchToLoadingStateGetCards(){
-        _getCardListState.emit(GetCardListState.Loading)
-    }
      fun getCard(cardId: Long) {
-//        Log.d("MyLog", "card id in vm = $cardId")
         viewModelScope.launch(Dispatchers.IO) {
             val card = getCardUseCase.execute(cardId)
             _currentCard.postValue(card)
@@ -73,8 +62,6 @@ class CardsFragmentViewModel @Inject constructor(
             .onFailure {  }
     }
 
-
-
     suspend fun addCard(card: Card){
         addCardUseCase.execute(card)
             .onSuccess {_getCardListState.emit(GetCardListState.AddCard(it))}
@@ -86,12 +73,4 @@ class CardsFragmentViewModel @Inject constructor(
             .onSuccess { _getCardListState.emit(GetCardListState.UpdateCard(it)) }
             .onFailure {  }
     }
-
-//    sealed class AddCardState{
-//       object Loading: AddCardState()
-//        class Success(val cardId: Long): AddCardState()
-//        class Failure(val exception: String): AddCardState()
-//
-//    }
-
 }

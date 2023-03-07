@@ -9,7 +9,6 @@ import com.chaplianski.bcard.domain.model.LanguageItem
 class LanguageSettingsAdapter(private val languageList: List<LanguageItem>): RecyclerView.Adapter<LanguageSettingsAdapter.ViewHolder>() {
 
     var checkedPosition = -1
-
     interface LanguageCheckListener{
         fun onClickLanguage(language: LanguageItem)
     }

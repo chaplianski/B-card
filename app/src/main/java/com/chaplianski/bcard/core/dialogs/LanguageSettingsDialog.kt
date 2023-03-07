@@ -11,8 +11,7 @@ import com.chaplianski.bcard.core.adapters.LanguageSettingsAdapter
 import com.chaplianski.bcard.databinding.DialogLanguageSettingsBinding
 import com.chaplianski.bcard.domain.model.LanguageItem
 
-
-class LanguageSettingsDialog : //DialogFragment() {
+class LanguageSettingsDialog :
     BasisDialogFragment<DialogLanguageSettingsBinding>(DialogLanguageSettingsBinding::inflate){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,11 +61,9 @@ class LanguageSettingsDialog : //DialogFragment() {
         const val CHECKED_OPTION = "checked option"
         const val SETUP_LANGUAGE_STATUS = "setup language status"
         const val CHECKED_LANGUAGE = "checked language"
-
         val TAG = LanguageSettingsDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
 
-        //
         fun show(
             manager: FragmentManager
         ) {

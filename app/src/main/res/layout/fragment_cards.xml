@@ -28,22 +28,14 @@
                 app:layoutDescription="@xml/fragment_cards_scene"
                 tools:context=".core.ui.CardFragment">
 
-<!--                <ImageView-->
-<!--                    android:id="@+id/imageView6"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="180dp"-->
-<!--                    android:src="@drawable/decor_center"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="@+id/parent" />-->
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_cards_fragment_cards"
-                    android:layout_width="409dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="@dimen/default_margin_30dp"
                     android:background="@color/transparent"
                     android:clipToPadding="false"
-                    android:paddingHorizontal="50dp"
+                    android:paddingHorizontal="@dimen/default_padding_50dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.533"
@@ -56,8 +48,8 @@
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_sort_phone"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
                     android:background="@drawable/button"
                     android:src="@drawable/ic_phone_call"
                     app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_sort"
@@ -70,11 +62,10 @@
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_sort_mail"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
                     android:background="@drawable/button"
                     android:clickable="true"
-
                     android:src="@drawable/ic_email_card"
                     app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_sort"
                     app:layout_constraintEnd_toEndOf="@+id/bt_cards_fragment_sort"
@@ -82,12 +73,13 @@
                     app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_sort"
                     app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_sort"
                     app:layout_constraintVertical_bias="0.5"
-                    app:tint="@color/black" />
+                    app:tint="@color/black"
+                    android:focusable="true" />
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_sort_organisation"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
                     android:background="@drawable/button"
                     android:src="@drawable/ic_organization"
                     app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_sort"
@@ -100,8 +92,8 @@
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_sort_location"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
                     android:background="@drawable/button"
                     android:src="@drawable/ic_location_card"
                     app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_sort"
@@ -114,8 +106,8 @@
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_sort_name"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
                     android:background="@drawable/button"
                     android:src="@drawable/ic_black_user"
                     app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_sort"
@@ -128,10 +120,10 @@
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_search_reset"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="-80dp"
-                    android:layout_marginEnd="50dp"
+                    android:layout_width="@dimen/layout_width_40dp"
+                    android:layout_height="@dimen/layout_height_40dp"
+                    android:layout_marginTop="@dimen/default_margin_minus_80dp"
+                    android:layout_marginEnd="@dimen/default_margin_50dp"
                     android:alpha="0"
                     android:background="@drawable/button"
                     android:clickable="true"
@@ -142,35 +134,31 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
-                    app:tint="@color/black" />
+                    app:tint="@color/black"
+                    android:focusable="true" />
 
                 <EditText
                     android:id="@+id/tv_cards_fragment_search_field"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/zero_dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginTop="-80dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/default_margin_50dp"
+                    android:layout_marginTop="@dimen/default_margin_minus_80dp"
+                    android:layout_marginEnd="@dimen/default_margin_16dp"
                     android:textColor="@color/black"
                     android:textCursorDrawable="@drawable/cursor_color"
                     android:background="@drawable/search_field"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
+                    android:padding="@dimen/default_padding_8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/bt_cards_fragment_search_reset"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-
-                    />
-
+                    app:layout_constraintVertical_bias="0.0"/>
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_add_card"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="@dimen/layout_width_80dp"
+                    android:layout_height="@dimen/layout_height_80dp"
                     android:background="@drawable/button_over"
                     android:clickable="true"
                     android:src="@drawable/ic_add_user"
@@ -180,15 +168,15 @@
                     app:layout_constraintStart_toStartOf="@+id/iv_fragment_cards_left_panel"
                     app:layout_constraintTop_toTopOf="@+id/iv_fragment_cards_right_panel"
                     app:layout_constraintVertical_bias="0.5"
-                    app:tint="@color/black" />
-
+                    app:tint="@color/black"
+                    android:focusable="true" />
 
                 <ImageView
                     android:id="@+id/iv_fragment_cards_left_panel"
-                    android:layout_width="220dp"
-                    android:layout_height="155dp"
-                    android:layout_marginStart="-153dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_width="@dimen/layout_width_220dp"
+                    android:layout_height="@dimen/layout_height_155dp"
+                    android:layout_marginStart="@dimen/default_margin_minus_153dp"
+                    android:layout_marginBottom="@dimen/default_margin_20dp"
                     android:clickable="true"
                     android:src="@drawable/left_panel"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -196,13 +184,14 @@
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1" />
+                    app:layout_constraintVertical_bias="1"
+                    android:focusable="true" />
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_delete"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
+                    android:layout_marginStart="@dimen/default_margin_8dp"
                     android:background="@drawable/button"
                     android:clickable="true"
                     android:focusable="true"
@@ -216,24 +205,23 @@
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_share"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="18dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
+                    android:layout_marginStart="@dimen/default_margin_8dp"
+                    android:layout_marginBottom="@dimen/default_margin_18dp"
                     android:background="@drawable/button"
                     android:clickable="true"
                     android:src="@drawable/ic_baseline_share"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_fragment_cards_left_panel"
                     app:layout_constraintStart_toStartOf="@+id/iv_fragment_cards_left_panel"
-
-                    app:tint="@color/black" />
+                    app:tint="@color/black"
+                    android:focusable="true" />
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_edit"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-
-                    android:layout_marginTop="18dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
+                    android:layout_marginTop="@dimen/default_margin_18dp"
                     android:background="@drawable/button"
                     android:clickable="true"
                     android:src="@drawable/ic_baseline_edit_note"
@@ -243,14 +231,15 @@
                     app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_share"
                     app:layout_constraintTop_toTopOf="@+id/iv_fragment_cards_left_panel"
                     app:layout_constraintVertical_bias="0.0"
-                    app:tint="@color/black" />
+                    app:tint="@color/black"
+                    android:focusable="true" />
 
                 <ImageView
                     android:id="@+id/iv_fragment_cards_right_panel"
-                    android:layout_width="220dp"
-                    android:layout_height="155dp"
-                    android:layout_marginEnd="-153dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_width="@dimen/layout_width_220dp"
+                    android:layout_height="@dimen/layout_height_155dp"
+                    android:layout_marginEnd="@dimen/default_margin_minus_153dp"
+                    android:layout_marginBottom="@dimen/default_margin_20dp"
                     android:clickable="true"
                     android:src="@drawable/right_panel"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -258,13 +247,14 @@
                     app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1" />
+                    app:layout_constraintVertical_bias="1"
+                    android:focusable="true" />
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_sort"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
+                    android:layout_marginEnd="@dimen/default_margin_8dp"
                     android:background="@drawable/button"
                     android:src="@drawable/ic_sort_up"
                     app:layout_constraintBottom_toBottomOf="@+id/bt_cards_fragment_search"
@@ -277,13 +267,13 @@
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_search"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
+                    android:layout_marginTop="@dimen/default_margin_18dp"
+                    android:layout_marginEnd="@dimen/default_margin_8dp"
                     android:background="@drawable/button"
                     android:clickable="true"
-                    android:maxHeight="60dp"
+                    android:maxHeight="@dimen/layout_height_60dp"
                     android:src="@drawable/ic_search"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_fragment_cards_right_panel"
                     app:layout_constraintEnd_toEndOf="@+id/iv_fragment_cards_right_panel"
@@ -291,14 +281,15 @@
                     app:layout_constraintStart_toStartOf="@+id/iv_fragment_cards_right_panel"
                     app:layout_constraintTop_toTopOf="@+id/iv_fragment_cards_right_panel"
                     app:layout_constraintVertical_bias="0"
-                    app:tint="@color/black" />
+                    app:tint="@color/black"
+                    android:focusable="true" />
 
                 <ImageButton
                     android:id="@+id/bt_cards_fragment_settings"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
                     android:layout_gravity="bottom|center"
-                    android:layout_marginBottom="18dp"
+                    android:layout_marginBottom="@dimen/default_margin_18dp"
                     android:background="@drawable/button"
                     android:clickable="true"
                     android:focusable="true"
@@ -309,14 +300,13 @@
                     app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_sort"
                     app:layout_constraintTop_toBottomOf="@+id/bt_cards_fragment_search"
                     app:layout_constraintVertical_bias="0.971"
-                    app:maxImageSize="56dp"
                     app:tint="@color/black"
                     app:useCompatPadding="false" />
 
                 <ImageButton
                     android:id="@+id/fab_cards_fragment_exit"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/layout_width_60dp"
+                    android:layout_height="@dimen/layout_height_60dp"
                     android:background="@drawable/button"
                     android:clickable="true"
                     android:src="@drawable/ic_baseline_exit_to_app"
@@ -326,14 +316,12 @@
                     app:layout_constraintStart_toStartOf="@+id/bt_cards_fragment_search"
                     app:layout_constraintTop_toTopOf="@+id/bt_cards_fragment_settings"
                     app:layout_constraintVertical_bias="0.948"
-                    app:tint="@color/black" />
-
+                    app:tint="@color/black"
+                    android:focusable="true" />
 
             </androidx.constraintlayout.motion.widget.MotionLayout>
 
-
         </com.google.android.material.appbar.CollapsingToolbarLayout>
-
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -342,18 +330,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="fill_vertical"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="@dimen/default_margin_8dp"
+        android:layout_marginBottom="@dimen/default_margin_16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_margin="@dimen/default_margin_20dp"
             android:background="@drawable/paper_015"
             android:orientation="vertical">
 

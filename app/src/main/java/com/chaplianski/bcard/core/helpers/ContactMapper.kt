@@ -1,12 +1,9 @@
 package com.chaplianski.bcard.core.helpers
 
-import android.util.Log
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.model.ContactCsv
 
-
 fun ContactCsv.mapContactCsvToCard(): Card {
-
     return Card(
         id = 0,
         userId = 0,

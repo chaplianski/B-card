@@ -15,7 +15,6 @@ class DeleteCardFragmentViewModel @Inject constructor(private val deleteCardUseC
             deleteCardUseCase.execute(cardId)
         }
     }
-
     override fun onCleared() {
         viewModelScope.cancel()
     }

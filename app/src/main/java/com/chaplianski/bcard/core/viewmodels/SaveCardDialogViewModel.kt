@@ -1,17 +1,12 @@
 package com.chaplianski.bcard.core.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.chaplianski.bcard.domain.model.Card
-import com.chaplianski.bcard.domain.model.GetCardListState
 import com.chaplianski.bcard.domain.usecases.GetCardListUseCase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SaveCardDialogViewModel @Inject constructor(
@@ -27,15 +22,13 @@ class SaveCardDialogViewModel @Inject constructor(
     suspend fun getCards(fieldBySorting: String) {
         getCardListUseCase.execute(fieldBySorting)
             .onSuccess {
-                Log.d("MyLog", "list size = ${it.size}")
                 _getCardListState.emit(GetCardsState.Success(it)) }
-            .onFailure {  Log.d("MyLog", "list size failure") }
+            .onFailure {  }
     }
 
     sealed class GetCardsState{
         object Loading: GetCardsState()
         class Success(val cardList: List<Card>): GetCardsState()
         class Failure(val exception: String): GetCardsState()
-
     }
 }

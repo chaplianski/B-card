@@ -23,5 +23,4 @@ class CardSettingsDialogViewModel @Inject constructor(
             _currentCard.postValue(card)
         }
     }
-
 }

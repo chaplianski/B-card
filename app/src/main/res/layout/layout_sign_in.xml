@@ -3,16 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_sign_in"
-    android:layout_width="250dp"
-    android:layout_height="450dp"
-    android:layout_marginStart="0dp"
-   >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
+        android:paddingHorizontal="@dimen/default_margin_10dp"
         android:background="@drawable/paper_07"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,10 +23,10 @@
             style="@style/SemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/default_margin_20dp"
             android:text="@string/sign_in"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -43,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/login"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/default_margin_10dp"
             app:startIconTint="@color/light_brown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +54,6 @@
                 android:id="@+id/et_layout_sign_in_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,7 +77,6 @@
                 android:id="@+id/et_layout_sign_in_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,7 +85,7 @@
             style="@style/SemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email or password is incorrect"
+            android:text="@string/email_or_password_is_incorrect"
             android:textColor="@color/accent_3"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/cb_layout_sign_in_remember"
@@ -105,8 +100,8 @@
             style="@style/Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="@dimen/default_margin_20dp"
+            android:layout_marginTop="@dimen/default_margin_16dp"
             android:buttonTint="@color/light_brown"
             android:text="@string/remember"
             android:textColor="@color/black"
@@ -120,8 +115,8 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_layout_sign_in_forgot_password"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="@dimen/default_button_height_50dp"
+            android:layout_marginTop="@dimen/default_margin_16dp"
             android:background="@drawable/square_button"
             android:text="@string/i_forget_password"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -131,13 +126,12 @@
             app:layout_constraintTop_toBottomOf="@+id/cb_layout_sign_in_remember"
             app:layout_constraintVertical_bias="0.0" />
 
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_layout_sign_in_sign_up"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/default_button_height_50dp"
             style="@style/old_button_style"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/default_margin_16dp"
             android:text="@string/sign_up"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -147,6 +141,5 @@
             app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,6 @@ class CardDecorResources {
         R.color.light_yellow,
         R.color.white
     )
-
     fun getCardTextureResource(): List<CardTexture> {
         return listOf(
             CardTexture("paper_01", R.drawable.paper_01, false),

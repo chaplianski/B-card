@@ -28,12 +28,10 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
 
-
 class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val view: View = View.inflate(context, R.layout.layout_ad_to_card, null)
     var adView: NativeAdView = view.findViewById(R.id.adView_ad_to_card)
-    var adCount = 5
     init{
         loadAdv()
     }
@@ -140,8 +138,6 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
                     }
                     else -> {
                         tvCardFragmentItemLocation.text = ""
-//                        tvCardFragmentItemLocation.isVisible = false
-//                        ivCardFragmentLocation.isVisible = false
                     }
                 }
 
@@ -166,16 +162,6 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
                 ivCardFragmentEmail.setColorFilter(currentColor)
                 ivCardFragmentLocation.setColorFilter(currentColor)
 
-//                if (card.homePhone.isNullOrEmpty()) {
-//                    tvCardFragmentItemHomePhone.visibility = View.GONE
-//                    ivCardFragmentHomePhone.visibility = View.GONE
-//                }
-//
-//                if (card.workPhone.isNullOrEmpty()) {
-//                    tvCardFragmentItemWorkPhone.visibility = View.GONE
-//                    ivCardFragmentWorkPhone.visibility = View.GONE
-//                }
-//
                 if (card.email.isNullOrEmpty()) {
                     tvCardFragmentItemEmail.text = ""
                 }
