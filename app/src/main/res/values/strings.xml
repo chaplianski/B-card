@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">B-card</string>
+
     <string name="password">Password</string>
     <string name="email_address">Email Address</string>
     <string name="welcome_to_b_card">Welcome to B-card</string>
@@ -9,7 +10,6 @@
     <string name="check_all">Check All</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
-    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="logo" translatable="false">logo</string>
     <string name="registration_panel">registration panel</string>
     <string name="please_enter_login">Please, enter login</string>
@@ -28,7 +28,6 @@
     <string name="postal_address">Postal address:\n</string>
     <string name="note">Note: </string>
     <string name="nickname">Nickname: </string>
-    <string name="ad_attribution">Ad</string>
     <string name="setup">Setup</string>
     <string name="additional_information">Additional Information</string>
     <string name="personal_additional_information">Personal additional information</string>
@@ -72,15 +71,17 @@
     <string name="sign_up">Sign Up</string>
     <string name="delete">Delete</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="save_items">Add [%d]</string>
-    <string name="save_count">Save [%d]</string>
+    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="ad_attribution">Ad</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="add_items">Add [%d]</string>
+    <string name="save_items">Save [%d]</string>
     <string name="please_enter_name">Please, enter name</string>
     <string name="please_enter_surname">Please, enter surname</string>
     <string name="please_enter_phone">Please, enter phone</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="terms_of_use">Terms of use</string>
-    <string name="anything_lab">Anything lab</string>
+    <string name="anything_lab" translatable="false">Anything lab</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="email_or_password_is_incorrect">Email or password is incorrect</string>

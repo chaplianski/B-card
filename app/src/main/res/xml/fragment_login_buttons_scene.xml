@@ -16,5 +16,4 @@
         android:id="@+id/click_forgot_password_button_forward"
         app:constraintSetEnd="@+id/click_forgot_password_button_end"
         app:constraintSetStart="@+id/click_forgot_password_button_start" />
-
 </MotionScene>

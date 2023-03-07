@@ -48,7 +48,7 @@ class ProcessCard (val context: Context){
                         newContactList.add(ContactContent.Contact(card))
                     }
                 }
-            addButton.text = UiText.StringResource(R.string.save_items, checkedCardCount).asString(context)
+            addButton.text = UiText.StringResource(R.string.add_items, checkedCardCount).asString(context)
         }
 
         cardListAdapter.updateList(newContactList)
@@ -61,7 +61,7 @@ class ProcessCard (val context: Context){
                             cardItem.isChecked = !cardItem.isChecked
                             if (cardItem.isChecked) checkedCardCount++ else checkedCardCount--
                         }
-                        addButton.text = UiText.StringResource(R.string.save_items, checkedCardCount).asString(context)
+                        addButton.text = UiText.StringResource(R.string.add_items, checkedCardCount).asString(context)
                     }
                 }
             }
@@ -93,7 +93,7 @@ class ProcessCard (val context: Context){
                         newContactList.add(ContactContent.Contact(card))
                     }
                 }
-                addButton.text = UiText.StringResource(R.string.save_items, checkedCardCount).asString(context)
+                addButton.text = UiText.StringResource(R.string.add_items, checkedCardCount).asString(context)
             }
             cardListAdapter.updateList(newContactList)
             allCardCheckFlag = !allCardCheckFlag

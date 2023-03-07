@@ -1,7 +1,6 @@
 package com.chaplianski.bcard.core.dialogs
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.DoubleCardListAdapter
 import com.chaplianski.bcard.databinding.DialogCheckDoubleCardListBinding
-import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.model.Contact
 
 class CheckDoubleCardListDialog :
@@ -41,7 +39,7 @@ class CheckDoubleCardListDialog :
                             currentContact.isChecked = !currentContact.isChecked
                             if (currentContact.isChecked) checkedContactCount++ else checkedContactCount--
                         }
-                        addButton.text = getString(R.string.save_items, checkedContactCount)
+                        addButton.text = getString(R.string.add_items, checkedContactCount)
                     }
                 }
             }
@@ -58,7 +56,7 @@ class CheckDoubleCardListDialog :
                 }
                 checkedContactCount = 0
             }
-            addButton.text = getString(R.string.save_items, checkedContactCount)
+            addButton.text = getString(R.string.add_items, checkedContactCount)
 
             currentContactList?.toList()?.let { it1 -> contactListAdapter.updateList(it1) }
             allCardCheckFlag = !allCardCheckFlag

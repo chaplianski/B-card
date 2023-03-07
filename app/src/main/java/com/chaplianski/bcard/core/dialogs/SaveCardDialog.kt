@@ -20,7 +20,6 @@ import com.chaplianski.bcard.core.helpers.ProcessCsvCard
 import com.chaplianski.bcard.core.helpers.mapCardToContactCsv
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.SaveCardDialogViewModel
-import com.chaplianski.bcard.data.repository.cardMapDomainToData
 import com.chaplianski.bcard.databinding.DialogSaveCardBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.Card
@@ -113,7 +112,7 @@ class SaveCardDialog :
                             }
                             checkedCardCount = 1
                             saveVCFButton.text = getString(
-                                R.string.save_count,
+                                R.string.save_items,
                                 checkedCardCount
                             )
                         }
@@ -128,7 +127,7 @@ class SaveCardDialog :
                                             if (cardItem.isChecked) checkedCardCount++ else checkedCardCount--
                                         }
                                         saveVCFButton.text = getString(
-                                            R.string.save_count,
+                                            R.string.save_items,
                                             checkedCardCount
                                         )
                                     }
@@ -222,7 +221,7 @@ class SaveCardDialog :
                                     }
                                 }
                                 saveVCFButton.text = getString(
-                                    R.string.save_count,
+                                    R.string.save_items,
                                     checkedCardCount
                                 )
                             }

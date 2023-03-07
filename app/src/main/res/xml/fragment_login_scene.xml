@@ -4,9 +4,9 @@
 
     <ConstraintSet android:id="@+id/click_left_panel_start">
         <Constraint android:id="@+id/cl_login_fragment_left_left_panel"
-            android:layout_width="295dp"
-            android:layout_height="400dp"
-            android:layout_marginStart="-265dp"
+            android:layout_width="@dimen/layout_width_295dp"
+            android:layout_height="@dimen/layout_height_400dp"
+            android:layout_marginStart="@dimen/default_margin_minus_265dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -17,8 +17,8 @@
         <Constraint
             android:id="@+id/iv_login_fragment_left_logo"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="280dp"
-            android:layout_height="280dp"
+            android:layout_width="@dimen/layout_width_280dp"
+            android:layout_height="@dimen/layout_height_280dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.5"
             app:layout_constraintHorizontal_bias="0.5"
@@ -30,9 +30,9 @@
 
     <ConstraintSet android:id="@+id/click_left_panel_end">
         <Constraint android:id="@id/cl_login_fragment_left_left_panel"
-            android:layout_width="295dp"
-            android:layout_height="400dp"
-            android:layout_marginStart="0dp"
+            android:layout_width="@dimen/layout_width_295dp"
+            android:layout_height="@dimen/layout_height_400dp"
+            android:layout_marginStart="@dimen/zero_dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -42,8 +42,8 @@
         <Constraint
             android:id="@+id/iv_login_fragment_left_logo"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="280dp"
-            android:layout_height="280dp"
+            android:layout_width="@dimen/layout_width_280dp"
+            android:layout_height="@dimen/layout_height_280dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.5"
             app:layout_constraintHorizontal_bias="0.5"

@@ -14,8 +14,10 @@
     <dimen name="text_size_24sp">24sp</dimen>
     <dimen name="default_image_for_two_button">122dp</dimen>
     <dimen name="default_image_for_three_button">184dp</dimen>
+    <dimen name="default_margin_minus_5dp">-5dp</dimen>
     <dimen name="default_margin_minus_80dp">-80dp</dimen>
     <dimen name="default_margin_minus_153dp">-153dp</dimen>
+    <dimen name="default_margin_minus_265dp">-265dp</dimen>
     <dimen name="default_margin_4dp">4dp</dimen>
     <dimen name="default_margin_8dp">8dp</dimen>
     <dimen name="default_margin_10dp">10dp</dimen>
@@ -26,8 +28,10 @@
     <dimen name="default_margin_24dp">24dp</dimen>
     <dimen name="default_margin_30dp">30dp</dimen>
     <dimen name="default_margin_36dp">36dp</dimen>
+    <dimen name="default_margin_40dp">40dp</dimen>
     <dimen name="default_margin_50dp">50dp</dimen>
     <dimen name="default_margin_60dp">60dp</dimen>
+    <dimen name="default_margin_80dp">80dp</dimen>
     <dimen name="default_margin_100dp">100dp</dimen>
     <dimen name="default_padding_4dp">4dp</dimen>
     <dimen name="default_padding_8dp">8dp</dimen>
@@ -53,6 +57,8 @@
     <dimen name="layout_width_80dp">80dp</dimen>
     <dimen name="layout_width_160dp">160dp</dimen>
     <dimen name="layout_width_220dp">220dp</dimen>
+    <dimen name="layout_width_280dp">280dp</dimen>
     <dimen name="layout_width_295dp">295dp</dimen>
     <dimen name="layout_width_300dp">300dp</dimen>
+    <dimen name="layout_width_409dp">409dp</dimen>
 </resources>
