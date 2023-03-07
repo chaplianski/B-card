@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.DoubleCardListAdapter
 import com.chaplianski.bcard.databinding.DialogCheckDoubleCardListBinding
-import com.chaplianski.bcard.domain.model.Contact
+import com.chaplianski.bcard.core.model.Contact
 
 class CheckDoubleCardListDialog :
     BasisDialogFragment<DialogCheckDoubleCardListBinding>(DialogCheckDoubleCardListBinding::inflate){

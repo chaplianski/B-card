@@ -1,4 +1,6 @@
-package com.chaplianski.bcard.domain.model
+package com.chaplianski.bcard.core.model
+
+import com.chaplianski.bcard.domain.model.Card
 
 
 sealed class ContactContent {

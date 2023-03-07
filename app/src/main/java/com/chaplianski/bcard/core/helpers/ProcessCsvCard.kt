@@ -5,7 +5,7 @@ import android.net.Uri
 import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.utils.UiText
 import com.chaplianski.bcard.domain.model.Card
-import com.chaplianski.bcard.domain.model.ContactCsv
+import com.chaplianski.bcard.core.model.ContactCsv
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.KotlinModule

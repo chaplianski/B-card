@@ -1,7 +1,7 @@
 package com.chaplianski.bcard.core.helpers
 
 import com.chaplianski.bcard.R
-import com.chaplianski.bcard.domain.model.CardTexture
+import com.chaplianski.bcard.core.model.CardTexture
 
 class CardDecorResources {
 

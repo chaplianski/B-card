@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.chaplianski.bcard.databinding.ItemCardTextureBinding
-import com.chaplianski.bcard.domain.model.CardTexture
+import com.chaplianski.bcard.core.model.CardTexture
 
 class CardTextureAdapter: RecyclerView.Adapter<CardTextureAdapter.ViewHolder>() {
 
@@ -24,7 +24,7 @@ class CardTextureAdapter: RecyclerView.Adapter<CardTextureAdapter.ViewHolder>() 
     var checkedPosition = -1
 
     interface CardTextureListener{
-        fun onClickItem (cardTexture:CardTexture)
+        fun onClickItem (cardTexture: CardTexture)
     }
     var cardTextureListener: CardTextureListener? = null
 

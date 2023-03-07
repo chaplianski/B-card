@@ -21,8 +21,8 @@ import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.CardSettingsDialogViewModel
 import com.chaplianski.bcard.databinding.DialogCardSettingsBinding
 import com.chaplianski.bcard.di.DaggerApp
-import com.chaplianski.bcard.domain.model.CardSettings
-import com.chaplianski.bcard.domain.model.CardTexture
+import com.chaplianski.bcard.core.model.CardSettings
+import com.chaplianski.bcard.core.model.CardTexture
 import javax.inject.Inject
 
 class CardSettingsDialog :

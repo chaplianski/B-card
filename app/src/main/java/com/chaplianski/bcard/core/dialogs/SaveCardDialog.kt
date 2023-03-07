@@ -23,8 +23,8 @@ import com.chaplianski.bcard.core.viewmodels.SaveCardDialogViewModel
 import com.chaplianski.bcard.databinding.DialogSaveCardBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.Card
-import com.chaplianski.bcard.domain.model.ContactContent
-import com.chaplianski.bcard.domain.model.ContactCsv
+import com.chaplianski.bcard.core.model.ContactContent
+import com.chaplianski.bcard.core.model.ContactCsv
 import ezvcard.Ezvcard
 import ezvcard.VCard
 import ezvcard.parameter.AddressType

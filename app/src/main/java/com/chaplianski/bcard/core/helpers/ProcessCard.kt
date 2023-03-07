@@ -8,7 +8,7 @@ import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
 import com.chaplianski.bcard.core.utils.UiText
 import com.chaplianski.bcard.domain.model.Card
-import com.chaplianski.bcard.domain.model.ContactContent
+import com.chaplianski.bcard.core.model.ContactContent
 
 class ProcessCard (val context: Context){
 

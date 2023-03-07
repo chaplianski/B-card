@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.chaplianski.bcard.databinding.ItemCardListShareContactBinding
-import com.chaplianski.bcard.domain.model.Card
-import com.chaplianski.bcard.domain.model.Contact
+import com.chaplianski.bcard.core.model.Contact
 
 class DoubleCardListAdapter: RecyclerView.Adapter<DoubleCardListAdapter.ViewHolder>() {
 

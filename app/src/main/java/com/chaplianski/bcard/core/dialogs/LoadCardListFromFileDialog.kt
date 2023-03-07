@@ -25,7 +25,7 @@ import com.chaplianski.bcard.core.viewmodels.LoadCardsDialogViewModel
 import com.chaplianski.bcard.databinding.DialogLoadCardBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.Card
-import com.chaplianski.bcard.domain.model.Contact
+import com.chaplianski.bcard.core.model.Contact
 import ezvcard.Ezvcard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn

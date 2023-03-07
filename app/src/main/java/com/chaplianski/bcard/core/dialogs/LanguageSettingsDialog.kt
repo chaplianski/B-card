@@ -9,7 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaplianski.bcard.core.adapters.LanguageSettingsAdapter
 import com.chaplianski.bcard.databinding.DialogLanguageSettingsBinding
-import com.chaplianski.bcard.domain.model.LanguageItem
+import com.chaplianski.bcard.core.model.LanguageItem
 
 class LanguageSettingsDialog :
     BasisDialogFragment<DialogLanguageSettingsBinding>(DialogLanguageSettingsBinding::inflate){

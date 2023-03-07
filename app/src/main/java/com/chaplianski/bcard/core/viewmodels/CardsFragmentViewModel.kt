@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chaplianski.bcard.domain.model.Card
-import com.chaplianski.bcard.domain.model.GetCardListState
 import com.chaplianski.bcard.domain.usecases.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -72,5 +71,15 @@ class CardsFragmentViewModel @Inject constructor(
         updateCardUseCase.execute(card)
             .onSuccess { _getCardListState.emit(GetCardListState.UpdateCard(it)) }
             .onFailure {  }
+    }
+
+    sealed class GetCardListState{
+        object Loading: GetCardListState()
+        class GetCardList(val cardList: List<Card>): GetCardListState()
+        class UpdateCard(val result: Int): GetCardListState()
+        class DeleteCard(val result: Int): GetCardListState()
+        class AddCard(val cardId: Long): GetCardListState()
+        class Failure(val exception: String): GetCardListState()
+
     }
 }

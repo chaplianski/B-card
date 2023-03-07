@@ -1,7 +1,7 @@
 package com.chaplianski.bcard.core.helpers
 
 import com.chaplianski.bcard.domain.model.Card
-import com.chaplianski.bcard.domain.model.ContactCsv
+import com.chaplianski.bcard.core.model.ContactCsv
 
 fun ContactCsv.mapContactCsvToCard(): Card {
     return Card(

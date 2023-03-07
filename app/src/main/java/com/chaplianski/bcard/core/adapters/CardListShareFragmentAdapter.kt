@@ -8,7 +8,7 @@ import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.utils.UiText
 import com.chaplianski.bcard.databinding.ItemCardListShareContactBinding
 import com.chaplianski.bcard.databinding.ItemCardListShareLetterBinding
-import com.chaplianski.bcard.domain.model.ContactContent
+import com.chaplianski.bcard.core.model.ContactContent
 
 
 class CardListShareFragmentAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>() {

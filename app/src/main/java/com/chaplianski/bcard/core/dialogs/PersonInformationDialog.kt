@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
@@ -21,7 +20,7 @@ import com.chaplianski.bcard.core.utils.CURRENT_USER_ID
 import com.chaplianski.bcard.core.viewmodels.PersonInfoDialogViewModel
 import com.chaplianski.bcard.databinding.DialogPersonInformationBinding
 import com.chaplianski.bcard.di.DaggerApp
-import com.chaplianski.bcard.domain.model.PersonInfo
+import com.chaplianski.bcard.core.model.PersonInfo
 import javax.inject.Inject
 
 class PersonInformationDialog :

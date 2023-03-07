@@ -33,7 +33,7 @@ import com.chaplianski.bcard.core.viewmodels.LoadContactListDialogViewModel
 import com.chaplianski.bcard.databinding.DialogLoadContactsBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.Card
-import com.chaplianski.bcard.domain.model.Contact
+import com.chaplianski.bcard.core.model.Contact
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

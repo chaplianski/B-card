@@ -14,7 +14,7 @@ import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.core.viewmodels.AdditionalInfoDialogViewModel
 import com.chaplianski.bcard.databinding.DialogAdditionalInformationBinding
 import com.chaplianski.bcard.di.DaggerApp
-import com.chaplianski.bcard.domain.model.AdditionalInfo
+import com.chaplianski.bcard.core.model.AdditionalInfo
 import javax.inject.Inject
 
 class AdditionalInformationDialog :

@@ -1,4 +1,4 @@
-package com.chaplianski.bcard.domain.model
+package com.chaplianski.bcard.core.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

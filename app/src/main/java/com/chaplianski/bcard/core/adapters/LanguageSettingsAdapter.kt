@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chaplianski.bcard.databinding.ItemLanguageBinding
-import com.chaplianski.bcard.domain.model.LanguageItem
+import com.chaplianski.bcard.core.model.LanguageItem
 
 class LanguageSettingsAdapter(private val languageList: List<LanguageItem>): RecyclerView.Adapter<LanguageSettingsAdapter.ViewHolder>() {
 

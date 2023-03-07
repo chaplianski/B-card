@@ -1,5 +1,6 @@
 package com.chaplianski.bcard.core.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.media.MediaScannerConnection
@@ -31,6 +32,9 @@ import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardListAdapter
 import com.chaplianski.bcard.core.dialogs.*
 import com.chaplianski.bcard.core.helpers.*
+import com.chaplianski.bcard.core.model.AdditionalInfo
+import com.chaplianski.bcard.core.model.CardSettings
+import com.chaplianski.bcard.core.model.PersonInfo
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel
 import com.chaplianski.bcard.databinding.FragmentCardsBinding
@@ -157,7 +161,7 @@ class CardsFragment : Fragment() {
             showSettingsDialog()
         }
         setupSettingsDialog()
-        setupBackgroundSettingsDialog(backgroundLayout)
+        setupBackgroundSettingsDialog(binding.clCardsFragment)
         setupLanguageDialog()
 
         editButton.setOnClickListener {
@@ -190,8 +194,8 @@ class CardsFragment : Fragment() {
             .flowWithLifecycle(lifecycle)
             .onEach {
                 when (it) {
-                    is GetCardListState.Loading -> {}
-                    is GetCardListState.GetCardList -> {
+                    is CardsFragmentViewModel.GetCardListState.Loading -> {}
+                    is CardsFragmentViewModel.GetCardListState.GetCardList -> {
                         listCards.clear()
                         listCards = if (!it.cardList.isEmpty()) {
                             it.cardList.map { it.copy() } as MutableList<Card>
@@ -238,13 +242,13 @@ class CardsFragment : Fragment() {
                         cardsRV.scrollToPosition(scrolledPosition)
                         addSearchFieldListener(searchField, resetSearchField)
                     }
-                    is GetCardListState.AddCard -> {
+                    is CardsFragmentViewModel.GetCardListState.AddCard -> {
                         currentAddItemId = it.cardId
                         lifecycleScope.launch(Dispatchers.IO) {
                             cardsFragmentViewModel.getCards(SURNAME)
                         }
                     }
-                    is GetCardListState.UpdateCard -> {
+                    is CardsFragmentViewModel.GetCardListState.UpdateCard -> {
                         lifecycleScope.launch(Dispatchers.IO) {
                             if (it.result == 1) {
 
@@ -252,12 +256,12 @@ class CardsFragment : Fragment() {
                             }
                         }
                     }
-                    is GetCardListState.DeleteCard -> {
+                    is CardsFragmentViewModel.GetCardListState.DeleteCard -> {
                         lifecycleScope.launch(Dispatchers.IO) {
                             if (it.result == 1) cardsFragmentViewModel.getCards(SURNAME)
                         }
                     }
-                    is GetCardListState.Failure -> {}
+                    is CardsFragmentViewModel.GetCardListState.Failure -> {}
                 }
             }
             .launchIn(lifecycleScope)
@@ -693,6 +697,7 @@ class CardsFragment : Fragment() {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun setupBackgroundSettingsDialog(backgroundLayout: CoordinatorLayout) {
         BackgroundSettingsDialog.setupListener(
             parentFragmentManager, this.viewLifecycleOwner
