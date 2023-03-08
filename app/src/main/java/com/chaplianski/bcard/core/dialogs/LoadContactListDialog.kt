@@ -624,7 +624,6 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         val CANCEL_STATUS = "cancel load contacts status"
         val TAG = LoadContactListDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
-        const val THUMBNAIL_SIZE = 200.0
 
         fun show(manager: FragmentManager) {
             val dialogFragment = LoadContactListDialog()
