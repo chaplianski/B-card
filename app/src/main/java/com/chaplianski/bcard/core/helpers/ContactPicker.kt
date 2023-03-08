@@ -12,7 +12,7 @@ import javax.inject.Inject
 class ContactPicker @Inject constructor(
     val context: Context,
     activityResultRegistry: ActivityResultRegistry,
-    private val callback: (uri: Uri) -> Unit //cardList: List<Card>) -> Unit
+    private val callback: (uri: Uri) -> Unit
 ) {
 
     private val pickFileLauncher = activityResultRegistry.register(

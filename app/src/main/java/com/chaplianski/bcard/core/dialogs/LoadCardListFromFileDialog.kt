@@ -85,7 +85,7 @@ class LoadCardListFromFileDialog :
         currentUri?.toUri().also {
             val mimeType = it?.let { it1 -> context?.contentResolver?.getType(it1) }
             val inputStream = it?.let { it1 -> context?.contentResolver?.openInputStream(it1) }
-            val readVcard = Ezvcard.parse(inputStream).all()//.first()
+            val readVcard = Ezvcard.parse(inputStream).all()
             val contentResolver = context?.contentResolver
             val processVcfCard = ProcessVcfCard()
             val processCsvCard = ProcessCsvCard()

@@ -37,7 +37,6 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
     }
 
     interface ShortOnClickListener {
-        //        fun shortClick()
         fun shortPhoneClick(phone: String)
         fun shortEmailClick(email: String)
         fun shortHomePhoneClick(homePhone: String)
@@ -167,7 +166,7 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
                 }
 
                 if (card.isCardCorner) cardviewCardFragmentCard.radius = 40f
-
+                Log.d("MyLog", "card photo = ${card.photo}")
                 if (card.cardFormPhoto == AVATAR_FORM_OVAL) {
 
                     Glide.with(itemView.context).load(card.photo)

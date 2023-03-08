@@ -1,13 +1,19 @@
 package com.chaplianski.bcard.core.dialogs
 
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.ContactsContract.Data
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -28,17 +34,19 @@ import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.adapters.CardListShareFragmentAdapter
 import com.chaplianski.bcard.core.helpers.CardDecorResources
 import com.chaplianski.bcard.core.helpers.ProcessCard
+import com.chaplianski.bcard.core.model.Contact
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.core.viewmodels.LoadContactListDialogViewModel
 import com.chaplianski.bcard.databinding.DialogLoadContactsBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.Card
-import com.chaplianski.bcard.core.model.Contact
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.io.*
 import javax.inject.Inject
+
 
 class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -506,8 +514,13 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
             val doubleCardList = mutableListOf<Card>()
             when {
                 allCardList.isEmpty() && listCard.isNotEmpty() -> {
-                    listCard.forEach {
-                        loadContactListDialogViewModel.addCard(it)
+                    listCard.forEach {card ->
+                        val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                            requireContext().contentResolver,
+                            Uri.parse(card.photo)
+                        )
+                        card.photo = saveImageInExternalCacheDir(requireContext(), bitmap)
+                        loadContactListDialogViewModel.addCard(card)
                     }
                 }
                 allCardList.isNotEmpty() && listCard.isNotEmpty() -> {
@@ -516,7 +529,14 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                             allCardList.filter { checkedCard.name == it.name && checkedCard.surname == it.surname }
                         if (doubleCheckedCard.isNotEmpty()){
                              doubleCardList.add(checkedCard)
-                        } else loadContactListDialogViewModel.addCard(checkedCard)
+                        } else {
+                            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                                requireContext().contentResolver,
+                                Uri.parse(checkedCard.photo)
+                            )
+                            checkedCard.photo = saveImageInExternalCacheDir(requireContext(), bitmap)
+                            loadContactListDialogViewModel.addCard(checkedCard)
+                        }
                     }
                 }
             }
@@ -579,6 +599,20 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         CheckDoubleCardListDialog.show(parentFragmentManager, contactList)
     }
 
+    fun saveImageInExternalCacheDir(context: Context, bitmap: Bitmap): String {
+        val fileName = System.currentTimeMillis().toString()
+        val filePath = context.externalCacheDir.toString() + "/" + fileName + ".jpg"
+        try {
+            val fos = FileOutputStream(File(filePath))
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+            fos.flush()
+            fos.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return filePath
+    }
+
     companion object {
         fun newInstance(): LoadContactListDialog {
             return LoadContactListDialog()
@@ -590,6 +624,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         val CANCEL_STATUS = "cancel load contacts status"
         val TAG = LoadContactListDialog::class.java.simpleName
         val REQUEST_KEY = "$TAG: default request key"
+        const val THUMBNAIL_SIZE = 200.0
 
         fun show(manager: FragmentManager) {
             val dialogFragment = LoadContactListDialog()
