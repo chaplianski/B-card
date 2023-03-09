@@ -88,5 +88,24 @@
     <string name="save_vcf">Save .vcf</string>
     <string name="save_csv_without_photo">Save .csv (without photo)</string>
     <string name="there_is_no_information_available_n_you_can_add_it_to_the_edit_menu">There is no information available,\n you can add it to the edit menu</string>
+    <string name="policy">All the information you enter is stored only on your device. Its confidentiality is ensured by the user authorization mechanism. \n
+                    In the process of using the application, requests for permission to use the camera, access the application to the file storage on your device, the ability to make calls, send emails, read your account contacts are used. This is necessary for the full operation of the application and is not used for any other purposes.\n
+                    The advertising information displayed in the application is used to finance current and future software development. Thanks for understanding.</string>
+    <string name="terms">Terms of use of the application v1.0 \n\n It is important that you read them, because this is where we outline our responsibilities as a mobile app developer,
+        as well as your responsibilities as a mobile app user. By installing and using the app, you accept these terms and conditions and are legally bound by them. If you don\'t want
+        to be bound by the terms, then you shouldn\'t use our app.\n\n 1.Your responsibilities\n You agree that the data that you provide to us when using the mobile application or
+        registering with us (for example, your phone number) will be processed and used in accordance with our Privacy Policy.\n\n 2.Privacy Policy\n We take your privacy very seriously.
+        We are not able to transfer your personal data to anyone else. For more information about how we protect your privacy, please read our Privacy Policy.\n\n 3.Our fee\n The use of
+        the application is shareware. You are not directly responsible for the costs of using the application. All the revenue we can get comes from the advertiser.\n\n
+        4. Copyright\n All content on our website, including the logo, belongs to us and is protected by US and international copyright laws. Please do not copy,
+        download or use our materials for either private or commercial use.\n\n 5. Uploading images and other materials\n The application provides only illustrative
+        content for decorating elements. All other information is uploaded by the user and must not contain any content that: • Is illegal, defamatory, offensive,
+        obscene, discriminatory or otherwise objectionable;\n • Includes information that you are not authorized to disclose or provide in accordance with any law
+        or in accordance with contractual or fiduciary relationships (for example, insider information or proprietary and confidential information obtained or
+        disclosed as part of an employment relationship or in accordance with non-disclosure agreements);\n • Infringes patents, trademarks, trade secrets,
+        copyrights or other proprietary rights.\n\n 6. Responsibility\n We have taken all possible measures to prevent Internet fraud and ensure that any data
+        collected from you is kept safe and secure. However, in the extremely unlikely event of your device being hacked, we cannot be held responsible.\n
+        Under no circumstances will we be liable for any direct, indirect, incidental or other damages or injuries resulting from your use or downloading
+        of any content on our site.</string>
 
 </resources>

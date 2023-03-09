@@ -121,8 +121,7 @@
                 app:layout_constraintTop_toTopOf="@+id/imageView4"
                 app:layout_constraintVertical_bias="0.523" />
 
-            <TextView
-                android:id="@+id/tv_about_dialog_content"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/zero_dp"
                 android:layout_margin="@dimen/default_margin_16dp"
@@ -130,7 +129,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_about_dialog_terms"
-                app:layout_constraintVertical_bias="0.225" />
+                app:layout_constraintVertical_bias="0.225">
+
+                <TextView
+                    android:id="@+id/tv_about_dialog_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"
+                    />
+
+            </ScrollView>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/bt_about_dialog_ok"

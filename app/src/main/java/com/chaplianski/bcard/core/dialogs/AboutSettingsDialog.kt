@@ -7,6 +7,7 @@ import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
+import com.chaplianski.bcard.R
 import com.chaplianski.bcard.core.utils.CURRENT_CARD_ID
 import com.chaplianski.bcard.databinding.DialogAboutSettingsBinding
 
@@ -21,16 +22,18 @@ class AboutSettingsDialog :
         val termsButton = binding.tvAboutDialogTerms
         val textField = binding.tvAboutDialogContent
 
+        textField.text = getString(R.string.policy)
+
         okButton.setOnClickListener {
             dismiss()
         }
 
         policyButton.setOnClickListener {
-            textField.text = "Any text about policy"
+            textField.text = getString(R.string.policy)
         }
 
         termsButton.setOnClickListener {
-            textField.text = "Any text about terms"
+            textField.text = getString(R.string.terms)
         }
     }
 
