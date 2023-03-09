@@ -166,7 +166,6 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
                 }
 
                 if (card.isCardCorner) cardviewCardFragmentCard.radius = 40f
-                Log.d("MyLog", "card photo = ${card.photo}")
                 if (card.cardFormPhoto == AVATAR_FORM_OVAL) {
 
                     Glide.with(itemView.context).load(card.photo)

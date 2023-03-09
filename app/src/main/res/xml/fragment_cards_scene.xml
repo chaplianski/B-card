@@ -8,7 +8,7 @@
             android:layout_width="@dimen/layout_width_220dp"
             android:layout_height="@dimen/layout_height_155dp"
             android:layout_marginStart="@dimen/default_margin_minus_153dp"
-            android:layout_marginBottom="@dimen/default_margin_20dp"
+            android:layout_marginBottom="@dimen/default_margin_50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
@@ -22,7 +22,7 @@
             android:layout_width="@dimen/layout_width_220dp"
             android:layout_height="@dimen/layout_height_155dp"
             android:layout_marginStart="@dimen/default_margin_minus_5dp"
-            android:layout_marginBottom="@dimen/default_margin_20dp"
+            android:layout_marginBottom="@dimen/default_margin_50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
@@ -37,7 +37,7 @@
             android:layout_width="@dimen/layout_width_220dp"
             android:layout_height="@dimen/layout_height_155dp"
             android:layout_marginEnd="@dimen/default_margin_minus_153dp"
-            android:layout_marginBottom="@dimen/default_margin_20dp"
+            android:layout_marginBottom="@dimen/default_margin_50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
@@ -52,7 +52,7 @@
             android:layout_width="@dimen/layout_width_220dp"
             android:layout_height="@dimen/layout_height_155dp"
             android:layout_marginEnd="@dimen/default_margin_minus_5dp"
-            android:layout_marginBottom="@dimen/default_margin_20dp"
+            android:layout_marginBottom="@dimen/default_margin_50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
@@ -264,7 +264,7 @@
             app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.733" />
+            app:layout_constraintVertical_bias="0.7" />
         <Constraint
             android:id="@+id/bt_cards_fragment_sort_phone"
             android:layout_width="@dimen/layout_width_60dp"
@@ -276,7 +276,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_sort_name"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.733" />
+            app:layout_constraintVertical_bias="0.7" />
         <Constraint
             android:id="@+id/bt_cards_fragment_sort_mail"
             android:layout_width="@dimen/layout_width_60dp"
@@ -288,7 +288,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_sort_phone"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.733" />
+            app:layout_constraintVertical_bias="0.7" />
         <Constraint
             android:id="@+id/bt_cards_fragment_sort_organisation"
             android:layout_width="@dimen/layout_width_60dp"
@@ -300,7 +300,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_sort_mail"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.733" />
+            app:layout_constraintVertical_bias="0.7" />
         <Constraint
             android:id="@+id/bt_cards_fragment_sort_location"
             android:layout_width="@dimen/layout_width_60dp"
@@ -312,7 +312,7 @@
             app:layout_constraintHorizontal_bias="0.01"
             app:layout_constraintStart_toEndOf="@+id/bt_cards_fragment_sort_organisation"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.733" />
+            app:layout_constraintVertical_bias="0.7" />
     </ConstraintSet>
     <ConstraintSet android:id="@+id/begin_position_start" >
         <Constraint
@@ -321,7 +321,7 @@
             android:layout_width="@dimen/layout_width_220dp"
             android:layout_height="@dimen/layout_height_155dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="@dimen/default_margin_20dp"
+            android:layout_marginBottom="@dimen/default_margin_50dp"
             app:layout_constraintVertical_bias="1"
             android:layout_marginEnd="@dimen/default_margin_minus_153dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -336,7 +336,7 @@
             android:layout_width="@dimen/layout_width_220dp"
             android:layout_height="@dimen/layout_height_155dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="@dimen/default_margin_20dp"
+            android:layout_marginBottom="@dimen/default_margin_50dp"
             app:layout_constraintVertical_bias="1"
             android:layout_marginEnd="@dimen/default_margin_minus_153dp"
             app:layout_constraintTop_toTopOf="parent"
