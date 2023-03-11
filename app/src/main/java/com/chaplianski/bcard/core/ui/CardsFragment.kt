@@ -7,6 +7,7 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -200,11 +200,10 @@ class CardsFragment : Fragment() {
                     is CardsFragmentViewModel.GetCardListState.Loading -> {}
                     is CardsFragmentViewModel.GetCardListState.GetCardList -> {
                         listCards.clear()
-                        listCards = if (!it.cardList.isEmpty()) {
+                        listCards = if (it.cardList.isNotEmpty()) {
                             it.cardList.map { it.copy() } as MutableList<Card>
                         } else it.cardList as MutableList<Card>
                         cardFragmentCardAdapter.differ.submitList(listCards)
-
                         if (it.cardList.isNotEmpty()) {
                             if (currentPosition == -1) {
                                 cardsFragmentViewModel.getCard(listCards[0].id)
@@ -240,6 +239,7 @@ class CardsFragment : Fragment() {
                                 currentPosition--
                                 scrolledPosition = currentPosition
                             }
+//                            currentCardId = currentPosition.
                             currentCardDeleteId = -2
                         }
                         cardsRV.scrollToPosition(scrolledPosition)
@@ -248,20 +248,21 @@ class CardsFragment : Fragment() {
                     is CardsFragmentViewModel.GetCardListState.AddCard -> {
                         currentAddItemId = it.cardId
                         lifecycleScope.launch(Dispatchers.IO) {
-                            cardsFragmentViewModel.getCards(SURNAME)
+                            cardsFragmentViewModel.getCardList(SURNAME)
+                            cardsFragmentViewModel.getCard(it.cardId)
                         }
                     }
                     is CardsFragmentViewModel.GetCardListState.UpdateCard -> {
                         lifecycleScope.launch(Dispatchers.IO) {
                             if (it.result == 1) {
-
-                                cardsFragmentViewModel.getCards(SURNAME)
+                                cardsFragmentViewModel.getCardList(SURNAME)
+                                cardsFragmentViewModel.getCard(currentCardEditId)
                             }
                         }
                     }
                     is CardsFragmentViewModel.GetCardListState.DeleteCard -> {
                         lifecycleScope.launch(Dispatchers.IO) {
-                            if (it.result == 1) cardsFragmentViewModel.getCards(SURNAME)
+                            if (it.result == 1) cardsFragmentViewModel.getCardList(SURNAME)
                         }
                     }
                     is CardsFragmentViewModel.GetCardListState.Failure -> {}
@@ -270,7 +271,7 @@ class CardsFragment : Fragment() {
             .launchIn(lifecycleScope)
 
         lifecycleScope.launch(Dispatchers.IO) {
-            cardsFragmentViewModel.getCards(SURNAME)
+            cardsFragmentViewModel.getCardList(SURNAME)
         }
 
         cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
@@ -305,34 +306,34 @@ class CardsFragment : Fragment() {
 
         sortSurnameButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                cardsFragmentViewModel.getCards(SURNAME)
+                cardsFragmentViewModel.getCardList(SURNAME)
             }
         }
 
         sortPhoneButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                cardsFragmentViewModel.getCards(PHONE)
+                cardsFragmentViewModel.getCardList(PHONE)
                 currentPosition = -1
             }
         }
 
         sortMailButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                cardsFragmentViewModel.getCards(EMAIL)
+                cardsFragmentViewModel.getCardList(EMAIL)
                 currentPosition = -1
             }
         }
 
         sortOrganizationButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                cardsFragmentViewModel.getCards(ORGANIZATION)
+                cardsFragmentViewModel.getCardList(ORGANIZATION)
                 currentPosition = -1
             }
         }
 
         sortLocationButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                cardsFragmentViewModel.getCards(LOCATION)
+                cardsFragmentViewModel.getCardList(LOCATION)
                 currentPosition = -1
             }
         }
@@ -374,7 +375,7 @@ class CardsFragment : Fragment() {
         resetSearchButton.setOnClickListener {
             searchField.text.clear()
             lifecycleScope.launch(Dispatchers.IO) {
-                cardsFragmentViewModel.getCards(SURNAME)
+                cardsFragmentViewModel.getCardList(SURNAME)
             }
         }
     }
@@ -897,8 +898,10 @@ class CardsFragment : Fragment() {
         ) { status ->
             when (status) {
                 LoadContactListDialog.ADD_STATUS -> {
+
                     lifecycleScope.launch(Dispatchers.IO) {
-                        cardsFragmentViewModel.getCards(SURNAME)
+                        delay(500)
+                        cardsFragmentViewModel.getCardList(SURNAME)
                     }
                 }
                 LoadContactListDialog.CANCEL_STATUS -> {
@@ -914,7 +917,7 @@ class CardsFragment : Fragment() {
             when (status) {
                 LoadCardListFromFileDialog.ADD_STATUS -> {
                     lifecycleScope.launch(Dispatchers.IO) {
-                        cardsFragmentViewModel.getCards(SURNAME)
+                        cardsFragmentViewModel.getCardList(SURNAME)
                     }
                 }
                 LoadCardListFromFileDialog.CANCEL_STATUS -> {
@@ -922,7 +925,7 @@ class CardsFragment : Fragment() {
                 }
                 LoadCardListFromFileDialog.AFTER_CHECK_DOUBLE_STATUS -> {
                     lifecycleScope.launch(Dispatchers.IO) {
-                        cardsFragmentViewModel.getCards(SURNAME)
+                        cardsFragmentViewModel.getCardList(SURNAME)
                     }
                 }
             }

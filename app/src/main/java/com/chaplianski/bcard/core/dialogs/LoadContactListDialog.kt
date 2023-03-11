@@ -143,10 +143,6 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
             dismiss()
         }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            loadContactListDialogViewModel.getCards(LoadCardListFromFileDialog.SURNAME)
-        }
-
         loadContactListDialogViewModel.getCardListState
             .flowWithLifecycle(lifecycle)
             .onEach {
@@ -154,7 +150,86 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
                     is LoadContactListDialogViewModel.GetCardsState.Loading -> {}
                     is LoadContactListDialogViewModel.GetCardsState.Success -> {
                         allCardList = it.cardList
-                        Log.d("MyLog", "all card in flow result")
+                        val listCard = mutableListOf<Card>()
+
+                        cardList.forEach { cardItem ->
+                            if (cardItem.isChecked) {
+                                cardItem.id = 0
+                                listCard.add(cardItem)
+                            }
+                        }
+                        val doubleCardList = mutableListOf<Card>()
+                        when {
+                            allCardList.isEmpty() && listCard.isNotEmpty() -> {
+                                listCard.forEach { card ->
+                                    if (card.photo.isNotEmpty()) {
+                                        val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                                            requireContext().contentResolver,
+                                            Uri.parse(card.photo)
+                                        )
+                                        card.photo =
+                                            saveImageInExternalCacheDir(requireContext(), bitmap)
+                                    }
+                                    loadContactListDialogViewModel.addCard(card)
+                                }
+                            }
+                            allCardList.isNotEmpty() && listCard.isNotEmpty() -> {
+                                listCard.forEach { checkedCard ->
+                                    val doubleCheckedCard =
+                                        allCardList.filter { checkedCard.name == it.name && checkedCard.surname == it.surname }
+                                    if (doubleCheckedCard.isNotEmpty()) {
+                                        if (checkedCard.photo.isNotEmpty()) {
+                                            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                                                requireContext().contentResolver,
+                                                Uri.parse(checkedCard.photo)
+                                            )
+                                            checkedCard.photo =
+                                                saveImageInExternalCacheDir(
+                                                    requireContext(),
+                                                    bitmap
+                                                )
+                                        }
+                                        doubleCardList.add(checkedCard)
+                                    } else {
+                                        if (checkedCard.photo.isNotEmpty()) {
+                                            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                                                requireContext().contentResolver,
+                                                Uri.parse(checkedCard.photo)
+                                            )
+                                            checkedCard.photo =
+                                                saveImageInExternalCacheDir(
+                                                    requireContext(),
+                                                    bitmap
+                                                )
+                                        }
+                                        loadContactListDialogViewModel.addCard(checkedCard)
+                                    }
+                                }
+                            }
+                        }
+
+                        if (doubleCardList.isNotEmpty()) {
+                            val contactList = mutableListOf<Contact>()
+                            doubleCardList.forEach {
+                                val contact = Contact(
+                                    name = it.name,
+                                    surname = it.surname,
+                                    workPhone = it.workPhone,
+                                    isChecked = false
+                                )
+                                contactList.add(contact)
+                            }
+                            showCheckDoubleCardListDialog(contactList)
+                        }
+                        if (doubleCardList.isNotEmpty()) {
+                            setupCheckDoubleCardListDialog()
+                        } else {
+                            parentFragmentManager.setFragmentResult(
+                                REQUEST_KEY,
+                                bundleOf(CHECKED_OPTION to ADD_STATUS)
+                            )
+                            dismiss()
+                        }
                     }
                     is LoadContactListDialogViewModel.GetCardsState.Failure -> {}
                 }
@@ -511,72 +586,9 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         processCardList.fillCardAdapter(cardList, addButton, cardListAdapter, checkboxAllCards)
 
         addButton.setOnClickListener {
-            val listCard = mutableListOf<Card>()
-
-            cardList.forEach { cardItem ->
-                if (cardItem.isChecked) {
-                    cardItem.id = 0
-                    listCard.add(cardItem)
-                }
-            }
-            val doubleCardList = mutableListOf<Card>()
-            when {
-                allCardList.isEmpty() && listCard.isNotEmpty() -> {
-                    listCard.forEach { card ->
-                        val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                            requireContext().contentResolver,
-                            Uri.parse(card.photo)
-                        )
-                        card.photo = saveImageInExternalCacheDir(requireContext(), bitmap)
-                        loadContactListDialogViewModel.addCard(card)
-                    }
-                }
-                allCardList.isNotEmpty() && listCard.isNotEmpty() -> {
-                    listCard.forEach { checkedCard ->
-                        val doubleCheckedCard =
-                            allCardList.filter { checkedCard.name == it.name && checkedCard.surname == it.surname }
-                        if (doubleCheckedCard.isNotEmpty()) {
-                            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                                requireContext().contentResolver,
-                                Uri.parse(checkedCard.photo)
-                            )
-                            checkedCard.photo =
-                                saveImageInExternalCacheDir(requireContext(), bitmap)
-                            doubleCardList.add(checkedCard)
-                        } else {
-                            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                                requireContext().contentResolver,
-                                Uri.parse(checkedCard.photo)
-                            )
-                            checkedCard.photo =
-                                saveImageInExternalCacheDir(requireContext(), bitmap)
-                            loadContactListDialogViewModel.addCard(checkedCard)
-                        }
-                    }
-                }
-            }
-
-            if (doubleCardList.isNotEmpty()) {
-                val contactList = mutableListOf<Contact>()
-                doubleCardList.forEach {
-                    val contact = Contact(
-                        name = it.name,
-                        surname = it.surname,
-                        workPhone = it.workPhone,
-                        isChecked = false
-                    )
-                    contactList.add(contact)
-                }
-                showCheckDoubleCardListDialog(contactList)
-            }
-            if (doubleCardList.isNotEmpty()) {
-                setupCheckDoubleCardListDialog()
-            } else {
-                parentFragmentManager.setFragmentResult(
-                    REQUEST_KEY,
-                    bundleOf(CHECKED_OPTION to ADD_STATUS)
-                )
-                dismiss()
+            lifecycleScope.launch(Dispatchers.IO) {
+                Log.d("MyLog", "get all card to vm")
+                loadContactListDialogViewModel.getCards(LoadCardListFromFileDialog.SURNAME)
             }
         }
     }
@@ -586,6 +598,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
             parentFragmentManager,
             this.viewLifecycleOwner
         ) { status, contactList ->
+            Log.d("MyLog", "in double setup dialog")
             when (status) {
                 CheckDoubleCardListDialog.ADD_STATUS -> {
                     val addDoubleCardList = mutableListOf<Card>()
@@ -644,7 +657,7 @@ class LoadContactListDialog : DialogFragment(), LoaderManager.LoaderCallbacks<Cu
         }
 
         const val SORT_ORDER = Data.MIMETYPE
-        val CHECKED_OPTION = "checked option"
+        val CHECKED_OPTION = "checked contacts option"
         val ADD_STATUS = "add contacts status"
         val CANCEL_STATUS = "cancel load contacts status"
         val TAG = LoadContactListDialog::class.java.simpleName

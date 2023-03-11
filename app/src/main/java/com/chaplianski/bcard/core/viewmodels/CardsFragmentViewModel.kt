@@ -30,7 +30,7 @@ class CardsFragmentViewModel @Inject constructor(
     private var _getCardListState = MutableStateFlow<GetCardListState>(GetCardListState.Loading)
     val getCardListState get() = _getCardListState.asStateFlow()
 
-    suspend fun getCards(fieldForSorting: String) {
+    suspend fun getCardList(fieldForSorting: String) {
         getCardListUseCase.execute(fieldForSorting)
                .onSuccess {
                    _getCardListState.emit(GetCardListState.GetCardList(it)) }

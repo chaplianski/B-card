@@ -288,7 +288,7 @@ class CardListAdapter (val context: Context): RecyclerView.Adapter<RecyclerView.
         override fun areItemsTheSame(oldItem: Card, newItem: Card): Boolean = oldItem == newItem
 
         override fun areContentsTheSame(oldItem: Card, newItem: Card): Boolean {
-            return oldItem.hashCode() == newItem.hashCode()
+            return oldItem == newItem
         }
 
     }
