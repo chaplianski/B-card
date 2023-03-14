@@ -1,9 +1,6 @@
 package com.chaplianski.bcard.core.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.chaplianski.bcard.domain.model.Card
 import com.chaplianski.bcard.domain.usecases.*
 import kotlinx.coroutines.Dispatchers
@@ -30,14 +27,16 @@ class CardsFragmentViewModel @Inject constructor(
     private var _getCardListState = MutableStateFlow<GetCardListState>(GetCardListState.Loading)
     val getCardListState get() = _getCardListState.asStateFlow()
 
-    suspend fun getCardList(fieldForSorting: String) {
-        getCardListUseCase.execute(fieldForSorting)
-               .onSuccess {
-                   _getCardListState.emit(GetCardListState.GetCardList(it)) }
-               .onFailure {  }
+    fun getCardList(fieldForSorting: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            getCardListUseCase.execute(fieldForSorting)
+                .onSuccess {
+                    _getCardListState.emit(GetCardListState.GetCardList(it)) }
+                .onFailure {  }
+        }
     }
 
-    suspend fun getCardListBySearchValue(searchValue: String){
+    fun getCardListBySearchValue(searchValue: String) = viewModelScope.launch(Dispatchers.IO) {
         getCardListBySearchValueUseCase.execute(searchValue)
             .onSuccess {
                 _getCardListState.emit(GetCardListState.GetCardList(it))
@@ -55,19 +54,19 @@ class CardsFragmentViewModel @Inject constructor(
         viewModelScope.cancel()
     }
 
-    suspend fun deleteCard(cardId: Long) {
+    fun deleteCard(cardId: Long) = viewModelScope.launch(Dispatchers.IO) {
         deleteCardUseCase.execute(cardId)
             .onSuccess { _getCardListState.emit(GetCardListState.DeleteCard(it)) }
             .onFailure {  }
     }
 
-    suspend fun addCard(card: Card){
+    fun addCard(card: Card) = viewModelScope.launch(Dispatchers.IO) {
         addCardUseCase.execute(card)
             .onSuccess {_getCardListState.emit(GetCardListState.AddCard(it))}
             .onFailure {  }
     }
 
-    suspend fun updateCard(card: Card){
+    fun updateCard(card: Card) = viewModelScope.launch(Dispatchers.IO) {
         updateCardUseCase.execute(card)
             .onSuccess { _getCardListState.emit(GetCardListState.UpdateCard(it)) }
             .onFailure {  }
