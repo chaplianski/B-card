@@ -7,7 +7,6 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +37,7 @@ import com.chaplianski.bcard.core.model.CardSettings
 import com.chaplianski.bcard.core.model.PersonInfo
 import com.chaplianski.bcard.core.utils.*
 import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel
+import com.chaplianski.bcard.core.viewmodels.CardsFragmentViewModel.*
 import com.chaplianski.bcard.databinding.FragmentCardsBinding
 import com.chaplianski.bcard.di.DaggerApp
 import com.chaplianski.bcard.domain.model.*
@@ -74,6 +74,7 @@ class CardsFragment : Fragment() {
     var currentCardDeleteId = -2L
     var scrolledPosition = 0
     var listCards = mutableListOf<Card>()
+    val cardFragmentCardAdapter = CardListAdapter(requireContext())
     override fun onAttach(context: Context) {
         (context.applicationContext as DaggerApp).getAppComponent().cardsFragmentInject(this)
         super.onAttach(context)
@@ -90,8 +91,6 @@ class CardsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         val backgroundLayout = binding.clCardsFragment
         val adContainerView = binding.layoutCardFragmentAd
         val settingsButton = binding.btCardsFragmentSettings
@@ -103,8 +102,6 @@ class CardsFragment : Fragment() {
         val motionLayout = binding.motionLayoutFragmentCards
         val sortButton = binding.btCardsFragmentSort
         val searchButton = binding.btCardsFragmentSearch
-        val searchField = binding.tvCardsFragmentSearchField
-        val resetSearchField = binding.btCardsFragmentSearchReset
         val leftPanelImage = binding.ivFragmentCardsLeftPanel
         val rightPanelImage = binding.ivFragmentCardsRightPanel
         val cardsRV = binding.rvCardsFragmentCards
@@ -114,20 +111,6 @@ class CardsFragment : Fragment() {
         val sortOrganizationButton = binding.btCardsFragmentSortOrganisation
         val sortLocationButton = binding.btCardsFragmentSortLocation
         val userInfoLayout = binding.layoutUserInformation.clUserInfo
-        val avatarUserInformation = binding.layoutUserInformation.ivUserInformationProfileAvatar
-        val nameUserInformation = binding.layoutUserInformation.tvUserInformationProfileName
-        val specialityUserInfo = binding.layoutUserInformation.tvUserInformationProfileSpeciality
-        val organizationUserInfo =
-            binding.layoutUserInformation.tvUserInformationProfileOrganization
-        val addProfileInfoTitle = binding.layoutUserInformation.userInformationProfileInfoTitle
-        val profInfoTitle = binding.layoutUserInformation.userInformationProfInfoTitle
-        val privateInfoTitle = binding.layoutUserInformation.userInformationPrivateTitle
-        val referenceTitle = binding.layoutUserInformation.userInformationReferenceTitle
-        val additionalProfileInfo = binding.layoutUserInformation.userInformationProfileInfo
-        val professionalInfo = binding.layoutUserInformation.userInformationProfInfo
-        val privateInfo = binding.layoutUserInformation.userInformationPrivate
-        val reference = binding.layoutUserInformation.userInformationReference
-        val absentInfoText = binding.layoutUserInformation.tvUserInformationAbsentInfo
 
         val adsPicker = AdsPicker()
         adsPicker.setAdNative(requireContext(), adContainerView)
@@ -188,154 +171,34 @@ class CardsFragment : Fragment() {
             activity?.finishAffinity()
         }
 
-
         // ******  Cards wheel  ********
-        val cardFragmentCardAdapter = CardListAdapter(requireContext())
+
         setupRecyclerView(cardsRV, cardFragmentCardAdapter, userInfoLayout, adContainerView)
 
-        cardsFragmentViewModel.getCardListState
-            .flowWithLifecycle(lifecycle)
-            .onEach {
-                when (it) {
-                    is CardsFragmentViewModel.GetCardListState.Loading -> {}
-                    is CardsFragmentViewModel.GetCardListState.GetCardList -> {
-                        listCards.clear()
-                        listCards = if (it.cardList.isNotEmpty()) {
-                            it.cardList.map { it.copy() } as MutableList<Card>
-                        } else it.cardList as MutableList<Card>
-                        cardFragmentCardAdapter.differ.submitList(listCards)
-                        if (it.cardList.isNotEmpty()) {
-                            if (currentPosition == -1) {
-                                cardsFragmentViewModel.getCard(listCards[0].id)
-                                currentPosition = 0
-                            }
-                        }
-                        if (currentAddItemId > 0) {
-                            it.cardList.forEachIndexed { index, card ->
-                                if (card.id == currentAddItemId) {
-                                    scrolledPosition = (index + (index / AD_POSITION))
-                                }
-                            }
-                            currentAddItemId = 0
-                        }
-                        if (currentCardEditId > 0) {
-                            it.cardList.forEachIndexed { index, card ->
-                                if (card.id == currentCardEditId) {
-                                    scrolledPosition = (index + (index / AD_POSITION))
-                                }
-                            }
-                            currentCardEditId = 0
-                        }
-                        if (currentCardDeleteId != -2L) {
-                            if (currentCardDeleteId == -1L) cardsRV.scrollToPosition(0)
-                            val cardListSize = listCards.size.toLong()
-                            if (currentCardDeleteId == cardListSize) {
-                                scrolledPosition =
-                                    ((cardListSize + cardListSize % AD_POSITION) - 1).toInt()
-                            }
-                            if (currentCardDeleteId == 0L && listCards.size > 0) scrolledPosition =
-                                0
-                            if (currentPosition > 0) {
-                                currentPosition--
-                                scrolledPosition = currentPosition
-                            }
-//                            currentCardId = currentPosition.
-                            currentCardDeleteId = -2
-                        }
-                        cardsRV.scrollToPosition(scrolledPosition)
-                        addSearchFieldListener(searchField, resetSearchField)
-                    }
-                    is CardsFragmentViewModel.GetCardListState.AddCard -> {
-                        currentAddItemId = it.cardId
-                        lifecycleScope.launch(Dispatchers.IO) {
-                            cardsFragmentViewModel.getCardList(SURNAME)
-                            cardsFragmentViewModel.getCard(it.cardId)
-                        }
-                    }
-                    is CardsFragmentViewModel.GetCardListState.UpdateCard -> {
-                        lifecycleScope.launch(Dispatchers.IO) {
-                            if (it.result == 1) {
-                                cardsFragmentViewModel.getCardList(SURNAME)
-                                cardsFragmentViewModel.getCard(currentCardEditId)
-                            }
-                        }
-                    }
-                    is CardsFragmentViewModel.GetCardListState.DeleteCard -> {
-                        lifecycleScope.launch(Dispatchers.IO) {
-                            if (it.result == 1) cardsFragmentViewModel.getCardList(SURNAME)
-                        }
-                    }
-                    is CardsFragmentViewModel.GetCardListState.Failure -> {}
-                }
-            }
-            .launchIn(lifecycleScope)
+        initHandleViewModels()
 
-        lifecycleScope.launch(Dispatchers.IO) {
+        sortSurnameButton.setOnClickListener {
             cardsFragmentViewModel.getCardList(SURNAME)
         }
 
-        cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
-
-            currentCard = card
-            currentCardId = card.id
-            imageUri = card.photo
-
-            fillCurrentCardProfileInformation(
-                card,
-                avatarUserInformation,
-                nameUserInformation,
-                absentInfoText,
-                specialityUserInfo,
-                organizationUserInfo,
-                addProfileInfoTitle,
-                additionalProfileInfo,
-                profInfoTitle,
-                professionalInfo,
-                privateInfoTitle,
-                privateInfo,
-                referenceTitle,
-                reference
-            )
-            saveToCurrentCardEditDialogInformation(card)
-
-            additionalInfoCheck =
-                currentAdditionalInfo.address.isNotEmpty() || currentAdditionalInfo.workInfo.isNotEmpty() || currentAdditionalInfo.privateInfo.isNotEmpty() || currentAdditionalInfo.reference.isNotEmpty()
-            personInfoCheck = true
-            cardSettingsCheck = true
-        }
-
-        sortSurnameButton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                cardsFragmentViewModel.getCardList(SURNAME)
-            }
-        }
-
         sortPhoneButton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                cardsFragmentViewModel.getCardList(PHONE)
-                currentPosition = -1
-            }
+            cardsFragmentViewModel.getCardList(PHONE)
+            currentPosition = -1
         }
 
         sortMailButton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                cardsFragmentViewModel.getCardList(EMAIL)
-                currentPosition = -1
-            }
+            cardsFragmentViewModel.getCardList(EMAIL)
+            currentPosition = -1
         }
 
         sortOrganizationButton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                cardsFragmentViewModel.getCardList(ORGANIZATION)
-                currentPosition = -1
-            }
+            cardsFragmentViewModel.getCardList(ORGANIZATION)
+            currentPosition = -1
         }
 
         sortLocationButton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                cardsFragmentViewModel.getCardList(LOCATION)
-                currentPosition = -1
-            }
+            cardsFragmentViewModel.getCardList(LOCATION)
+            currentPosition = -1
         }
 
         cardFragmentCardAdapter.shortOnClickListener =
@@ -359,6 +222,29 @@ class CardsFragment : Fragment() {
                 }
             }
     }
+
+    private fun initHandleViewModels() {
+        cardsFragmentViewModel.getCardListState
+            .flowWithLifecycle(lifecycle)
+            .onEach(::handleAction)
+            .launchIn(lifecycleScope)
+
+        cardsFragmentViewModel.getCardList(SURNAME)
+
+        cardsFragmentViewModel.currentCard.observe(this.viewLifecycleOwner) { card ->
+
+            binding.fillCurrentCardProfileInformation(
+                card
+            )
+            saveToCurrentCardEditDialogInformation(card)
+
+            additionalInfoCheck =
+                currentAdditionalInfo.address.isNotEmpty() || currentAdditionalInfo.workInfo.isNotEmpty() || currentAdditionalInfo.privateInfo.isNotEmpty() || currentAdditionalInfo.reference.isNotEmpty()
+            personInfoCheck = true
+            cardSettingsCheck = true
+        }
+    }
+
     private fun addSearchFieldListener(
         searchField: EditText,
         resetSearchButton: ImageButton
@@ -411,64 +297,61 @@ class CardsFragment : Fragment() {
         )
     }
 
-    private fun fillCurrentCardProfileInformation(
-        card: Card,
-        avatarUserInformation: ImageView,
-        nameUserInformation: AutofitTextView,
-        absentInfoText: TextView,
-        specialityUserInfo: AutofitTextView,
-        organizationUserInfo: AutofitTextView,
-        addProfileInfoTitle: TextView,
-        additionalProfileInfo: TextView,
-        profInfoTitle: TextView,
-        professionalInfo: TextView,
-        privateInfoTitle: TextView,
-        privateInfo: TextView,
-        referenceTitle: TextView,
-        reference: TextView
+    private fun FragmentCardsBinding.fillCurrentCardProfileInformation(
+        card: Card
     ) {
-        Glide.with(this).load(card.photo).centerCrop().placeholder(R.drawable.ic_portrait)
-            .into(avatarUserInformation)
-        nameUserInformation.text =
-            UiText.StringResource(R.string.two_value_without_comma, card.surname, card.name)
-                .asString(requireContext())// "${card.surname} ${card.name}"
-        absentInfoText.isVisible = false
-        specialityUserInfo.text = card.speciality
-        organizationUserInfo.text = card.organization
-        if (card.additionalContactInfo.isEmpty()) {
-            addProfileInfoTitle.visibility = View.GONE
-            additionalProfileInfo.visibility = View.GONE
-        } else {
-            addProfileInfoTitle.visibility = View.VISIBLE
-            additionalProfileInfo.visibility = View.VISIBLE
-            additionalProfileInfo.text = card.additionalContactInfo
-        }
-        if (card.professionalInfo.isEmpty()) {
-            profInfoTitle.visibility = View.GONE
-            professionalInfo.visibility = View.GONE
-        } else {
-            profInfoTitle.visibility = View.VISIBLE
-            professionalInfo.visibility = View.VISIBLE
-            professionalInfo.text = card.professionalInfo
-        }
-        if (card.privateInfo.isEmpty()) {
-            privateInfoTitle.visibility = View.GONE
-            privateInfo.visibility = View.GONE
-        } else {
-            privateInfoTitle.visibility = View.VISIBLE
-            privateInfo.visibility = View.VISIBLE
-            privateInfo.text = card.privateInfo
-        }
-        if (card.reference.isEmpty()) {
-            referenceTitle.visibility = View.GONE
+        with(this.layoutUserInformation) {
+            currentCard = card
+            currentCardId = card.id
+            imageUri = card.photo
+
+            Glide.with(this).load(card.photo).centerCrop().placeholder(R.drawable.ic_portrait)
+                .into(ivUserInformationProfileAvatar)
+            nameUserInformation.text =
+                UiText.StringResource(R.string.two_value_without_comma, card.surname, card.name)
+                    .asString(requireContext())// "${card.surname} ${card.name}"
+            absentInfoText.isVisible = false
+            specialityUserInfo.text = card.speciality
+            organizationUserInfo.text = card.organization
+            if (card.additionalContactInfo.isEmpty()) {
+                addProfileInfoTitle.visibility = View.GONE
+                additionalProfileInfo.visibility = View.GONE
+            } else {
+                addProfileInfoTitle.visibility = View.VISIBLE
+                additionalProfileInfo.visibility = View.VISIBLE
+                additionalProfileInfo.text = card.additionalContactInfo
+            }
+            if (card.professionalInfo.isEmpty()) {
+                profInfoTitle.visibility = View.GONE
+                professionalInfo.visibility = View.GONE
+            } else {
+                profInfoTitle.visibility = View.VISIBLE
+                professionalInfo.visibility = View.VISIBLE
+                professionalInfo.text = card.professionalInfo
+            }
+            if (card.privateInfo.isEmpty()) {
+                privateInfoTitle.visibility = View.GONE
+                privateInfo.visibility = View.GONE
+            } else {
+                privateInfoTitle.visibility = View.VISIBLE
+                privateInfo.visibility = View.VISIBLE
+                privateInfo.text = card.privateInfo
+            }
+
+            referenceTitle.isVisible = card.reference.isEmpty().not()
+            reference.text = card.referenceTitle
+
+            if (card.reference.isEmpty()) {
+            referenceTitle.visibility = View.GONE//зачем дублирование??
             referenceTitle.visibility = View.GONE
         } else {
             referenceTitle.visibility = View.VISIBLE
             referenceTitle.visibility = View.VISIBLE
-            reference.text = card.reference
+
         }
-        if (card.additionalContactInfo.isEmpty() && card.professionalInfo.isEmpty() && card.privateInfo.isEmpty() && card.reference.isEmpty()) {
-            absentInfoText.isVisible = true
+            if (card.additionalContactInfo.isEmpty() && card.professionalInfo.isEmpty() && card.privateInfo.isEmpty() && card.reference.isEmpty()) {
+                absentInfoText.isVisible = true
+            }
         }
     }
 
@@ -961,10 +844,82 @@ class CardsFragment : Fragment() {
     ) {
         DeleteCardDialog.setupListener(parentFragmentManager, this.viewLifecycleOwner) {
             lifecycleScope.launch(Dispatchers.IO) {
-                    deleteImage(currentCard.photo)
-                    cardsFragmentViewModel.deleteCard(currentCardId)
-                    currentCardDeleteId = currentCardId
+                deleteImage(currentCard.photo)
+                cardsFragmentViewModel.deleteCard(currentCardId)
+                currentCardDeleteId = currentCardId
             }
+        }
+    }
+
+    private fun handleAction(state: GetCardListState) {
+        when (state) {
+            is GetCardListState.Loading -> {}
+            is GetCardListState.GetCardList -> {
+                with(binding){
+                    listCards.clear()
+                    listCards = if (state.cardList.isNotEmpty()) {
+                        state.cardList.map { it.copy() } as MutableList<Card>
+                    } else state.cardList as MutableList<Card>
+                    cardFragmentCardAdapter.differ.submitList(listCards)
+                    if (state.cardList.isNotEmpty()) {
+                        if (currentPosition == -1) {
+                            cardsFragmentViewModel.getCard(listCards[0].id)
+                            currentPosition = 0
+                        }
+                    }
+                    if (currentAddItemId > 0) {
+                        state.cardList.forEachIndexed { index, card ->
+                            if (card.id == currentAddItemId) {
+                                scrolledPosition = (index + (index / AD_POSITION))
+                            }
+                        }
+                        currentAddItemId = 0
+                    }
+                    if (currentCardEditId > 0) {
+                        state.cardList.forEachIndexed { index, card ->
+                            if (card.id == currentCardEditId) {
+                                scrolledPosition = (index + (index / AD_POSITION))
+                            }
+                        }
+                        currentCardEditId = 0
+                    }
+                    if (currentCardDeleteId != -2L) {
+                        if (currentCardDeleteId == -1L) rvCardsFragmentCards.scrollToPosition(0)
+                        val cardListSize = listCards.size.toLong()
+                        if (currentCardDeleteId == cardListSize) {
+                            scrolledPosition =
+                                ((cardListSize + cardListSize % AD_POSITION) - 1).toInt()
+                        }
+                        if (currentCardDeleteId == 0L && listCards.size > 0) scrolledPosition =
+                            0
+                        if (currentPosition > 0) {
+                            currentPosition--
+                            scrolledPosition = currentPosition
+                        }
+//                            currentCardId = currentPosition.
+                        currentCardDeleteId = -2
+                    }
+                    rvCardsFragmentCards.scrollToPosition(scrolledPosition)
+                    addSearchFieldListener(tvCardsFragmentSearchField,btCardsFragmentSearchReset)
+                }
+            }
+            is GetCardListState.AddCard -> {
+                currentAddItemId = state.cardId
+                cardsFragmentViewModel.getCardList(SURNAME)
+                cardsFragmentViewModel.getCard(state.cardId)
+            }
+            is GetCardListState.UpdateCard -> {
+                if (state.result == 1) {
+                    cardsFragmentViewModel.getCardList(SURNAME)
+                    cardsFragmentViewModel.getCard(currentCardEditId)
+                }
+            }
+            is GetCardListState.DeleteCard -> {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    if (state.result == 1) cardsFragmentViewModel.getCardList(SURNAME)
+                }
+            }
+            is GetCardListState.Failure -> {}
         }
     }
 
